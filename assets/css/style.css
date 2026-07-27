@@ -370,18 +370,28 @@ body::before {
 .phrases .section__intro { color: rgba(255,255,255,.75); }
 .phrases__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
 .phrase {
-  perspective: 1000px; background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit;
+  -webkit-perspective: 1000px; perspective: 1000px;
+  background: none; border: 0; padding: 0; cursor: pointer; font-family: inherit;
   height: 130px; width: 100%;
 }
-.phrase__inner { position: relative; width: 100%; height: 100%; transition: transform .6s; transform-style: preserve-3d; }
-.phrase.is-flipped .phrase__inner { transform: rotateY(180deg); }
+.phrase__inner {
+  display: block; position: relative; width: 100%; height: 100%;
+  transition: -webkit-transform .6s, transform .6s;
+  -webkit-transform-style: preserve-3d; transform-style: preserve-3d;
+}
+.phrase.is-flipped .phrase__inner { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
 .phrase__face {
-  position: absolute; inset: 0; backface-visibility: hidden; border-radius: var(--radius);
+  position: absolute; inset: 0;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  border-radius: var(--radius);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem;
   padding: 1rem; text-align: center;
 }
 .phrase__front { background: linear-gradient(150deg, #fff, var(--cream-2)); color: var(--sea-deep); }
-.phrase__back { background: linear-gradient(150deg, var(--sun), var(--terra)); color: #fff; transform: rotateY(180deg); }
+.phrase__back {
+  background: linear-gradient(150deg, var(--sun), var(--terra)); color: #fff;
+  -webkit-transform: rotateY(180deg); transform: rotateY(180deg);
+}
 .phrase__de { font-weight: 700; font-size: 1.05rem; }
 .phrase__hint { font-size: .78rem; color: var(--muted); }
 .phrase__it { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; }

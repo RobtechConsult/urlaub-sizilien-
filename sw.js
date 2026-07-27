@@ -1,5 +1,5 @@
 /* Service Worker – macht die Reise-Website offline verfügbar (auch am Ätna ohne Netz) */
-const CACHE = "sizilien-2026-v1";
+const CACHE = "sizilien-2026-v2";
 const ASSETS = [
   "./",
   "index.html",

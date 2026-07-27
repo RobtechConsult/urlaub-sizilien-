@@ -1,40 +1,53 @@
-/* Service Worker – macht die Reise-Website offline verfügbar (auch am Ätna ohne Netz) */
-const CACHE = "sizilien-2026-v2";
+/* Service Worker – Sizilien 2026
+   Strategie: NETWORK-FIRST (online immer aktuell, offline aus Cache).
+   Beim Aktivieren werden alte Caches geloescht und offene Seiten neu geladen,
+   damit eine neue Version sofort sichtbar ist. */
+const CACHE = "sizilien-2026-v3";
 const ASSETS = [
   "./",
   "index.html",
-  "assets/css/style.css",
-  "assets/js/data.js",
-  "assets/js/app.js",
+  "assets/css/style.css?v=3",
+  "assets/js/data.js?v=3",
+  "assets/js/app.js?v=3",
   "manifest.webmanifest"
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then((cache) => cache.addAll(ASSETS))
+      .catch(() => {})
+      .then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    // Alte Caches entfernen
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+    // Sofort die Kontrolle uebernehmen -> loest in der Seite 'controllerchange' aus,
+    // die sich daraufhin genau einmal neu laedt (siehe app.js).
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return; // externe Requests unangetastet
+
+  // Network-first: immer versuchen, die aktuelle Version zu holen
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(event.request, copy)).catch(() => {});
-          return res;
-        })
-        .catch(() => caches.match("index.html"));
-    })
+    fetch(req)
+      .then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((cache) => cache.put(req, copy)).catch(() => {});
+        return res;
+      })
+      .catch(() =>
+        caches.match(req).then((cached) => cached || caches.match("index.html"))
+      )
   );
 });

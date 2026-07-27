@@ -289,6 +289,14 @@
 
   /* ---------------- Service Worker (offline) ---------------- */
   if ("serviceWorker" in navigator) {
+    // Wenn ein neuer SW die Kontrolle uebernimmt, Seite genau einmal neu laden,
+    // damit eine aktualisierte Version sofort sichtbar ist (kein alter Cache).
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("sw.js").catch(() => {});
     });

@@ -98,6 +98,7 @@
           <ul class="plan-day__tips">
             ${d.tips.map(t => `<li>${t}</li>`).join("")}
           </ul>
+          ${d.baby ? `<p class="plan-day__baby"><span aria-hidden="true">👶</span> <span>${d.baby}</span></p>` : ""}
         </div>
       </div>
     </article>
@@ -274,6 +275,19 @@
     if (card) card.classList.toggle("is-flipped");
   });
 
+  /* ---------------- Mit Baby unterwegs ---------------- */
+  const babyGrid = $("#babyGrid");
+  if (babyGrid && typeof BABY !== "undefined") {
+    babyGrid.innerHTML = BABY.map(b => `
+      <article class="baby-card">
+        <h3 class="baby-card__title"><span class="baby-card__icon" aria-hidden="true">${b.icon}</span>${b.title}</h3>
+        <ul class="baby-card__list">
+          ${b.items.map(i => `<li>${i}</li>`).join("")}
+        </ul>
+      </article>
+    `).join("");
+  }
+
   /* ---------------- Anreise: Auto-Animation entlang der Route ---------------- */
   const routeSection = $("#anreise");
   const carAnim = document.getElementById("carAnim");
@@ -306,7 +320,10 @@
       entries.forEach(en => {
         if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
       });
-    }, { threshold: 0.12 });
+    // threshold 0 + negativer rootMargin: loest aus, sobald das Element ~80px
+    // ins Bild ragt. Ein prozentualer Threshold wuerde bei Sektionen, die
+    // hoeher als der Viewport sind, nie erreicht -> Inhalt bliebe unsichtbar.
+    }, { threshold: 0, rootMargin: "0px 0px -80px 0px" });
     $$(".section, .fact, .hl-card, .plan-day").forEach(el => {
       el.classList.add("reveal");
       io.observe(el);

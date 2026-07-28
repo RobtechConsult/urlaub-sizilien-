@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/css/style.css?v=5" />
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
 </head>
 <body>
 
@@ -29,6 +29,7 @@
       <a href="#countdown">Countdown</a>
       <a href="#ueberblick">Überblick</a>
       <a href="#anreise">Anreise</a>
+      <a href="#baby">Baby</a>
       <a href="#reiseplan">Reiseplan</a>
       <a href="#highlights">Highlights</a>
       <a href="#kulinarik">Kulinarik</a>
@@ -91,7 +92,7 @@
         <div class="fact">
           <span class="fact__icon">📅</span>
           <h3>Reisezeitraum</h3>
-          <p><b>So. 02.08. – Fr. 14.08.2026</b><br>12 Nächte zu zweit</p>
+          <p><b>So. 02.08. – Fr. 14.08.2026</b><br>12 Nächte zu zweit + Baby (4 Monate)</p>
           <p class="fact__meta">Frühstück inklusive · Check-in ab 14:00</p>
         </div>
         <div class="fact">
@@ -105,6 +106,7 @@
           <h3>Buchung</h3>
           <p><b>1.388 €</b> gesamt (inkl. Steuern)<br>Vorgang HRS 200504921</p>
           <p class="fact__meta">Kostenlose Stornierung bis 01.08.2026</p>
+          <p class="fact__warn">⚠️ Gebucht für 2 Personen – Baby noch beim Hotel anmelden &amp; Babybett anfragen!</p>
         </div>
       </div>
       <div class="overview__contact">
@@ -122,8 +124,9 @@
       <h2 class="section__title">Mit dem Auto nach Sizilien</h2>
       <p class="section__intro">
         Rund 1.900 km von Stuttgart bis Acireale – über die Alpen, quer durch Italien
-        und mit der Fähre über die Straße von Messina. Scrollt hierher und schaut zu,
-        wie das Auto die Strecke fährt.
+        und mit der Fähre über die Straße von Messina. Schaut zu, wie das Auto die
+        Strecke fährt. <b>Mit Baby an Bord</b> plant ihr die Fahrt am besten auf
+        3–4 Etappen – alle Details dazu findet ihr im Abschnitt „Mit Baby".
       </p>
       <div class="route-map">
         <svg viewBox="0 0 1000 300" class="route-map__svg" id="routeSvg" role="img"
@@ -156,9 +159,35 @@
       <div class="route-stats">
         <div class="route-stat"><span class="route-stat__num">≈1.900 km</span><span class="route-stat__label">Strecke</span></div>
         <div class="route-stat"><span class="route-stat__num">≈19 Std.</span><span class="route-stat__label">reine Fahrzeit</span></div>
-        <div class="route-stat"><span class="route-stat__num">2 Tage</span><span class="route-stat__label">mit Zwischenstopp</span></div>
+        <div class="route-stat"><span class="route-stat__num">3–4 Tage</span><span class="route-stat__label">Etappen mit Baby</span></div>
+        <div class="route-stat route-stat--baby"><span class="route-stat__num">max. 2 Std.</span><span class="route-stat__label">am Stück in der Babyschale</span></div>
       </div>
       <button class="btn btn--ghost btn--sm route-map__replay" id="routeReplay">🚗 Fahrt erneut abspielen</button>
+    </div>
+  </section>
+
+  <!-- MIT BABY UNTERWEGS -->
+  <section class="section baby" id="baby">
+    <div class="section__inner">
+      <p class="eyebrow">Zu dritt statt zu zweit</p>
+      <h2 class="section__title">Mit Baby nach Sizilien</h2>
+      <p class="section__intro">
+        Euer Kind ist bei der Reise gut vier Monate alt. Das ändert vor allem drei Dinge:
+        die Fahrt wird länger, die Hitze wird zum Hauptthema und der Tagesplan richtet sich
+        nach dem Baby. Hier steht alles, was ihr fürs Auto, fürs Packen und für den Urlaub
+        beachten solltet.
+      </p>
+
+      <div class="baby-alert">
+        <h3>🚨 Die drei wichtigsten Punkte</h3>
+        <ol>
+          <li><b>Eigenes Ausweisdokument fürs Baby.</b> Kinder brauchen einen eigenen Kinderreisepass oder Personalausweis – ein Eintrag im Elternpass gilt seit 2012 nicht mehr. Beantragung dauert, also früh kümmern.</li>
+          <li><b>Maximal 1,5–2 Stunden am Stück in der Babyschale.</b> Danach raus aus dem Sitz. Deshalb werden aus 1.900 km realistisch 3–4 Reisetage – Abfahrt entsprechend früher planen.</li>
+          <li><b>Keine direkte Sonne.</b> Babys unter 6 Monaten gehören komplett in den Schatten, Sonnencreme ist noch keine Lösung. Bei 30–38 °C ist die Mittagszeit von 11–17 Uhr Siesta.</li>
+        </ol>
+      </div>
+
+      <div class="baby-grid" id="babyGrid"><!-- rendered by JS --></div>
     </div>
   </section>
 
@@ -204,7 +233,10 @@
     <div class="section__inner">
       <p class="eyebrow">Bevor's losgeht</p>
       <h2 class="section__title">Interaktive Packliste</h2>
-      <p class="section__intro">Alles abgehakt? Der Stand bleibt auf diesem Gerät gespeichert.</p>
+      <p class="section__intro">
+        Alles abgehakt? Der Stand bleibt auf diesem Gerät gespeichert.
+        Die Baby-Kategorien sind mit 👶 markiert.
+      </p>
       <div class="progress" aria-hidden="true"><div class="progress__bar" id="packProgress"></div></div>
       <p class="progress__label" id="packProgressLabel">0 von 0 gepackt</p>
       <div class="checklist__grid" id="packGrid"><!-- rendered by JS --></div>
@@ -296,6 +328,12 @@
         <a href="tel:113" class="emcard"><span>👮</span><b>113</b><small>Polizei</small></a>
         <a href="tel:+3909557634275" class="emcard"><span>🏨</span><b>Hotel</b><small>+39 0955 763 4275</small></a>
       </div>
+      <p class="emergency__note">
+        👶 <b>Mit Baby:</b> Kinder-Notaufnahme heißt „Pronto Soccorso Pediatrico“, der
+        ärztliche Bereitschaftsdienst „Guardia Medica Turistica“, die Apotheke „Farmacia“.
+        Die Hotelrezeption vermittelt im Zweifel den nächsten Kinderarzt – EHIC-Karte des
+        Babys immer dabeihaben.
+      </p>
     </div>
   </section>
 
@@ -305,7 +343,7 @@
     <button class="btn btn--ghost btn--sm" id="backTop">↑ Nach oben</button>
   </footer>
 
-  <script src="assets/js/data.js?v=5"></script>
-  <script src="assets/js/app.js?v=5"></script>
+  <script src="assets/js/data.js?v=6"></script>
+  <script src="assets/js/app.js?v=6"></script>
 </body>
 </html>

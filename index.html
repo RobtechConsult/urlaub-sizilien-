@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
 </head>
 <body>
 
@@ -28,6 +28,7 @@
     <nav class="nav__links" id="navLinks">
       <a href="#countdown">Countdown</a>
       <a href="#ueberblick">Überblick</a>
+      <a href="#anreise">Anreise</a>
       <a href="#reiseplan">Reiseplan</a>
       <a href="#highlights">Highlights</a>
       <a href="#kulinarik">Kulinarik</a>
@@ -111,6 +112,53 @@
         <span>✉️ <a href="mailto:H7557@accor.com">H7557@accor.com</a></span>
         <span>📍 <a href="https://maps.google.com/?q=ibis+Styles+Catania+Acireale" target="_blank" rel="noopener">In Google Maps öffnen</a></span>
       </div>
+    </div>
+  </section>
+
+  <!-- ANREISE -->
+  <section class="section route" id="anreise">
+    <div class="section__inner">
+      <p class="eyebrow">Die große Anreise</p>
+      <h2 class="section__title">Mit dem Auto nach Sizilien</h2>
+      <p class="section__intro">
+        Rund 1.900 km von Stuttgart bis Acireale – über die Alpen, quer durch Italien
+        und mit der Fähre über die Straße von Messina. Scrollt hierher und schaut zu,
+        wie das Auto die Strecke fährt.
+      </p>
+      <div class="route-map">
+        <svg viewBox="0 0 1000 300" class="route-map__svg" id="routeSvg" role="img"
+             aria-label="Animierte Route von Stuttgart nach Acireale auf Sizilien"
+             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <ellipse cx="750" cy="175" rx="100" ry="55" class="route-map__sea"></ellipse>
+
+          <path id="routeLine" class="route-map__path"
+                d="M60,80 Q200,50 270,110 Q340,170 410,135 Q480,100 550,153 Q620,205 690,175 Q760,145 900,200"></path>
+
+          <text x="200" y="34" text-anchor="middle" class="route-map__icon" font-size="26">⛰️</text>
+          <text x="740" y="118" text-anchor="middle" class="route-map__icon" font-size="24">⛴️</text>
+          <text x="855" y="150" text-anchor="middle" class="route-map__icon" font-size="26">🌋</text>
+
+          <circle cx="60" cy="80" r="7" class="route-map__pin"></circle>
+          <text x="60" y="50" text-anchor="middle" class="route-map__label">🏠 Stuttgart</text>
+
+          <circle cx="900" cy="200" r="7" class="route-map__pin route-map__pin--end"></circle>
+          <text x="900" y="238" text-anchor="middle" class="route-map__label">🏨 Acireale</text>
+
+          <text x="740" y="228" text-anchor="middle" class="route-map__label route-map__label--ferry">Fähre Villa S. G. – Messina</text>
+
+          <text class="route-map__car" font-size="34" text-anchor="middle" dominant-baseline="middle">🚗
+            <animateMotion id="carAnim" dur="7s" begin="indefinite" fill="freeze">
+              <mpath href="#routeLine" xlink:href="#routeLine"></mpath>
+            </animateMotion>
+          </text>
+        </svg>
+      </div>
+      <div class="route-stats">
+        <div class="route-stat"><span class="route-stat__num">≈1.900 km</span><span class="route-stat__label">Strecke</span></div>
+        <div class="route-stat"><span class="route-stat__num">≈19 Std.</span><span class="route-stat__label">reine Fahrzeit</span></div>
+        <div class="route-stat"><span class="route-stat__num">2 Tage</span><span class="route-stat__label">mit Zwischenstopp</span></div>
+      </div>
+      <button class="btn btn--ghost btn--sm route-map__replay" id="routeReplay">🚗 Fahrt erneut abspielen</button>
     </div>
   </section>
 
@@ -257,7 +305,7 @@
     <button class="btn btn--ghost btn--sm" id="backTop">↑ Nach oben</button>
   </footer>
 
-  <script src="assets/js/data.js?v=4"></script>
-  <script src="assets/js/app.js?v=4"></script>
+  <script src="assets/js/data.js?v=5"></script>
+  <script src="assets/js/app.js?v=5"></script>
 </body>
 </html>

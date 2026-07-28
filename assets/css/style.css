@@ -250,6 +250,33 @@ body::before {
 }
 .overview__contact a { font-weight: 600; }
 
+/* ---------------- Anreise / Routen-Karte ---------------- */
+.route { background: linear-gradient(180deg, var(--cream-2) 0%, var(--cream) 100%); }
+.route-map {
+  background: #eaf3f6; border-radius: var(--radius-lg); padding: clamp(1rem, 3vw, 1.8rem);
+  box-shadow: var(--shadow-sm); border: 1px solid rgba(6,58,77,.08); overflow: hidden;
+}
+.route-map__svg { width: 100%; height: auto; display: block; overflow: visible; }
+.route-map__sea { fill: rgba(26,134,163,.18); }
+.route-map__path {
+  fill: none; stroke: var(--terra); stroke-width: 4; stroke-linecap: round;
+  stroke-dasharray: 2 14;
+}
+.route-map__pin { fill: var(--sun); stroke: #fff; stroke-width: 2.5; }
+.route-map__pin--end { fill: var(--olive); }
+.route-map__label {
+  font: 700 15px/1 var(--font-body); fill: var(--sea-deep);
+}
+.route-map__label--ferry { font: 600 12px/1 var(--font-body); fill: var(--sea); }
+.route-map__car { filter: drop-shadow(0 3px 5px rgba(6,58,77,.4)); }
+.route-stats { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.6rem 0 1.4rem; }
+.route-stat {
+  background: #fff; border-radius: var(--radius); padding: .9rem 1.5rem; min-width: 140px;
+  text-align: center; box-shadow: var(--shadow-sm); border: 1px solid rgba(6,58,77,.06);
+}
+.route-stat__num { display: block; font-family: var(--font-display); font-weight: 700; color: var(--sea-deep); font-size: 1.4rem; }
+.route-stat__label { display: block; font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+
 /* ---------------- Reiseplan ---------------- */
 .plan { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%); }
 .plan__timeline { display: flex; flex-direction: column; gap: .9rem; }

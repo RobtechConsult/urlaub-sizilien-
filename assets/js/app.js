@@ -274,6 +274,32 @@
     if (card) card.classList.toggle("is-flipped");
   });
 
+  /* ---------------- Anreise: Auto-Animation entlang der Route ---------------- */
+  const routeSection = $("#anreise");
+  const carAnim = document.getElementById("carAnim");
+  const routeReplay = $("#routeReplay");
+  const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function playCarAnim() {
+    if (!carAnim || typeof carAnim.beginElement !== "function") return;
+    try { carAnim.beginElement(); } catch (e) {}
+  }
+
+  if (routeSection && carAnim && !reducedMotion && "IntersectionObserver" in window) {
+    const routeIO = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          playCarAnim();
+          routeIO.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    routeIO.observe(routeSection);
+  }
+  if (routeReplay) {
+    routeReplay.addEventListener("click", playCarAnim);
+  }
+
   /* ---------------- Scroll-Reveal ---------------- */
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {

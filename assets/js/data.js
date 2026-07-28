@@ -16,8 +16,8 @@ const ITINERARY = [
     title: "Ankunft & Ankommen",
     tag: "Ankunft",
     icon: "🛬",
-    text: "Taxi vom Flughafen Catania nach Acireale, Check-in ab 14:00. Erste Runde durch die Barock-Altstadt, Piazza Duomo bestaunen und den ersten Aperitivo genießen.",
-    tips: ["Erste Granita zur Belohnung", "Web-Check-in spart Zeit", "Früh schlafen – Jetlag & Vorfreude"]
+    text: "Nach der langen Fahrt aus Stuttgart (über die Alpen & Fähre Villa San Giovanni–Messina) endlich da! Auto kostenlos am Hotel parken, Check-in ab 14:00. Erste Runde durch die Barock-Altstadt und den ersten Aperitivo genießen.",
+    tips: ["Erste Granita zur Belohnung", "Web-Check-in spart Zeit", "Auto abstellen & durchatmen"]
   },
   {
     day: "Mo · 03.08.",
@@ -112,8 +112,8 @@ const ITINERARY = [
     title: "Abreise – Arrivederci Sicilia",
     tag: "Abschied",
     icon: "🛫",
-    text: "Frühstück, Check-out, Taxi zum Flughafen Catania. Mit vollem Herzen (und Koffer voller Pistazien) nach Hause. Arrivederci – oder besser: a presto!",
-    tips: ["Taxi rechtzeitig bestätigen", "Flüssigkeiten ins Aufgabegepäck", "Ci vediamo, Sicilia 🇮🇹"]
+    text: "Frühstück, Check-out und ab aufs Auto Richtung Heimat (Fähre & Alpen zurück). Mit vollem Herzen und Kofferraum voller Pistazien nach Stuttgart. Arrivederci – oder besser: a presto!",
+    tips: ["Snacks & Kühlbox neu bestücken", "Tank voll & Reifendruck checken", "Ci vediamo, Sicilia 🇮🇹"]
   }
 ];
 
@@ -152,8 +152,23 @@ const FOOD = [
 /* ---------- Packliste ---------- */
 const PACKING = {
   "📄 Dokumente & Geld": [
-    "Personalausweis / Reisepass", "Führerschein (für Mietwagen)", "Buchungsbestätigung Hotel",
-    "Flugtickets / Boarding-Pässe", "Kreditkarte & etwas Bargeld", "EU-Krankenkassenkarte (EHIC)", "Reiseversicherung"
+    "Personalausweis / Reisepass", "Führerschein", "Buchungsbestätigung Hotel",
+    "Kreditkarte & etwas Bargeld", "EU-Krankenkassenkarte (EHIC)", "Reiseversicherung / Schutzbrief"
+  ],
+  "🚗 Auto: Papiere & Maut": [
+    "Fahrzeugschein (Zulassung Teil I)", "Grüne Versicherungskarte", "ADAC-/Pannendienst-Nummer",
+    "Vignette Österreich (digital/Kleber)", "Brenner-Maut eingeplant", "Bargeld/Karte für Autobahn-Maut Italien",
+    "Fährticket Villa San Giovanni ↔ Messina", "Navi + Offline-Karten geladen", "Handyhalterung fürs Auto"
+  ],
+  "🛟 Auto: Sicherheit (Pflicht in IT)": [
+    "2× Warnweste (griffbereit im Innenraum!)", "Warndreieck", "Verbandskasten (nicht abgelaufen)",
+    "Ersatz-Glühbirnen-Set", "Starthilfekabel", "Reifenpannenset / Ersatzrad",
+    "Reifendruck & Öl vorab geprüft", "Frostschutz Scheibenwasser aufgefüllt"
+  ],
+  "😌 Auto: Komfort für die lange Fahrt": [
+    "Nackenkissen", "Leichte Decke", "Sonnenschutz-Rollos für die Scheiben",
+    "12V-Kühlbox", "Ladekabel & USB-Adapter / Powerbank", "Müllbeutel & Feuchttücher",
+    "Parkscheibe", "Wechsel-Shirt griffbereit"
   ],
   "👕 Kleidung": [
     "Leichte Sommerkleidung", "1 schickeres Outfit fürs Abendessen", "Badesachen (2×)", "Sonnenhut / Kappe",
@@ -172,22 +187,29 @@ const PACKING = {
   ]
 };
 
-/* ---------- Snack-Liste für die Fahrt ---------- */
+/* ---------- Snack-Liste für die lange Fahrt (Stuttgart → Sizilien, ~1.900 km) ---------- */
 const SNACKS = {
-  "💧 Getränke": [
-    "Viel Wasser (still)", "Kalter Espresso / Kaffee to go", "Isogetränk / Schorle", "Kleine Saftpäckchen"
+  "💧 Getränke (reichlich!)": [
+    "Wasser – am besten eine ganze Kiste", "Apfel- & Saftschorlen", "Kalter, ungesüßter Tee",
+    "Thermoskanne Kaffee für den Fahrer", "1 Energydrink als Notfall-Wachmacher"
   ],
-  "🍎 Frisch & gesund": [
-    "Trauben & Äpfel", "Bananen", "Gemüsesticks (Karotte, Gurke, Paprika)", "Cherrytomaten", "Käsewürfel"
+  "🍫 Süß & Nervennahrung": [
+    "Amicelli (in die Kühlbox – schmilzt sonst!)", "Waffeln (z. B. Manner-Schnitten)",
+    "Prinzenrolle & Butterkekse", "Müsli-/Nussriegel", "Traubenzucker (Dextro)",
+    "Gummibärchen", "Schokoriegel – ab in die Kühlbox"
   ],
-  "🥨 Herzhaft": [
-    "Salzstangen / Cracker", "Nüsse & Studentenfutter", "Trockenfleisch / Salami-Sticks", "Panini / belegte Brötchen", "Grissini"
+  "🥪 Herzhaft & sättigend": [
+    "Belegte Vollkorn-Brötchen / Sandwiches", "Wraps mit Frischkäse & Gemüse",
+    "Landjäger / Salami-Sticks", "Käsewürfel & Babybel", "Hartgekochte Eier",
+    "TUC-Cracker & Salzstangen", "Grissini"
   ],
-  "🍫 Süß & Energie": [
-    "Müsli-/Nussriegel", "Pistazien (Bronte!)", "Traubenzucker", "Bonbons / Kaugummi (gegen Kurven)", "Kekse"
+  "🍎 Frisch & leicht": [
+    "Weintrauben (kernlos)", "Äpfel & Bananen", "Snack-Gurken & Kirschtomaten",
+    "Karotten-Sticks", "Mandarinen / Clementinen", "Studentenfutter"
   ],
-  "🧰 Nicht vergessen": [
-    "Kühltasche", "Feuchttücher & Papiertücher", "Müllbeutel", "Wiederverschließbare Dosen", "Taschenmesser"
+  "🧊 Fürs Auto nicht vergessen": [
+    "12V-Kühlbox befüllt (Eisakkus!)", "Feuchttücher & Küchenrolle", "Müllbeutel",
+    "Kaugummi & Pfefferminz (wach bleiben)", "Wiederverschließbare Dosen", "Brotzeit-Messer"
   ]
 };
 

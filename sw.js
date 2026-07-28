@@ -2,13 +2,13 @@
    Strategie: NETWORK-FIRST (online immer aktuell, offline aus Cache).
    Beim Aktivieren werden alte Caches geloescht und offene Seiten neu geladen,
    damit eine neue Version sofort sichtbar ist. */
-const CACHE = "sizilien-2026-v3";
+const CACHE = "sizilien-2026-v4";
 const ASSETS = [
   "./",
   "index.html",
-  "assets/css/style.css?v=3",
-  "assets/js/data.js?v=3",
-  "assets/js/app.js?v=3",
+  "assets/css/style.css?v=4",
+  "assets/js/data.js?v=4",
+  "assets/js/app.js?v=4",
   "manifest.webmanifest"
 ];
 

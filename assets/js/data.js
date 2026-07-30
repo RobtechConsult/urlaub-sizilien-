@@ -18,7 +18,7 @@ const ITINERARY = [
     icon: "🛬",
     text: "Nach der langen Fahrt aus Stuttgart (über die Alpen & Fähre Villa San Giovanni–Messina) endlich da! Auto kostenlos am Hotel parken, Check-in ab 14:00. Erste Runde durch die Barock-Altstadt und den ersten Aperitivo genießen.",
     tips: ["Erste Granita zur Belohnung", "Web-Check-in spart Zeit", "Auto abstellen & durchatmen"],
-    baby: "Heute nichts mehr vornehmen. Zimmer kühlen, Reisebett aufbauen, dem Baby Zeit zum Ankommen geben – der erste Abend darf komplett unspektakulär sein."
+    baby: "Nach der Durchfahrt seid ihr alle drei durch. Heute nichts mehr vornehmen: Zimmer kühlen, Reisebett aufbauen, dem Baby Zeit zum Ankommen geben. Der erste Abend darf komplett unspektakulär sein – Aperitivo geht auch morgen."
   },
   {
     day: "Mo · 03.08.",
@@ -123,7 +123,7 @@ const ITINERARY = [
     icon: "🛫",
     text: "Frühstück, Check-out und ab aufs Auto Richtung Heimat (Fähre & Alpen zurück). Mit vollem Herzen und Kofferraum voller Pistazien nach Stuttgart. Arrivederci – oder besser: a presto!",
     tips: ["Snacks & Kühlbox neu bestücken", "Tank voll & Reifendruck checken", "Ci vediamo, Sicilia 🇮🇹"],
-    baby: "Auch zurück wieder 3–4 Etappen einplanen und die Zwischenhotels vorab buchen. Windeln, Wasser und Pre-Nahrung für die Rückfahrt neu auffüllen."
+    baby: "Auch zurück derselbe Rhythmus: große Pause alle 3–4 Stunden, dazwischen ein kurzer Stopp aus der Schale. Windeln, Wasser und Pre-Nahrung für die Rückfahrt vorher neu auffüllen – unterwegs bekommt ihr die gewohnte Marke oft nicht."
   }
 ];
 
@@ -173,7 +173,9 @@ const PACKING = {
     "Hotel über das Baby informiert",
     "Babybett / Reisebett beim Hotel angefragt",
     "Kinderarzt-Nummer für Rückfragen notiert",
-    "Zäpfchen-Dosierung vom Kinderarzt erfragt"
+    "Zäpfchen-Dosierung vom Kinderarzt erfragt",
+    "Hotel-Adressen entlang der A1 als Plan B notiert",
+    "Späte Ankunft beim Hotel angekündigt"
   ],
   "🚗 Baby: Sicherheit im Auto": [
     "Babyschale Gruppe 0+ / i-Size, rückwärts gerichtet",
@@ -320,27 +322,31 @@ const SNACKS = {
 const BABY = [
   {
     icon: "🚗",
-    title: "Die Autofahrt – Pausen sind Pflicht",
+    title: "Euer Pausen-Rhythmus",
     items: [
-      "<b>Maximal 1,5–2 Stunden am Stück</b> in der Babyschale, dann raus aus dem Sitz. Die halb liegende Position belastet Atmung und Wirbelsäule.",
-      "Nach jeder Etappe eine echte Pause: hinlegen, strampeln lassen, wickeln, füttern.",
+      "Euer Plan: <b>durchfahren mit einer größeren Pause alle 3–4 Stunden.</b> Das funktioniert – mit einer Ergänzung.",
+      "<b>Schiebt zwischen die großen Pausen je einen kurzen Stopp ein</b> (10–15 Min., also etwa alle 2 Stunden), bei dem das Baby aus der Schale kommt. Länger als 1,5–2 Stunden am Stück sollte ein Säugling nicht in der halb liegenden Position bleiben – sie belastet Atmung und Wirbelsäule.",
+      "Die großen Pausen fallen ohnehin mit den Mahlzeiten zusammen: mit vier Monaten will das Baby etwa alle 3–4 Stunden trinken.",
+      "In der Pause das Baby <b>flach hinlegen</b> und strampeln lassen – nicht in der Schale füttern.",
       "Babyschale <b>rückwärts gerichtet</b>. Wenn sie vorne steht: unbedingt den Beifahrer-Airbag deaktivieren.",
       "Wenn möglich sitzt ein Erwachsener hinten neben dem Baby.",
       "Klimaanlage nie direkt auf das Baby richten.",
       "Das Baby <b>niemals allein im Auto lassen</b> – im Sommer wird es binnen Minuten lebensgefährlich heiß.",
-      "Lange Etappen in die frühen Morgenstunden legen: kühler, weniger Verkehr, das Baby schläft."
+      "Fahrerwechsel konsequent durchziehen – 1.900 km in einem Zug sind auch für die Eltern hart."
     ]
   },
   {
     icon: "🗺️",
-    title: "Etappen-Vorschlag statt Gewaltmarsch",
+    title: "Durchfahrt: der realistische Zeitplan",
     items: [
-      "Mit Baby werden aus 1.900 km realistisch <b>3–4 Reisetage</b> statt zwei – rechnet mit 400–600 km pro Tag.",
-      "Das heißt: <b>Abfahrt schon am 29./30. Juli</b>, damit ihr am 2. August entspannt eincheckt.",
-      "Vorschlag: Tag 1 bis zum Gardasee, Tag 2 bis Florenz/Bologna, Tag 3 bis Salerno/Neapel, Tag 4 Fähre & Ankunft.",
-      "Hotels für die Zwischenstopps <b>vorab buchen</b> – mit Babybett und möglichst mit Klimaanlage.",
-      "Die Fähre Villa San Giovanni–Messina dauert nur ~20 Min. – gute Gelegenheit, das Baby aus dem Sitz zu nehmen.",
-      "Puffer einplanen: mit Baby dauert alles länger, und das ist völlig okay."
+      "1.900 km und ~19 Std. reine Fahrzeit. <b>Mit allen Pausen landet ihr bei etwa 24–27 Stunden</b> – also gut ein Tag am Stück.",
+      "Grobe Etappen: Stuttgart → Brenner (~3 h) → Gardasee (~2,5 h) → Bologna/Florenz (~2,5 h) → Rom (~3,5 h) → Salerno (~2,5 h) → Villa San Giovanni (~4,5 h) → Fähre → Acireale (~1,5 h).",
+      "Damit ihr am 2. August eincheckt: <b>Abfahrt am 1. August, früher Nachmittag.</b>",
+      "Die <b>Nachtetappe durch Italien</b> hat zwei Vorteile: es ist kühl und das Baby schläft sowieso. Dafür braucht der Fahrerwechsel Disziplin.",
+      "Die Fähre Villa San Giovanni–Messina dauert nur ~20 Min. – perfekt, um das Baby aus dem Sitz zu nehmen und zu wickeln.",
+      "Italienische Autogrill-Raststätten sind gut ausgebaut und haben meist Wickelmöglichkeiten.",
+      "<b>Plan B im Kopf behalten:</b> wenn das Baby die Fahrt schlecht verträgt, unterwegs spontan ein Hotel nehmen. Ein paar Adressen entlang der A1 vorab notieren.",
+      "Dem Hotel eine späte Ankunft ankündigen, falls es länger dauert als gedacht."
     ]
   },
   {

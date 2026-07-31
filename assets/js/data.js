@@ -230,7 +230,7 @@ const PACKING = {
     "Handventilator & Sprühflasche zum Abkühlen",
     "Kühlpads für die Wickeltasche",
     "Schwimmwindeln & Badehandtuch",
-    "Sonnencreme erst ab 6 Monaten – bis dahin nur Schatten & Kleidung"
+    "Mineralische Baby-Sonnencreme LSF 50 (nur für Gesicht & Handrücken, wenn Schatten nicht reicht)"
   ],
   "😴 Baby: Schlafen": [
     "Reisebett (falls Hotel keines stellt)",
@@ -248,7 +248,7 @@ const PACKING = {
     "Elektrolytlösung gegen Austrocknung",
     "Wundschutz & Wunddesinfektion",
     "Moskitonetz für Bett & Kinderwagen (statt Chemie)",
-    "Baby-tauglichen Mückenschutz in der Apotheke erfragen",
+    "Kein Repellent auf die Babyhaut – Schutz läuft über Netz & Kleidung",
     "Zahnungsgel, falls es früh losgeht"
   ],
   "🚗 Auto: Papiere & Maut": [
@@ -269,6 +269,21 @@ const PACKING = {
   "👕 Kleidung": [
     "Leichte Sommerkleidung", "1 schickeres Outfit fürs Abendessen", "Badesachen (2×)", "Sonnenhut / Kappe",
     "Sonnenbrille", "Leichte Jacke (Ätna & Abende)", "Bequeme Wanderschuhe", "Sandalen & Badeschuhe"
+  ],
+  "🧴 Einkaufen: Sonnen- & Mückenschutz": [
+    "👶 Mineralische Sonnencreme LSF 50 (Zinkoxid/Titandioxid, ohne Duft- & Konservierungsstoffe)",
+    "👶 Moskitonetz fürs Reisebett",
+    "👶 Moskitonetz für den Kinderwagen",
+    "👶 UV-Schutzkleidung UPF 50+ & Sonnenhut mit Nackenschutz",
+    "🧑 Sonnencreme LSF 50+ ohne Octocrylen & Oxybenzon",
+    "🧑 Gesichts-Sonnencreme (nicht fettend)",
+    "🧑 Lippenpflege mit Lichtschutzfaktor",
+    "🧑 Repellent mit Icaridin 20 % (Saltidin) – bestes Verhältnis Wirkung/Verträglichkeit",
+    "🧑 Alternativ IR3535 als mildere Variante",
+    "After-Sun mit Aloe Vera oder Panthenol",
+    "Kühlgel für Mückenstiche (nur Erwachsene)",
+    "Sonnenbrillen mit UV-400",
+    "Nachschub einplanen – bei täglichem Eincremen geht viel weg"
   ],
   "🏖️ Strand & Ätna": [
     "Sonnencreme LSF 50", "After-Sun / Aloe Vera", "Strandtuch (Mikrofaser)", "Trinkflasche",
@@ -315,6 +330,90 @@ const SNACKS = {
     "Extra viel Wasser für die stillende Mama",
     "Snacks, die sich einhändig essen lassen",
     "Spucktücher & Feuchttücher in Reichweite"
+  ]
+};
+
+/* ---------- Einkaufshilfe: Sonnen- & Mückenschutz ---------- */
+const SUNCARE = [
+  {
+    tone: "baby",
+    who: "👶 Baby, 4 Monate",
+    title: "Sonnenschutz",
+    items: [
+      "<b>Der eigentliche Schutz ist Schatten, Kleidung und Hut</b> – unter 6 Monaten gehört das Baby nicht in die direkte Sonne.",
+      "Wenn sich Sonne mal nicht vermeiden lässt, ist eine <b>kleine Menge auf Gesicht und Handrücken</b> vertretbar – so empfehlen es auch Kinderärzte.",
+      "Nur <b>mineralische Filter: Zinkoxid und/oder Titandioxid.</b> Die bleiben auf der Haut, ziehen nicht ein und wirken sofort.",
+      "LSF 50, ohne Duftstoffe, ohne Parfüm, ohne Alkohol.",
+      "<b>Keine Sprays</b> – das Baby könnte die Partikel einatmen. Nur Creme oder Milch.",
+      "Möglichst „nanofrei“ gekennzeichnet.",
+      "Ein paar Tage vor der Reise an einer kleinen Stelle testen.",
+      "Aus der Apotheke z. B. Ladival für Kinder (mineralisch), Eucerin Kids Mineral, Lavera Baby & Kinder oder Weleda Edelweiss – Formulierungen ändern sich, also kurz beraten lassen."
+    ]
+  },
+  {
+    tone: "baby",
+    who: "👶 Baby, 4 Monate",
+    title: "Mückenschutz",
+    items: [
+      "<b>Kein Repellent auf die Haut.</b> Icaridin, DEET & Co. sind erst ab 1–2 Jahren zugelassen, für ein 4 Monate altes Baby gibt es kein geeignetes Hautmittel.",
+      "Schutz läuft rein mechanisch: <b>Moskitonetz über Reisebett und Kinderwagen</b>, lange dünne Kleidung, abends Fenster zu bzw. Klimaanlage.",
+      "<b>Finger weg von ätherischen Ölen</b> wie Eukalyptus, Menthol und Kampfer – bei Säuglingen können sie zu Atemproblemen führen. Auch nicht in Bettnähe verdampfen.",
+      "Keine Insektenstecker oder Verdampfer im Zimmer, in dem das Baby schläft.",
+      "In Italien ist die <b>Tigermücke</b> verbreitet – die sticht auch tagsüber. Netz am Kinderwagen also nicht nur abends.",
+      "Bei Stichen kühlen und Kratzen verhindern; bei starker Schwellung oder Fieber zum Arzt."
+    ]
+  },
+  {
+    tone: "adult",
+    who: "🧑 Erwachsene",
+    title: "Sonnenschutz",
+    items: [
+      "Sizilien hat im August <b>UV-Index 9–10</b> – das ist die höchste Stufe. LSF 50+ ist hier kein Luxus.",
+      "Wenn „möglichst unbedenklich“ euer Kriterium ist: ebenfalls <b>mineralische Filter</b> (Zinkoxid, Titandioxid). Sie wirken sofort und stehen nicht in der Hormon-Diskussion.",
+      "<b>Meiden: Octocrylen, Oxybenzon (Benzophenone-3), Octinoxat, Homosalat.</b> Diese Filter stehen wegen hormoneller Wirkung in der Kritik, Octocrylen kann mit der Zeit zu Benzophenon abbauen.",
+      "Dieselben Filter schaden auch Korallen und Meereslebewesen – beim täglichen Baden im Meer durchaus relevant.",
+      "<b>Die meisten cremen zu dünn.</b> Für einen Erwachsenenkörper braucht es ca. 30–40 ml pro Anwendung, sonst bleibt vom LSF wenig übrig.",
+      "Alle 2 Stunden und nach jedem Baden nachcremen – auch bei „wasserfest“.",
+      "Kopf, Ohren, Nacken, Fußrücken und Lippen werden am häufigsten vergessen.",
+      "Zwischen 11 und 17 Uhr sowieso in den Schatten – das deckt sich mit der Siesta fürs Baby."
+    ]
+  },
+  {
+    tone: "adult",
+    who: "🧑 Erwachsene",
+    title: "Mückenschutz",
+    items: [
+      "<b>Beste Wahl: Icaridin (auch Saltidin oder Picaridin), 20 %.</b> Wirkt so zuverlässig wie DEET, ist deutlich besser verträglich, riecht kaum und greift Kunststoffe nicht an.",
+      "<b>Mildeste Variante: IR3535.</b> Sehr gut verträglich, auch für Schwangere und Stillende geeignet – dafür kürzere Wirkdauer, also öfter nachlegen.",
+      "DEET wirkt am längsten, ist aber aggressiver zu Schleimhäuten und Kunststoff. Für Sizilien braucht ihr das nicht.",
+      "<b>Rein pflanzliche Öle</b> wie Citronella oder Lavendel wirken nur etwa 20–60 Minuten – nett, aber kein verlässlicher Schutz.",
+      "<b>Reihenfolge beachten:</b> erst Sonnencreme, 20–30 Min. warten, dann Repellent. Umgekehrt leidet der Sonnenschutz.",
+      "Repellent senkt die Wirkung der Sonnencreme spürbar – also großzügiger auftragen und öfter nachcremen.",
+      "Nach dem Baden und starkem Schwitzen neu auftragen.",
+      "Denkt daran: Wenn ihr das Baby tragt, sollte das Repellent an euren Armen trocken sein."
+    ]
+  }
+];
+
+/* Inhaltsstoff-Ampel für den Einkauf */
+const INGREDIENTS = {
+  good: [
+    "Zinkoxid (Zinc Oxide) – mineralischer UV-Filter",
+    "Titandioxid (Titanium Dioxide) – mineralischer UV-Filter",
+    "Icaridin / Saltidin / Picaridin – Repellent für Erwachsene",
+    "IR3535 (Ethyl Butylacetylaminopropionate) – mildestes Repellent",
+    "Panthenol & Aloe Vera – für die Pflege danach",
+    "„ohne Duftstoffe“, „ohne Parfüm“, „nanofrei“"
+  ],
+  avoid: [
+    "Octocrylen – kann zu Benzophenon abbauen",
+    "Oxybenzon / Benzophenone-3 – hormonell wirksam, schädigt Korallen",
+    "Octinoxat / Ethylhexyl Methoxycinnamate",
+    "Homosalat & 4-Methylbenzylidencampher (4-MBC)",
+    "Parfum / Duftstoffe – besonders auf Babyhaut",
+    "Alkohol (Alcohol denat.) in Baby-Produkten",
+    "Kampfer, Menthol, Eukalyptusöl – bei Säuglingen gefährlich",
+    "DEET beim Baby – und keine Sprays fürs Baby (Einatmen)"
   ]
 };
 

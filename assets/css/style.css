@@ -420,6 +420,43 @@ body::before {
 .food-card.is-tried { border-color: var(--olive); background: #f4f8f1; }
 .food-card.is-tried .food-card__stamp { opacity: 1; }
 
+/* ---------------- Einkaufshilfe: Sonnen- & Mückenschutz ---------------- */
+.suncare {
+  background: #fff; border-radius: var(--radius-lg); border: 1px solid rgba(6,58,77,.08);
+  box-shadow: var(--shadow-sm); padding: clamp(1.2rem, 3vw, 2rem); margin-bottom: 2.4rem;
+}
+.suncare__head { font-family: var(--font-display); color: var(--sea-deep); font-size: 1.4rem; margin-bottom: .4rem; }
+.suncare__lead { color: var(--muted); font-size: .98rem; margin-bottom: 1.5rem; max-width: 640px; }
+.suncare__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.2rem; }
+.sc-card { border-radius: var(--radius); padding: 1.4rem; border: 1px solid rgba(6,58,77,.08); }
+.sc-card--baby { background: #fdf1f4; border-color: #eabcca; }
+.sc-card--adult { background: #eef6f8; border-color: #b9d8e1; }
+.sc-card__who {
+  font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .15rem;
+}
+.sc-card--baby .sc-card__who { color: #a83f5f; }
+.sc-card--adult .sc-card__who { color: var(--sea); }
+.sc-card__title { font-family: var(--font-display); font-size: 1.25rem; color: var(--sea-deep); margin-bottom: .8rem; }
+.sc-card__list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+.sc-card__list li { padding-left: 1.3rem; position: relative; font-size: .93rem; color: var(--ink); }
+.sc-card__list li::before { content: "•"; position: absolute; left: .3rem; font-weight: 700; }
+.sc-card--baby .sc-card__list li::before { color: #d4708c; }
+.sc-card--adult .sc-card__list li::before { color: var(--sea-light); }
+
+.ingredients { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-top: 1.2rem; }
+.ing { border-radius: var(--radius); padding: 1.3rem; border: 2px solid; }
+.ing h4 { font-size: 1rem; margin-bottom: .7rem; font-weight: 700; }
+.ing ul { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+.ing li { font-size: .9rem; padding-left: 1.1rem; position: relative; }
+.ing li::before { position: absolute; left: 0; font-weight: 700; }
+.ing--good { background: #f2f8ef; border-color: #a8c79c; }
+.ing--good h4 { color: #46703a; }
+.ing--good li::before { content: "✓"; color: #5b8a4b; }
+.ing--avoid { background: #fdf2ef; border-color: #e5a893; }
+.ing--avoid h4 { color: #a3411f; }
+.ing--avoid li::before { content: "×"; color: var(--terra); }
+
 /* ---------------- Checklisten ---------------- */
 .checklist__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.6rem; }
 .snacks { background: linear-gradient(180deg, var(--cream) 0%, #f3e6cf 100%); }

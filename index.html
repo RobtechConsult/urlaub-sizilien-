@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
 </head>
 <body>
 
@@ -237,6 +237,25 @@
         Alles abgehakt? Der Stand bleibt auf diesem Gerät gespeichert.
         Die Baby-Kategorien sind mit 👶 markiert.
       </p>
+
+      <div class="suncare">
+        <h3 class="suncare__head">🧴 Sonnen- &amp; Mückenschutz richtig einkaufen</h3>
+        <p class="suncare__lead">
+          Fürs Baby gelten andere Regeln als für euch – hier steht, was ihr jeweils
+          kaufen solltet und worauf ihr bei den Inhaltsstoffen achten müsst.
+        </p>
+        <div class="suncare__grid" id="suncareGrid"><!-- rendered by JS --></div>
+        <div class="ingredients">
+          <div class="ing ing--good">
+            <h4>✅ Darauf achten</h4>
+            <ul id="ingGood"><!-- rendered by JS --></ul>
+          </div>
+          <div class="ing ing--avoid">
+            <h4>⛔ Besser meiden</h4>
+            <ul id="ingAvoid"><!-- rendered by JS --></ul>
+          </div>
+        </div>
+      </div>
       <div class="progress" aria-hidden="true"><div class="progress__bar" id="packProgress"></div></div>
       <p class="progress__label" id="packProgressLabel">0 von 0 gepackt</p>
       <div class="checklist__grid" id="packGrid"><!-- rendered by JS --></div>
@@ -343,7 +362,7 @@
     <button class="btn btn--ghost btn--sm" id="backTop">↑ Nach oben</button>
   </footer>
 
-  <script src="assets/js/data.js?v=7"></script>
-  <script src="assets/js/app.js?v=7"></script>
+  <script src="assets/js/data.js?v=8"></script>
+  <script src="assets/js/app.js?v=8"></script>
 </body>
 </html>

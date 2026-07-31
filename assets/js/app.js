@@ -275,6 +275,25 @@
     if (card) card.classList.toggle("is-flipped");
   });
 
+  /* ---------------- Einkaufshilfe: Sonnen- & Mückenschutz ---------------- */
+  const suncareGrid = $("#suncareGrid");
+  if (suncareGrid && typeof SUNCARE !== "undefined") {
+    suncareGrid.innerHTML = SUNCARE.map(s => `
+      <article class="sc-card sc-card--${s.tone}">
+        <p class="sc-card__who">${s.who}</p>
+        <h4 class="sc-card__title">${s.title}</h4>
+        <ul class="sc-card__list">
+          ${s.items.map(i => `<li>${i}</li>`).join("")}
+        </ul>
+      </article>
+    `).join("");
+  }
+  if (typeof INGREDIENTS !== "undefined") {
+    const fill = (sel, arr) => { const el = $(sel); if (el) el.innerHTML = arr.map(i => `<li>${i}</li>`).join(""); };
+    fill("#ingGood", INGREDIENTS.good);
+    fill("#ingAvoid", INGREDIENTS.avoid);
+  }
+
   /* ---------------- Mit Baby unterwegs ---------------- */
   const babyGrid = $("#babyGrid");
   if (babyGrid && typeof BABY !== "undefined") {

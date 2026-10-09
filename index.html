@@ -19,7 +19,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="assets/css/style.css?v=13" />
+  <link rel="stylesheet" href="assets/css/style.css?v=14" />
 </head>
 <body>
 
@@ -258,7 +258,16 @@
     <div class="section__inner">
       <p class="eyebrow">Kasse machen 💶</p>
       <h2 class="section__title">Budget &amp; Kostenteiler</h2>
-      <p class="section__intro">Gesamtbudget <b>2.000 €</b> (4 × 500 €). Tragt eure gemeinsamen Ausgaben ein – Rest &amp; Pro-Kopf rechnen sich automatisch. (Stand wird auf diesem Gerät gespeichert.)</p>
+      <p class="section__intro">Gesamtbudget <b>2.000 €</b> (4 × 500 €). Tragt Ausgaben mit Zahler ein – Rest, Pro-Kopf und <b>wer wem was schuldet</b> rechnen sich automatisch. Startet die <b>gemeinsame Kasse</b> und teilt den Link – dann sehen alle 4 denselben Stand (synchron).</p>
+
+      <div class="kitty-bar">
+        <span class="kitty-status" id="kittyStatus">● Kasse nur auf diesem Gerät</span>
+        <span class="kitty-sync" id="kittySync"></span>
+        <span class="kitty-actions">
+          <button type="button" class="btn btn--primary btn--sm" id="kittyStart">Gemeinsame Kasse starten</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="kittyShare" hidden>🔗 Kassen-Link teilen</button>
+        </span>
+      </div>
       <div class="budget__stats">
         <div class="bstat"><span class="bstat__label">Budget</span><span class="bstat__val" id="bTotal">2.000 €</span><span class="bstat__sub" id="bPerPerson">500 € / Mann</span></div>
         <div class="bstat bstat--spent"><span class="bstat__label">Ausgegeben</span><span class="bstat__val" id="bSpent">0 €</span><span class="bstat__sub" id="bSpentPP">0 € / Mann</span></div>
@@ -269,11 +278,20 @@
 
       <form class="budget__form" id="budgetForm">
         <input type="text" id="bName" placeholder="Wofür? (z. B. Bootstour)" maxlength="40" required />
+        <select id="bPayer" aria-label="Wer hat bezahlt?">
+          <option value="Robert">💳 Robert</option>
+          <option value="Robin">💳 Robin</option>
+          <option value="Pieth">💳 Pieth</option>
+          <option value="Heiko">💳 Heiko</option>
+        </select>
         <input type="number" id="bAmount" placeholder="€" min="0" step="0.01" required />
         <button type="submit" class="btn btn--primary btn--sm">+ Hinzufügen</button>
       </form>
 
       <ul class="budget__list" id="budgetList"></ul>
+
+      <h3 class="subhead">🧮 Abrechnung – wer zahlt wem</h3>
+      <div class="settle" id="settle"></div>
 
       <details class="budget__opts">
         <summary>Budget anpassen / zurücksetzen</summary>
@@ -379,7 +397,7 @@
   </footer>
 
   <script src="assets/vendor/leaflet/leaflet.js"></script>
-  <script src="assets/js/data.js?v=13"></script>
-  <script src="assets/js/app.js?v=13"></script>
+  <script src="assets/js/data.js?v=14"></script>
+  <script src="assets/js/app.js?v=14"></script>
 </body>
 </html>

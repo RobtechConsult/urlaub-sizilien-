@@ -14,6 +14,7 @@ const TRIP = {
 const ITINERARY = [
   {
     day: "Fr · 16.10.",
+    date: "2026-10-16",
     title: "Abflug & Anreise",
     tag: "Anreise",
     icon: "🛫",
@@ -22,6 +23,7 @@ const ITINERARY = [
   },
   {
     day: "Sa · 17.10.",
+    date: "2026-10-17",
     title: "Ankommen & Marina",
     tag: "Strand",
     icon: "🏖️",
@@ -30,6 +32,7 @@ const ITINERARY = [
   },
   {
     day: "So · 18.10.",
+    date: "2026-10-18",
     title: "Der Erlebnistag 🍹",
     tag: "Highlight",
     icon: "⛵",
@@ -38,6 +41,7 @@ const ITINERARY = [
   },
   {
     day: "Mo · 19.10.",
+    date: "2026-10-19",
     title: "Letzter Tag & Rückflug",
     tag: "Abreise",
     icon: "🛬",

@@ -149,3 +149,39 @@ const PHRASES = [
   { de: "Sprichst du Englisch?", it: "¿Hablas inglés?", pron: "AB-las in-GLES" },
   { de: "Tschüss", it: "¡Adiós!", pron: "a-DYOS" },
 ];
+
+/* ---------- Geo-Daten für die interaktiven Karten (Leaflet) ---------- */
+const GEO = {
+  mallorca: {
+    center: [39.52, 3.00], zoom: 10, fitMaxZoom: 11,
+    points: [
+      { n: "★", name: "Cala d'Or – unser Standort", lat: 39.3746, lng: 3.2320, maps: "Gavimar Cala Gran Hotel Cala d'Or", us: true },
+      { n: "1", name: "Palma", lat: 39.5696, lng: 2.6502, maps: "Palma de Mallorca" },
+      { n: "2", name: "Flughafen PMI", lat: 39.5517, lng: 2.7388, maps: "Aeropuerto Palma de Mallorca" },
+      { n: "3", name: "Ballermann / Playa de Palma", lat: 39.5116, lng: 2.7510, maps: "Ballermann Playa de Palma" },
+      { n: "4", name: "Es Trenc / Colònia", lat: 39.3480, lng: 2.9850, maps: "Es Trenc Mallorca" },
+      { n: "5", name: "Santanyí", lat: 39.3545, lng: 3.1285, maps: "Santanyí Mallorca" },
+      { n: "6", name: "Felanitx", lat: 39.4694, lng: 3.1486, maps: "Felanitx Mallorca" },
+      { n: "7", name: "Porto Cristo & Coves del Drac", lat: 39.5345, lng: 3.3300, maps: "Coves del Drac Porto Cristo" }
+    ],
+    routes: [
+      { from: 0, to: 1, type: "bus" }, { from: 0, to: 7, type: "bus" }, { from: 0, to: 5, type: "bus" },
+      { from: 0, to: 3, type: "taxi" }, { from: 0, to: 4, type: "taxi" }
+    ]
+  },
+  calador: {
+    center: [39.374, 3.236], zoom: 15, fitMaxZoom: 16,
+    points: [
+      { n: "★", name: "Gavimar Cala Gran – unser Hotel", lat: 39.3746, lng: 3.2320, maps: "Gavimar Cala Gran Hotel Cala d'Or", us: true },
+      { n: "1", name: "Cala Gran (Strand, ~2 Min)", lat: 39.3735, lng: 3.2350, maps: "Cala Gran beach Cala d'Or" },
+      { n: "2", name: "Cala d'Or / Cala Esmeralda (~5–10 Min)", lat: 39.3786, lng: 3.2378, maps: "Cala Esmeralda Cala d'Or" },
+      { n: "3", name: "Es Fortí (Sonnenuntergang, ~15 Min)", lat: 39.3800, lng: 3.2365, maps: "Es Forti Cala d'Or" },
+      { n: "4", name: "Cala Ferrera (~15 Min)", lat: 39.3690, lng: 3.2400, maps: "Cala Ferrera Cala d'Or" },
+      { n: "5", name: "Marina de Cala d'Or (Bars, ~15 Min)", lat: 39.3668, lng: 3.2412, maps: "Marina de Cala d'Or" }
+    ],
+    routes: [
+      { from: 0, to: 1, type: "walk" }, { from: 0, to: 2, type: "walk" }, { from: 0, to: 3, type: "walk" },
+      { from: 0, to: 4, type: "walk" }, { from: 0, to: 5, type: "walk" }
+    ]
+  }
+};

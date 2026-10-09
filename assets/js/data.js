@@ -106,6 +106,22 @@ const RESTAURANTS = [
   { icon: "🐟", name: "Mediterráneo", cat: "Fisch vom Grill", note: "Frischer gegrillter Fisch (Dorada, Sardinen) und Tapas mit Meerblick.", maps: "Restaurante Mediterraneo Cala d'Or" },
 ];
 
+/* ---------- Buchbare Aktivitäten (echte Angebote, Ideen-Liste) ----------
+   Preise sind Richtwerte und schwanken; im Oktober (Nebensaison) vorab
+   Verfügbarkeit prüfen. */
+const BOOKABLE = [
+  { icon: "⛵", name: "Privater Buchten-Törn (4 Std)", cat: "Boot", price: "ab ~140 €/Pers. (bis 4)", access: "ab Cala d'Or", note: "Entlang der Südost-Buchten, Baden & Drinks an Bord – zu viert teilen.", url: "https://www.getyourguide.com/cala-d-or-l168810/cruises-boat-tours-tc48/" },
+  { icon: "🐬", name: "Delfin-Sightseeing (1 Std)", cat: "Boot", price: "ab ~88 €", access: "ab Cala d'Or", note: "Morgens raus, Delfine beobachten – kurz, günstig, gut bewertet (4,7).", url: "https://www.getyourguide.com/cala-d-or-l168810/cruises-boat-tours-tc48/" },
+  { icon: "🌅", name: "Sunset-Speedboot (privat)", cat: "Boot · Premium", price: "ab ~944 €/Gruppe (bis 8)", access: "ab Cala d'Or", note: "Schnelles Boot in den Sonnenuntergang – der Flex-Move für die Truppe.", url: "https://www.getyourguide.com/cala-d-or-l168810/cruises-boat-tours-tc48/" },
+  { icon: "🌊", name: "Jetski nach Cala Mondragó (1 Std)", cat: "Action", price: "Preis variiert", access: "ab Cala d'Or", note: "Geführte Jetski-Tour mit Benzin & Schwimmwesten – ordentlich Spaß.", url: "https://civitatis.com/en/cala-d-or/cala-mondrago-jet-ski-tour" },
+  { icon: "🚤", name: "Jetski 30 Min (SE-Küste)", cat: "Action", price: "ab ~110 €", access: "ab Cala d'Or", note: "Kurz & knackig, kein Führerschein nötig, Guide fährt mit.", url: "https://www.expedia.co.uk/things-to-do/cala-dor-jet-ski-tour-30-min-along-southeast-coast.a48200371.activity-details" },
+  { icon: "🕳️", name: "Coves del Drac + Konzert + Boot", cat: "Höhle", price: "ab ~16,50 € (Paket höher)", access: "mit Abholung buchbar", note: "Tropfsteinhöhlen mit Klassik-Konzert auf dem unterirdischen See. Früh buchen – oft ausverkauft!", url: "https://www.ticketlens.com/en/p263194/mallorca/coves-del-drac" },
+  { icon: "🍷", name: "Bodega Es Fangar – Weinprobe", cat: "Wein", price: "62,50 € (5 Weine)", access: "Taxi ~25 € (Felanitx)", note: "Weingut-Tour + Verkostung mit Charcuterie, ca. 1 Std 45.", url: "https://www.funbooker.com/en/listing/tour-of-the-es-fangar-winery-and-premium-wine-tasting-of-5-wines-in-mallorca/show" },
+  { icon: "🛶", name: "Kajak + Schnorcheln + Pizza", cat: "Aktiv · Essen", price: "ab ~89 €", access: "Treffpunkt prüfen", note: "Versteckte Buchten, Schnorcheln und hausgemachte Pizza – Top bewertet (4,99).", url: "https://www.airbnb.com/s/Mallorca--Spain/experiences" },
+  { icon: "🏝️", name: "Es Trenc Bootstag + BBQ (9 Std)", cat: "Tagestour", price: "ab ~79 €", access: "mit Bustransfer", note: "Ganzer Tag per Boot zum Karibik-Strand Es Trenc, inkl. BBQ an Bord.", url: "https://www.getyourguide.com/cala-d-or-l168810/cruises-boat-tours-tc48/" },
+  { icon: "🚂", name: "Insel-Tour: Boot + Oldtimer-Zug (9 Std)", cat: "Tagestour", price: "ab ~124 €", access: "mit Hotel-Transfer", note: "Großer Ausflug in den Norden: historischer Zug, Boot nach La Calobra, Strandzeit.", url: "https://www.getyourguide.com/cala-d-or-l168810/" },
+];
+
 /* ---------- Packliste (NUR Handgepäck 40×30×20 cm!) ---------- */
 const PACKING = {
   "📄 Doku & Geld": [

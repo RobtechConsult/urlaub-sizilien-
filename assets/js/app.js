@@ -248,6 +248,17 @@
         <p class="hl-card__place">📍 In Google Maps öffnen ↗</p>
       </a>`).join("");
   }
+  const bookGrid = $("#bookableGrid");
+  if (bookGrid && typeof BOOKABLE !== "undefined") {
+    bookGrid.innerHTML = BOOKABLE.map(a => `
+      <a class="hl-card hl-card--link" href="${a.url}" target="_blank" rel="noopener">
+        <div class="hl-card__top"><span class="hl-card__icon">${a.icon}</span><span class="hl-card__cat">${a.cat}</span></div>
+        <h3 class="hl-card__name">${a.name}</h3>
+        <p class="book-meta"><span class="book-price">💶 ${a.price}</span> · <span class="book-access">${a.access}</span></p>
+        <p class="hl-card__text">${a.note}</p>
+        <p class="hl-card__place">🎟️ Jetzt buchen ↗</p>
+      </a>`).join("");
+  }
 
   /* ---------------- Kulinarische Bucket-List ---------------- */
   const foodGrid = $("#foodGrid");

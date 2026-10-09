@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
 </head>
 <body>
 
@@ -30,6 +30,7 @@
       <a href="#ueberblick">Überblick</a>
       <a href="#reiseplan">Programm</a>
       <a href="#highlights">Strände</a>
+      <a href="#ausfluege">Ausflüge</a>
       <a href="#erlebnisse">Erlebnisse</a>
       <a href="#kulinarik">Essen</a>
       <a href="#packliste">Packliste</a>
@@ -43,6 +44,7 @@
     <div class="hero__sky"></div>
     <div class="hero__etna" aria-hidden="true"></div>
     <div class="hero__sea" aria-hidden="true"></div>
+    <div class="hero__boat" aria-hidden="true"><span>⛵</span></div>
     <div class="hero__content">
       <p class="hero__eyebrow">Robert · Robin · Niklas · Heiko — 16.–19. Oktober 2026</p>
       <h1 class="hero__title">Mallorca<span class="hero__title-sub">Cala d'Or · Der Jungs-Trip</span></h1>
@@ -133,6 +135,19 @@
       <h2 class="section__title">Strände &amp; Orte</h2>
       <div class="filterbar" id="highlightFilters"><!-- rendered by JS --></div>
       <div class="highlights__grid" id="highlightsGrid"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <!-- WEITER WEG / AUSFLÜGE -->
+  <section class="section daytrips" id="ausfluege">
+    <div class="section__inner">
+      <p class="eyebrow">Mit Bus &amp; Taxi</p>
+      <h2 class="section__title">Weiter weg – Tagesausflüge</h2>
+      <p class="section__intro">
+        Ohne Auto, aber mit Plan: Ziele etwas weiter weg – jeweils mit Entfernung und
+        Bus-/Taxi-Tipp. (Ja, auch die Distanz zum Ballermann 😉.)
+      </p>
+      <div class="highlights__grid" id="daytripsGrid"><!-- rendered by JS --></div>
     </div>
   </section>
 
@@ -253,7 +268,7 @@
     <button class="btn btn--ghost btn--sm" id="backTop">↑ Nach oben</button>
   </footer>
 
-  <script src="assets/js/data.js?v=6"></script>
-  <script src="assets/js/app.js?v=6"></script>
+  <script src="assets/js/data.js?v=7"></script>
+  <script src="assets/js/app.js?v=7"></script>
 </body>
 </html>

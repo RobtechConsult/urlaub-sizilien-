@@ -1,14 +1,14 @@
-/* Service Worker – Sizilien 2026
+/* Service Worker – Malle 2026 (Cala d'Or)
    Strategie: NETWORK-FIRST (online immer aktuell, offline aus Cache).
    Beim Aktivieren werden alte Caches geloescht und offene Seiten neu geladen,
    damit eine neue Version sofort sichtbar ist. */
-const CACHE = "sizilien-2026-v4";
+const CACHE = "malle-2026-v5";
 const ASSETS = [
   "./",
   "index.html",
-  "assets/css/style.css?v=4",
-  "assets/js/data.js?v=4",
-  "assets/js/app.js?v=4",
+  "assets/css/style.css?v=5",
+  "assets/js/data.js?v=5",
+  "assets/js/app.js?v=5",
   "manifest.webmanifest"
 ];
 

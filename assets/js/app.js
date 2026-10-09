@@ -59,12 +59,12 @@
       if (now < departure) {
         cd.days.textContent = "0"; cd.hours.textContent = "00";
         cd.mins.textContent = "00"; cd.secs.textContent = "00";
-        note.innerHTML = "🎉 <b>Ihr seid da – godetevi la Sicilia!</b>";
+        note.innerHTML = "🏝️ <b>¡Vamos! Ihr seid auf Malle – genießt es!</b>";
         return;
       }
       cd.days.textContent = "∞"; cd.hours.textContent = "♥";
       cd.mins.textContent = "♥"; cd.secs.textContent = "♥";
-      note.innerHTML = "Die Reise ist vorbei – aber die Erinnerungen bleiben. 🍋";
+      note.innerHTML = "Der Trip ist vorbei – aber was für ein Wochenende! 🍻";
       return;
     }
     const d = Math.floor(diff / 86400000); diff -= d * 86400000;
@@ -200,11 +200,7 @@
 
   const packCl = buildChecklist({
     data: PACKING, gridEl: "#packGrid", barEl: "#packProgress",
-    labelEl: "#packProgressLabel", storageKey: "sizilien_pack", verb: "gepackt"
-  });
-  const snackCl = buildChecklist({
-    data: SNACKS, gridEl: "#snackGrid", barEl: "#snackProgress",
-    labelEl: "#snackProgressLabel", storageKey: "sizilien_snack", verb: "eingepackt"
+    labelEl: "#packProgressLabel", storageKey: "malle_pack", verb: "gepackt"
   });
 
   function resetList(storageKey, gridSel, cl) {
@@ -215,12 +211,24 @@
     });
     cl.updateProgress();
   }
-  $("#packReset").addEventListener("click", () => resetList("sizilien_pack", "#packGrid", packCl));
-  $("#snackReset").addEventListener("click", () => resetList("sizilien_snack", "#snackGrid", snackCl));
+  $("#packReset").addEventListener("click", () => resetList("malle_pack", "#packGrid", packCl));
+
+  /* ---------------- Erlebnisse (Karten) ---------------- */
+  const expGrid = $("#erlebnisseGrid");
+  if (expGrid && typeof ERLEBNISSE !== "undefined") {
+    expGrid.innerHTML = ERLEBNISSE.map(e => `
+      <article class="hl-card">
+        <div class="hl-card__top"><span class="hl-card__icon">${e.icon}</span><span class="hl-card__cat">${e.cat}</span></div>
+        <h3 class="hl-card__name">${e.name}</h3>
+        <p class="hl-card__place">📍 ${e.place}</p>
+        <p class="hl-card__text">${e.text}</p>
+      </article>
+    `).join("");
+  }
 
   /* ---------------- Kulinarische Bucket-List ---------------- */
   const foodGrid = $("#foodGrid");
-  const foodState = store.get("sizilien_food", {});
+  const foodState = store.get("malle_food", {});
   foodGrid.innerHTML = FOOD.map(f => {
     const id = "food:" + f.name;
     const on = foodState[id] ? " is-tried" : "";
@@ -234,7 +242,7 @@
   }).join("");
 
   function updateFoodProgress() {
-    const s = store.get("sizilien_food", {});
+    const s = store.get("malle_food", {});
     const done = Object.values(s).filter(Boolean).length;
     const pct = FOOD.length ? Math.round(done / FOOD.length * 100) : 0;
     $("#foodProgress").style.width = pct + "%";
@@ -243,10 +251,10 @@
   foodGrid.addEventListener("click", e => {
     const card = e.target.closest(".food-card");
     if (!card) return;
-    const s = store.get("sizilien_food", {});
+    const s = store.get("malle_food", {});
     const id = card.dataset.id;
     s[id] = !s[id];
-    store.set("sizilien_food", s);
+    store.set("malle_food", s);
     card.classList.toggle("is-tried", s[id]);
     card.setAttribute("aria-pressed", String(!!s[id]));
     updateFoodProgress();

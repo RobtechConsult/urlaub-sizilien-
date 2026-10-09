@@ -1,230 +1,132 @@
 /* =========================================================================
-   Sizilien 2026 – Inhalte / Daten
+   Malle 2026 – Cala d'Or · Jungs-Trip
    Alle Texte an einem Ort, damit sie leicht angepasst werden können.
    ========================================================================= */
 
 const TRIP = {
-  // Check-in: 2. August 2026, 14:00 Uhr Ortszeit (CEST = UTC+2)
-  arrival: "2026-08-02T14:00:00+02:00",
-  departure: "2026-08-14T11:00:00+02:00",
+  // Abflug Köln/Bonn: Fr. 16.10.2026, 21:50 Uhr (CEST = UTC+2)
+  arrival: "2026-10-16T21:50:00+02:00",
+  // Rück-Landung Köln/Bonn: Di. 20.10.2026, 00:55 Uhr
+  departure: "2026-10-20T00:55:00+02:00",
 };
 
-/* ---------- Reiseplan (Tag für Tag) ---------- */
+/* ---------- Programm (Tag für Tag) ---------- */
 const ITINERARY = [
   {
-    day: "So · 02.08.",
-    title: "Ankunft & Ankommen",
-    tag: "Ankunft",
-    icon: "🛬",
-    text: "Nach der langen Fahrt aus Stuttgart (über die Alpen & Fähre Villa San Giovanni–Messina) endlich da! Auto kostenlos am Hotel parken, Check-in ab 14:00. Erste Runde durch die Barock-Altstadt und den ersten Aperitivo genießen.",
-    tips: ["Erste Granita zur Belohnung", "Web-Check-in spart Zeit", "Auto abstellen & durchatmen"]
-  },
-  {
-    day: "Mo · 03.08.",
-    title: "Acireale & Riviera dei Ciclopi",
-    tag: "Küste",
-    icon: "🌊",
-    text: "Entspannter Start: Acireale erkunden, hinunter nach Santa Maria La Scala (Fischerort), baden an der Riviera dei Ciclopi. Naturreservat La Timpa für den Sonnenuntergang.",
-    tips: ["Badeschuhe für die Felsküste", "Fisch-Trattoria in S. M. La Scala", "Terme di Acireale ansehen"]
-  },
-  {
-    day: "Di · 04.08.",
-    title: "Catania – Stadt aus Lava",
-    tag: "Kultur",
-    icon: "🐘",
-    text: "Der barocke Fischmarkt „A Piscaria“, Piazza del Duomo mit dem Elefanten Liotru, die Via Etnea und Street Food ohne Ende. Nachmittags Kaffeepause im Schatten.",
-    tips: ["Pasta alla Norma – hier erfunden!", "Fischmarkt am besten vormittags", "Am Stadtrand parken (ZTL!)"]
-  },
-  {
-    day: "Mi · 05.08.",
-    title: "Ätna – der Feuerberg",
-    tag: "Ätna",
-    icon: "🌋",
-    text: "Früh los zum Rifugio Sapienza. Seilbahn oder geführte Tour zu den Kratern, die Silvestri-Krater sind auch ohne Guide begehbar. Grandiose Ausblicke über die Insel.",
-    tips: ["Warme Jacke & feste Schuhe", "Tour vorab buchen", "Früh = weniger Wolken & Hitze"]
-  },
-  {
-    day: "Do · 06.08.",
-    title: "Strand & Dolce Far Niente",
-    tag: "Küste",
-    icon: "🏖️",
-    text: "Ruhetag nach dem Vulkan. Aci Trezza mit den Faraglioni dei Ciclopi, dann Aci Castello mit der Normannenburg auf schwarzem Lavafels. Baden, lesen, Nichtstun.",
-    tips: ["Schnorchelbrille mitnehmen", "Sonnenuntergang in Aci Trezza", "Gelato-Pause einplanen"]
-  },
-  {
-    day: "Fr · 07.08.",
-    title: "Taormina & Isola Bella",
-    tag: "Kultur",
-    icon: "🎭",
-    text: "Das antike Theater mit Ätna-Kulisse, Corso Umberto zum Bummeln, hinunter zur Isola Bella. Wer mag: Abstecher hinauf nach Castelmola auf einen Mandelwein.",
-    tips: ["Vormittags = weniger Menschen", "Theater-Ticket online kaufen", "Badesachen für Isola Bella"]
-  },
-  {
-    day: "Sa · 08.08.",
-    title: "Syrakus & Ortigia",
-    tag: "Kultur",
-    icon: "🏛️",
-    text: "Archäologiepark Neapolis mit griechischem Theater und dem „Ohr des Dionysios“. Nachmittags die Insel Ortigia: Dom, Fonte Aretusa und Gassen voller Leben.",
-    tips: ["Früh starten (ca. 1,5 h Fahrt)", "Markt von Ortigia am Morgen", "Sonnenuntergang am Meer"]
-  },
-  {
-    day: "So · 09.08.",
-    title: "Ätna-Weingüter & Genuss",
-    tag: "Genuss",
-    icon: "🍷",
-    text: "Die Nordhänge des Ätna: Weinstraße rund um Linguaglossa & Randazzo. Verkostung von Etna Rosso (Nerello Mascalese). Pistazien aus Bronte nicht vergessen!",
-    tips: ["Fahrer bestimmen 😉", "Weingut-Termin vorab", "Pistazien-Pesto als Souvenir"]
-  },
-  {
-    day: "Mo · 10.08.",
-    title: "Gole dell'Alcantara",
-    tag: "Natur",
-    icon: "🏞️",
-    text: "Erfrischung gefällig? Die spektakuläre Basalt-Schlucht mit eiskaltem Flusswasser. Danach gemütlich zurück, Nachmittag am Pool oder Meer.",
-    tips: ["Wasserschuhe & Handtuch", "Wasser ist wirklich kalt!", "Früh = ruhiger"]
-  },
-  {
-    day: "Di · 11.08.",
-    title: "Noto & der Barock-Süden",
-    tag: "Kultur",
-    icon: "⛪",
-    text: "Noto, die Barock-Hauptstadt aus honigfarbenem Stein. Optional weiter nach Modica für die berühmte Schokolade. Ein Tag für Schönheit & Süßes.",
-    tips: ["Modica-Schokolade probieren", "Mittagshitze im Café aussitzen", "Bequeme Schuhe"]
-  },
-  {
-    day: "Mi · 12.08.",
-    title: "Freier Tag nach Lust & Laune",
-    tag: "Genuss",
-    icon: "✨",
-    text: "Puffer-Tag: Lieblingsort noch einmal besuchen, ausschlafen, shoppen in Catania oder einfach am Strand liegen. Was auch immer euch fehlt – heute ist Platz dafür.",
-    tips: ["Souvenirs & Keramik kaufen", "Lieblings-Trattoria erneut", "Nichts müssen, alles dürfen"]
-  },
-  {
-    day: "Do · 13.08.",
-    title: "Letzter voller Tag",
-    tag: "Küste",
-    icon: "🌅",
-    text: "Noch einmal Meer, noch einmal Granita, letzte Fotos. Abends ein festliches Abschiedsessen mit Blick aufs Wasser und einem Glas Etna Bianco.",
-    tips: ["Koffer schon vorpacken", "Letzte Cannoli mitnehmen", "Sonnenuntergang genießen"]
-  },
-  {
-    day: "Fr · 14.08.",
-    title: "Abreise – Arrivederci Sicilia",
-    tag: "Abschied",
+    day: "Fr · 16.10.",
+    title: "Abflug & Anreise",
+    tag: "Anreise",
     icon: "🛫",
-    text: "Frühstück, Check-out und ab aufs Auto Richtung Heimat (Fähre & Alpen zurück). Mit vollem Herzen und Kofferraum voller Pistazien nach Stuttgart. Arrivederci – oder besser: a presto!",
-    tips: ["Snacks & Kühlbox neu bestücken", "Tank voll & Reifendruck checken", "Ci vediamo, Sicilia 🇮🇹"]
+    text: "Treffen am Flughafen Köln/Bonn, Abflug 21:50 Uhr mit Ryanair (FR 9967). Landung 00:10 Uhr in Palma, dann mit dem vorgebuchten Transfer (~50 Min) nach Cala d'Or und spät einchecken.",
+    tips: ["Transfer unbedingt vorbuchen – nachts kein Bus", "Nur Handgepäck: 40×30×20 cm", "Ausweis & Boarding-Pass griffbereit"]
+  },
+  {
+    day: "Sa · 17.10.",
+    title: "Ankommen & Marina",
+    tag: "Strand",
+    icon: "🏖️",
+    text: "Ausschlafen, Frühstück im Hotel (Halbpension!), dann Strandtag an der Cala Gran direkt vor der Tür. Abends Sonnenuntergang an der Festung Es Fortí und Bar-Hopping an der Marina.",
+    tips: ["Cala Gran liegt direkt am Hotel", "Sunset an Es Fortí", "Erste Hierbas an der Marina"]
+  },
+  {
+    day: "So · 18.10.",
+    title: "Der Erlebnistag 🍹",
+    tag: "Highlight",
+    icon: "⛵",
+    text: "Das Herzstück: Bootstour ab der Marina mit Baden & Drinks an Bord – oder eine Weintour zur Bodega bei Felanitx (per Taxi). Nachmittags in eine Traumbucht, abends Tapas & Cocktails.",
+    tips: ["Boot/Weintour vorab buchen", "Caló des Moro bei gutem Wetter", "Zu viert teilen = günstiger"]
+  },
+  {
+    day: "Mo · 19.10.",
+    title: "Letzter Tag & Rückflug",
+    tag: "Abreise",
+    icon: "🛬",
+    text: "Der Flug geht erst 22:30 Uhr – also noch ein kompletter Strand- & Marina-Tag. Gepäck nach dem Check-out an der Rezeption lassen, abends Transfer zum Flughafen. ¡Adiós, Mallorca!",
+    tips: ["Late Check-out / Gepäck klären", "Transfer für ~19:00 Uhr buchen", "Letzte Ensaïmada mitnehmen"]
   }
 ];
 
-/* ---------- Highlights ---------- */
+/* ---------- Strände & Orte (Karten mit Filter) ---------- */
 const HIGHLIGHTS = [
-  { cat: "Küste", icon: "🪨", name: "Faraglioni dei Ciclopi", place: "Aci Trezza", text: "Die schwarzen Felsnadeln, die der Zyklop Polyphem laut Homer nach Odysseus warf." },
-  { cat: "Küste", icon: "🏰", name: "Castello di Aci", place: "Aci Castello", text: "Normannische Burg auf einem Lavafelsen direkt über dem Meer." },
-  { cat: "Küste", icon: "🐟", name: "Santa Maria La Scala", place: "Acireale", text: "Winziger Fischerhafen unterhalb der Steilküste – bester Fisch der Gegend." },
-  { cat: "Ätna", icon: "🌋", name: "Krater des Ätna", place: "Rifugio Sapienza", text: "Europas höchster aktiver Vulkan – Seilbahn, Jeep und Wandern zu den Gipfelkratern." },
-  { cat: "Ätna", icon: "🥾", name: "Silvestri-Krater", place: "Ätna Süd", text: "Erloschene Nebenkrater, die man frei und ohne Guide erwandern kann." },
-  { cat: "Kultur", icon: "🎭", name: "Teatro Antico", place: "Taormina", text: "Antikes Theater mit atemberaubender Kulisse aus Meer und Ätna." },
-  { cat: "Kultur", icon: "🏛️", name: "Ortigia", place: "Syrakus", text: "Historische Insel mit Barock-Dom, Fonte Aretusa und lebendigem Markt." },
-  { cat: "Kultur", icon: "🐘", name: "Piazza del Duomo", place: "Catania", text: "Der Lava-Elefant „Liotru“ – Wahrzeichen der Stadt aus schwarzem Stein." },
-  { cat: "Kultur", icon: "⛪", name: "Barockstadt Noto", place: "Val di Noto", text: "UNESCO-Welterbe aus honigfarbenem Stein – der Inbegriff des sizilianischen Barock." },
-  { cat: "Natur", icon: "🏞️", name: "Gole dell'Alcantara", place: "bei Taormina", text: "Enge Basaltschlucht mit eiskaltem, glasklarem Flusswasser." },
-  { cat: "Natur", icon: "🌿", name: "Riserva La Timpa", place: "Acireale", text: "Naturschutzgebiet mit Pfaden entlang der grünen Steilküste." },
-  { cat: "Genuss", icon: "🍇", name: "Etna-Weinstraße", place: "Linguaglossa", text: "Weingüter auf Vulkanböden – der Nerello Mascalese ist ein Muss." },
+  { cat: "Strand", icon: "🏖️", name: "Cala Gran", place: "direkt am Hotel", text: "Feiner Sand, türkises Wasser, von Pinien gesäumt – eure Haustür-Bucht." },
+  { cat: "Strand", icon: "🐚", name: "Cala Ferrera", place: "~15 Min zu Fuß", text: "Gemütliche Bucht mit Strandbar, Sonnenliegen und Tretbooten." },
+  { cat: "Strand", icon: "💎", name: "Cala Esmeralda", place: "~20 Min zu Fuß", text: "Smaragdgrünes Wasser, etwas ruhiger – schöner Halbtagsspot." },
+  { cat: "Ausgehen", icon: "⛵", name: "Marina de Cala d'Or", place: "Cala Llonga", text: "Palmen, weiße Yachten und abends die besten Bars – euer Nightlife-Zentrum." },
+  { cat: "Natur", icon: "🌅", name: "Es Fortí", place: "~15 Min zu Fuß", text: "Alte Küstenfestung und der beste Platz für den Sonnenuntergang." },
+  { cat: "Strand", icon: "🏝️", name: "Caló des Moro", place: "bei Santanyí · Taxi", text: "Gilt als schönste Bucht Mallorcas – türkis zwischen Felsen. Früh dran sein!" },
+  { cat: "Natur", icon: "🥾", name: "Parc Natural de Mondragó", place: "~10 km · Taxi/Bus", text: "Naturpark mit Wanderwegen und zwei naturbelassenen Traumbuchten." },
+  { cat: "Ort", icon: "🚤", name: "Cala Figuera", place: "~12 km · Taxi/Bus", text: "Malerischer Fischerort mit schmaler Hafenbucht – wie aus dem Bilderbuch." },
+  { cat: "Ort", icon: "🛍️", name: "Santanyí", place: "~10 km · Bus 515", text: "Hübsches Städtchen, Markt Mi & Sa vormittags, Kunsthandwerk & Cafés." },
 ];
 
-/* ---------- Kulinarische Bucket-List ---------- */
+/* ---------- Erlebnisse mit Drinks (Karten) ---------- */
+const ERLEBNISSE = [
+  { cat: "Boot", icon: "⛵", name: "Bootstour mit Drinks", place: "ab Marina · vorab buchen", text: "Privat-Törn entlang der Buchten (z. B. Vita Bel / Click&Boat), Baden & Getränke an Bord. Ab ca. 305 € bis 7 Personen – zu viert gut teilbar." },
+  { cat: "Boot", icon: "🌅", name: "Sunset-Katamaran", place: "mit Hotel-Abholung", text: "Nachmittags/Abends raus aufs Meer mit Musik, Snacks und Drinks – der entspannteste Programmpunkt des Trips." },
+  { cat: "Wein", icon: "🍷", name: "Weintour / Bodega", place: "Felanitx ~15 km · Taxi", text: "Die Weinregion liegt gleich um die Ecke. Verkostung auf einem Weingut – ohne Auto am besten per Taxi/Transfer oder geführter Tour." },
+  { cat: "Bar", icon: "🍸", name: "Marina-Bar-Hopping", place: "Cala d'Or · zu Fuß", text: "Cocktails mit Hafenblick: Dugan's Irish Pub, Cheeki Tiki, Mabu-Hay & The Dubliner. Die meisten bis ca. 1 Uhr offen." },
+  { cat: "Bar", icon: "🎤", name: "Karaoke-Nacht", place: "Betty's Music Bar", text: "Pflichtprogramm für Jungs-Trips: Mikro schnappen, Hierbas kippen, Gröhlen erlaubt." },
+  { cat: "Genuss", icon: "🌿", name: "Hierbas-Tasting + Tapas", place: "Cala d'Or · zu Fuß", text: "Mallorcas Kräuterlikör in süß/trocken durchprobieren, dazu Tapas – authentisch und günstig." },
+  { cat: "Kreativ", icon: "🏺", name: "Töpfern & Trinken", place: "Santanyí/Palma · anfragen", text: "„Sip & Paint“/Keramik-Workshop mit Getränk – eure Random-Idee! In der Region per Transfer; vorher Verfügbarkeit (Okt) anfragen." },
+  { cat: "Aktiv", icon: "🛶", name: "Kajak & Schnorcheln", place: "ab Cala d'Or", text: "Sportlich in die Calas paddeln, schnorcheln – und danach das kühle Bier doppelt verdient." },
+];
+
+/* ---------- Essen & Trinken – Bucket-List ---------- */
 const FOOD = [
-  { icon: "🍧", name: "Granita & Brioche", note: "Mandel oder Pistazie – das echte Frühstück" },
-  { icon: "🍚", name: "Arancino", note: "Frittierter Reisball, Catania sagt „arancino“" },
-  { icon: "🥧", name: "Cannolo", note: "Knusprig, frisch gefüllt mit Ricotta" },
-  { icon: "🍝", name: "Pasta alla Norma", note: "Aubergine, Tomate, Ricotta salata" },
-  { icon: "🐟", name: "Pesce spada", note: "Frischer Schwertfisch vom Grill" },
-  { icon: "🍆", name: "Caponata", note: "Süß-saures Auberginen-Gemüse" },
-  { icon: "🥜", name: "Pistacchio di Bronte", note: "Das grüne Gold vom Ätna" },
-  { icon: "🍫", name: "Cioccolato di Modica", note: "Körnige Azteken-Schokolade" },
-  { icon: "🎂", name: "Cassata siciliana", note: "Ricotta-Torte mit Marzipan" },
-  { icon: "🍋", name: "Granita al limone", note: "Erfrischung pur an heißen Tagen" },
-  { icon: "🍷", name: "Etna Rosso DOC", note: "Vulkanwein aus Nerello Mascalese" },
-  { icon: "☕", name: "Caffè al bar", note: "Espresso im Stehen wie die Locals" },
+  { icon: "🥐", name: "Ensaïmada", note: "Fluffiges Schmalzgebäck – das Mallorca-Frühstück" },
+  { icon: "🍅", name: "Pa amb oli", note: "Brot mit Öl, Tomate, Käse/Schinken" },
+  { icon: "🌶️", name: "Sobrassada", note: "Streichbare Paprika-Rohwurst" },
+  { icon: "🍆", name: "Tumbet", note: "Mallorquinisches Gemüse-Schichtgericht" },
+  { icon: "🍳", name: "Frit mallorquí", note: "Deftige Pfanne mit Kartoffeln & Gemüse" },
+  { icon: "🥗", name: "Trampó", note: "Frischer Sommersalat mit Tomate & Paprika" },
+  { icon: "🦐", name: "Gambas al ajillo", note: "Knoblauch-Garnelen aus der Pfanne" },
+  { icon: "🥘", name: "Arròs brut / Paella", note: "Herzhafter Reis – perfekt zum Teilen" },
+  { icon: "🍷", name: "Vi de Mallorca", note: "Inselwein aus Felanitx/Binissalem" },
+  { icon: "🌿", name: "Hierbas", note: "Kräuterlikör – süß oder trocken" },
+  { icon: "🍹", name: "Sangría / Tinto de verano", note: "Der Klassiker für den Strandtag" },
+  { icon: "☕", name: "Café con hielo", note: "Espresso auf Eis gegen die Mittagshitze" },
 ];
 
-/* ---------- Packliste ---------- */
+/* ---------- Packliste (NUR Handgepäck 40×30×20 cm!) ---------- */
 const PACKING = {
-  "📄 Dokumente & Geld": [
-    "Personalausweis / Reisepass", "Führerschein", "Buchungsbestätigung Hotel",
-    "Kreditkarte & etwas Bargeld", "EU-Krankenkassenkarte (EHIC)", "Reiseversicherung / Schutzbrief"
+  "📄 Doku & Geld": [
+    "Personalausweis / Reisepass", "Boarding-Pass (Handy + Screenshot)", "Hotel-Voucher (Gavimar Cala Gran)",
+    "Transfer-Buchung Flughafen ↔ Hotel", "Kreditkarte & Bargeld", "EU-Krankenkassenkarte (EHIC)"
   ],
-  "🚗 Auto: Papiere & Maut": [
-    "Fahrzeugschein (Zulassung Teil I)", "Grüne Versicherungskarte", "ADAC-/Pannendienst-Nummer",
-    "Vignette Österreich (digital/Kleber)", "Brenner-Maut eingeplant", "Bargeld/Karte für Autobahn-Maut Italien",
-    "Fährticket Villa San Giovanni ↔ Messina", "Navi + Offline-Karten geladen", "Handyhalterung fürs Auto"
+  "🧴 Handgepäck-Regeln (wichtig!)": [
+    "Nur 1 kleine Tasche: 40 × 30 × 20 cm", "Flüssigkeiten ≤ 100 ml im 1-Liter-Beutel",
+    "Powerbank in die Kabine (nie einchecken)", "Keine scharfen Gegenstände / Rasierer prüfen",
+    "Deo/Parfüm als Mini oder fest", "Sonnencreme klein – oder vor Ort kaufen"
   ],
-  "🛟 Auto: Sicherheit (Pflicht in IT)": [
-    "2× Warnweste (griffbereit im Innenraum!)", "Warndreieck", "Verbandskasten (nicht abgelaufen)",
-    "Ersatz-Glühbirnen-Set", "Starthilfekabel", "Reifenpannenset / Ersatzrad",
-    "Reifendruck & Öl vorab geprüft", "Frostschutz Scheibenwasser aufgefüllt"
+  "👕 Klamotten (3 Tage, leicht)": [
+    "3× T-Shirt", "1 schickeres Ausgeh-Shirt", "Kurze Hosen", "1 lange Hose/Chino",
+    "Unterwäsche & Socken", "Badeshorts", "Leichte Jacke/Pulli (Okt-Abende)", "Sneaker + Flip-Flops"
   ],
-  "😌 Auto: Komfort für die lange Fahrt": [
-    "Nackenkissen", "Leichte Decke", "Sonnenschutz-Rollos für die Scheiben",
-    "12V-Kühlbox", "Ladekabel & USB-Adapter / Powerbank", "Müllbeutel & Feuchttücher",
-    "Parkscheibe", "Wechsel-Shirt griffbereit"
-  ],
-  "👕 Kleidung": [
-    "Leichte Sommerkleidung", "1 schickeres Outfit fürs Abendessen", "Badesachen (2×)", "Sonnenhut / Kappe",
-    "Sonnenbrille", "Leichte Jacke (Ätna & Abende)", "Bequeme Wanderschuhe", "Sandalen & Badeschuhe"
-  ],
-  "🏖️ Strand & Ätna": [
-    "Sonnencreme LSF 50", "After-Sun / Aloe Vera", "Strandtuch (Mikrofaser)", "Trinkflasche",
-    "Schnorchelbrille", "Tagesrucksack", "Powerbank für Ausflüge"
+  "🏖️ Strand & Sonne": [
+    "Sonnenbrille", "Cap / Hut", "Mikrofaser-Handtuch", "Leere Trinkflasche (durch Security)",
+    "Kleiner Tagesrucksack / Beutel"
   ],
   "🔌 Technik": [
-    "Handy & Ladekabel", "Kamera", "Kopfhörer", "Adapter (in Italien nicht nötig, EU-Stecker)", "Offline-Karten geladen"
+    "Handy & Ladekabel", "Powerbank (in die Kabine!)", "Kopfhörer", "Kein Adapter nötig (Spanien = EU-Stecker)"
   ],
-  "💊 Gesundheit": [
-    "Persönliche Medikamente", "Kleine Reiseapotheke", "Mückenschutz", "Pflaster & Blasenpflaster",
-    "Elektrolyte / Magnesium", "Reisetabletten (Serpentinen)"
+  "💊 Kleinkram & Kater-Kit": [
+    "Kopfschmerztabletten", "Elektrolyte / Magnesium", "Pflaster & Blasenpflaster",
+    "After-Sun / Aloe Vera", "Kaugummi & Feuchttücher"
   ]
 };
 
-/* ---------- Snack-Liste für die lange Fahrt (Stuttgart → Sizilien, ~1.900 km) ---------- */
-const SNACKS = {
-  "💧 Getränke (reichlich!)": [
-    "Wasser – am besten eine ganze Kiste", "Apfel- & Saftschorlen", "Kalter, ungesüßter Tee",
-    "Thermoskanne Kaffee für den Fahrer", "1 Energydrink als Notfall-Wachmacher"
-  ],
-  "🍫 Süß & Nervennahrung": [
-    "Amicelli (in die Kühlbox – schmilzt sonst!)", "Waffeln (z. B. Manner-Schnitten)",
-    "Prinzenrolle & Butterkekse", "Müsli-/Nussriegel", "Traubenzucker (Dextro)",
-    "Gummibärchen", "Schokoriegel – ab in die Kühlbox"
-  ],
-  "🥪 Herzhaft & sättigend": [
-    "Belegte Vollkorn-Brötchen / Sandwiches", "Wraps mit Frischkäse & Gemüse",
-    "Landjäger / Salami-Sticks", "Käsewürfel & Babybel", "Hartgekochte Eier",
-    "TUC-Cracker & Salzstangen", "Grissini"
-  ],
-  "🍎 Frisch & leicht": [
-    "Weintrauben (kernlos)", "Äpfel & Bananen", "Snack-Gurken & Kirschtomaten",
-    "Karotten-Sticks", "Mandarinen / Clementinen", "Studentenfutter"
-  ],
-  "🧊 Fürs Auto nicht vergessen": [
-    "12V-Kühlbox befüllt (Eisakkus!)", "Feuchttücher & Küchenrolle", "Müllbeutel",
-    "Kaugummi & Pfefferminz (wach bleiben)", "Wiederverschließbare Dosen", "Brotzeit-Messer"
-  ]
-};
-
-/* ---------- Italienisch-Sprachkarten ---------- */
+/* ---------- Spanisch-Sprachkarten ---------- */
 const PHRASES = [
-  { de: "Guten Morgen", it: "Buongiorno", pron: "bwon-DSCHOR-no" },
-  { de: "Danke / Bitte", it: "Grazie / Prego", pron: "GRAA-tsije / PREH-go" },
-  { de: "Einen Kaffee, bitte", it: "Un caffè, per favore", pron: "un kaf-FEH per fa-VOO-re" },
-  { de: "Zwei Granita mit Mandel", it: "Due granite alla mandorla", pron: "DUU-e gra-NII-te alla MAN-dor-la" },
-  { de: "Die Rechnung, bitte", it: "Il conto, per favore", pron: "il KON-to per fa-VOO-re" },
-  { de: "Wo ist…?", it: "Dov'è…?", pron: "do-VEH" },
-  { de: "Wie viel kostet das?", it: "Quanto costa?", pron: "KWAN-to KOS-ta" },
-  { de: "Sehr lecker!", it: "Buonissimo!", pron: "bwo-NIS-si-mo" },
-  { de: "Prost!", it: "Salute! / Cin cin!", pron: "sa-LUU-te / tschin tschin" },
-  { de: "Entschuldigung", it: "Mi scusi", pron: "mi SKUU-si" },
-  { de: "Sprechen Sie Englisch?", it: "Parla inglese?", pron: "PAR-la in-GLEE-se" },
-  { de: "Auf Wiedersehen", it: "Arrivederci", pron: "ar-ri-ve-DER-tschi" },
+  { de: "Hallo", it: "¡Hola!", pron: "OH-la" },
+  { de: "Danke / Bitte", it: "Gracias / Por favor", pron: "GRA-thias / por fa-WOR" },
+  { de: "Vier Bier, bitte", it: "Cuatro cervezas, por favor", pron: "KWA-tro ther-WE-thas por fa-WOR" },
+  { de: "Prost!", it: "¡Salud!", pron: "sa-LUD" },
+  { de: "Noch zwei Bier", it: "Dos cervezas más", pron: "dos ther-WE-thas mas" },
+  { de: "Die Rechnung, bitte", it: "La cuenta, por favor", pron: "la KWEN-ta por fa-WOR" },
+  { de: "Wo ist…?", it: "¿Dónde está…?", pron: "DON-de es-TA" },
+  { de: "Was kostet das?", it: "¿Cuánto cuesta?", pron: "KWAN-to KWES-ta" },
+  { de: "Sehr lecker!", it: "¡Qué rico!", pron: "ke RII-ko" },
+  { de: "Entschuldigung", it: "Perdón", pron: "per-DON" },
+  { de: "Sprichst du Englisch?", it: "¿Hablas inglés?", pron: "AB-las in-GLES" },
+  { de: "Tschüss", it: "¡Adiós!", pron: "a-DYOS" },
 ];

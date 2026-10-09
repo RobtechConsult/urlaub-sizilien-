@@ -1,7 +1,7 @@
 {
-  "name": "Sizilien 2026 – Unser Reise-Erlebnis",
-  "short_name": "Sizilien 2026",
-  "description": "Interaktiver Reiseplaner & Begleiter für unsere Sizilien-Reise (Acireale, 2.–14. August 2026).",
+  "name": "Malle 2026 – Cala d'Or Jungs-Trip",
+  "short_name": "Malle 2026",
+  "description": "Interaktiver Reiseplaner & Begleiter für den Mallorca-Trip nach Cala d'Or (16.–19. Oktober 2026).",
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
@@ -11,7 +11,7 @@
   "lang": "de",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230a5c73'/%3E%3Ctext x='256' y='368' font-size='300' text-anchor='middle'%3E%F0%9F%8D%8B%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230a5c73'/%3E%3Ctext x='256' y='368' font-size='300' text-anchor='middle'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"

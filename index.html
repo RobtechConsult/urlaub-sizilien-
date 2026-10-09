@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
 </head>
 <body>
 
@@ -28,6 +28,7 @@
     <nav class="nav__links" id="navLinks">
       <a href="#countdown">Countdown</a>
       <a href="#ueberblick">Überblick</a>
+      <a href="#karte">Karte</a>
       <a href="#reiseplan">Programm</a>
       <a href="#highlights">Strände</a>
       <a href="#ausfluege">Ausflüge</a>
@@ -111,6 +112,101 @@
       <div class="overview__contact">
         <span>📞 <a href="tel:+34971657100">+34 971 65 71 00</a> (Hotel)</span>
         <span>📍 <a href="https://maps.google.com/?q=Gavimar+Cala+Gran+Hotel+Cala+d'Or" target="_blank" rel="noopener">In Google Maps öffnen</a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KARTE -->
+  <section class="section maps" id="karte">
+    <div class="section__inner">
+      <p class="eyebrow">Wo sind wir?</p>
+      <h2 class="section__title">Karte &amp; Orientierung</h2>
+      <p class="section__intro">
+        Euer Standort auf Mallorca mit Busverbindungen – und die Nahaufnahme von Cala d'Or
+        mit Hotel, Buchten und Gehzeiten. Zum Navigieren jeweils in Google Maps öffnen.
+      </p>
+      <div class="maps__grid">
+
+        <!-- Mallorca Übersicht -->
+        <div class="mapcard">
+          <h3>Mallorca &amp; Busverbindungen</h3>
+          <p class="map-sub">Unser Standort ★ Cala d'Or im Südosten · Linien ab Cala d'Or</p>
+          <svg class="map-svg" viewBox="0 0 1000 760" role="img" aria-label="Karte von Mallorca mit unserem Standort Cala d'Or und Busverbindungen">
+            <path class="map-land" d="M64,426 L168,307 L320,224 L400,150 L624,114 L728,58 L936,297 L904,362 L832,444 L776,555 L768,601 L600,702 L504,656 L392,610 L272,463 L176,518 Z"/>
+            <text class="map-sealabel" x="96" y="705">Mar Mediterrani</text>
+            <text class="map-sealabel" x="906" y="92" text-anchor="middle" style="font-size:30px">N ↑</text>
+            <!-- Routen ab Cala d'Or -->
+            <line class="map-route" x1="746" y1="594" x2="280" y2="417"/>
+            <line class="map-route" x1="746" y1="594" x2="826" y2="446"/>
+            <line class="map-route" x1="746" y1="594" x2="662" y2="615"/>
+            <line class="map-route map-route--taxi" x1="746" y1="594" x2="360" y2="472"/>
+            <line class="map-route map-route--taxi" x1="746" y1="594" x2="554" y2="646"/>
+            <!-- Ziele -->
+            <g><circle class="map-dot" cx="280" cy="417" r="18"/><text class="map-badge" x="280" y="425" text-anchor="middle">1</text></g>
+            <g><circle class="map-dot" cx="351" cy="434" r="18"/><text class="map-badge" x="351" y="442" text-anchor="middle">2</text></g>
+            <g><circle class="map-dot" cx="360" cy="472" r="18"/><text class="map-badge" x="360" y="480" text-anchor="middle">3</text></g>
+            <g><circle class="map-dot" cx="554" cy="646" r="18"/><text class="map-badge" x="554" y="654" text-anchor="middle">4</text></g>
+            <g><circle class="map-dot" cx="662" cy="615" r="18"/><text class="map-badge" x="662" y="623" text-anchor="middle">5</text></g>
+            <g><circle class="map-dot" cx="678" cy="510" r="18"/><text class="map-badge" x="678" y="518" text-anchor="middle">6</text></g>
+            <g><circle class="map-dot" cx="826" cy="446" r="18"/><text class="map-badge" x="826" y="454" text-anchor="middle">7</text></g>
+            <!-- Unser Standort -->
+            <circle class="map-pin-pulse" cx="746" cy="594" r="22"/>
+            <circle class="map-pin" cx="746" cy="594" r="21"/>
+            <text class="map-badge" x="746" y="603" text-anchor="middle" style="font-size:26px">★</text>
+          </svg>
+          <ul class="map-legend">
+            <li><span class="num num--us">★</span><span><b>Cala d'Or</b> – unser Standort (Hotel)</span></li>
+            <li><span class="num">1</span><span><b>Palma</b> <small>· 🚌 515e (Apr–Okt) / 🚕 ~90 €</small></span></li>
+            <li><span class="num">2</span><span><b>Flughafen PMI</b> <small>· Transfer ~50 Min</small></span></li>
+            <li><span class="num">3</span><span><b>Ballermann / Playa de Palma</b> <small>· ~60 km · 🚕 ~90 €</small></span></li>
+            <li><span class="num">4</span><span><b>Es Trenc / Colònia</b> <small>· 🚕 ~50 € / Boot</small></span></li>
+            <li><span class="num">5</span><span><b>Santanyí</b> <small>· 🚌 515</small></span></li>
+            <li><span class="num">6</span><span><b>Felanitx</b> <small>· 🚕 ~25 €</small></span></li>
+            <li><span class="num">7</span><span><b>Porto Cristo &amp; Coves del Drac</b> <small>· 🚌 428</small></span></li>
+          </ul>
+          <div class="hero__cta" style="justify-content:flex-start">
+            <a class="btn btn--primary btn--sm" href="https://www.google.com/maps/search/?api=1&query=Cala%20d'Or%20Mallorca" target="_blank" rel="noopener">Mallorca in Google Maps</a>
+            <a class="btn btn--ghost btn--sm" href="https://www.tib.org/en/" target="_blank" rel="noopener">Busfahrplan (TIB)</a>
+          </div>
+        </div>
+
+        <!-- Cala d'Or Nahkarte -->
+        <div class="mapcard">
+          <h3>Cala d'Or – vor Ort</h3>
+          <p class="map-sub">Hotel, Buchten, Marina &amp; Gehzeiten (alles zu Fuß)</p>
+          <svg class="map-svg" viewBox="0 0 1000 640" role="img" aria-label="Nahkarte von Cala d'Or mit Hotel, Buchten und Marina">
+            <path class="map-land" d="M0,0 L640,0 L700,60 L600,150 L680,210 L560,290 L690,350 L600,440 L700,480 L560,560 L700,600 L640,640 L0,640 Z"/>
+            <text class="map-sealabel" x="835" y="330" text-anchor="middle">Mar</text>
+            <!-- Fußwege vom Hotel -->
+            <line class="map-route" x1="470" y1="290" x2="575" y2="292"/>
+            <line class="map-route" x1="470" y1="290" x2="618" y2="150"/>
+            <line class="map-route" x1="470" y1="290" x2="720" y2="72"/>
+            <line class="map-route" x1="470" y1="290" x2="612" y2="442"/>
+            <line class="map-route" x1="470" y1="290" x2="600" y2="560"/>
+            <!-- Buchten -->
+            <g><circle class="map-dot" cx="575" cy="292" r="18"/><text class="map-badge" x="575" y="300" text-anchor="middle">1</text></g>
+            <g><circle class="map-dot" cx="618" cy="150" r="18"/><text class="map-badge" x="618" y="158" text-anchor="middle">2</text></g>
+            <g><circle class="map-dot" cx="720" cy="72" r="18"/><text class="map-badge" x="720" y="80" text-anchor="middle">3</text></g>
+            <g><circle class="map-dot" cx="612" cy="442" r="18"/><text class="map-badge" x="612" y="450" text-anchor="middle">4</text></g>
+            <g><circle class="map-dot" cx="600" cy="560" r="18"/><text class="map-badge" x="600" y="568" text-anchor="middle">5</text></g>
+            <!-- Hotel -->
+            <circle class="map-pin-pulse" cx="470" cy="290" r="22"/>
+            <circle class="map-pin" cx="470" cy="290" r="21"/>
+            <text class="map-badge" x="470" y="299" text-anchor="middle" style="font-size:24px">★</text>
+          </svg>
+          <ul class="map-legend">
+            <li><span class="num num--us">★</span><span><b>Gavimar Cala Gran</b> – unser Hotel</span></li>
+            <li><span class="num">1</span><span><b>Cala Gran</b> <small>· Strand, ~2 Min</small></span></li>
+            <li><span class="num">2</span><span><b>Cala d'Or / Cala Esmeralda</b> <small>· ~5–10 Min</small></span></li>
+            <li><span class="num">3</span><span><b>Es Fortí</b> <small>· Sonnenuntergang, ~15 Min</small></span></li>
+            <li><span class="num">4</span><span><b>Cala Ferrera</b> <small>· ~15 Min</small></span></li>
+            <li><span class="num">5</span><span><b>Marina de Cala d'Or</b> <small>· Bars, ~15 Min</small></span></li>
+          </ul>
+          <div class="hero__cta" style="justify-content:flex-start">
+            <a class="btn btn--primary btn--sm" href="https://www.google.com/maps/search/?api=1&query=Gavimar%20Cala%20Gran%20Hotel%20Cala%20d'Or" target="_blank" rel="noopener">Hotel in Google Maps</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -268,7 +364,7 @@
     <button class="btn btn--ghost btn--sm" id="backTop">↑ Nach oben</button>
   </footer>
 
-  <script src="assets/js/data.js?v=7"></script>
-  <script src="assets/js/app.js?v=7"></script>
+  <script src="assets/js/data.js?v=8"></script>
+  <script src="assets/js/app.js?v=8"></script>
 </body>
 </html>

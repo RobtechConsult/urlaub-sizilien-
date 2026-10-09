@@ -318,6 +318,50 @@
     });
   }
 
+  /* ---------------- Interaktive Karten (Leaflet) ---------------- */
+  function initMaps() {
+    if (typeof L === "undefined" || typeof GEO === "undefined") return;
+    [["map-mallorca", GEO.mallorca], ["map-calador", GEO.calador]].forEach(([id, cfg]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const map = L.map(el, { scrollWheelZoom: false, zoomControl: true }).setView(cfg.center, cfg.zoom);
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19, attribution: "&copy; OpenStreetMap, &copy; CARTO"
+      }).addTo(map);
+
+      const pts = cfg.points;
+      (cfg.routes || []).forEach(r => {
+        const a = pts[r.from], b = pts[r.to];
+        L.polyline([[a.lat, a.lng], [b.lat, b.lng]], {
+          color: r.type === "taxi" ? "#c65332" : "#0a5c73",
+          weight: 3.5, opacity: .75, dashArray: r.type === "taxi" ? "2 9" : "4 10"
+        }).addTo(map);
+      });
+
+      const bounds = [];
+      pts.forEach(pt => {
+        const icon = L.divIcon({
+          className: "mkr-wrap",
+          html: `<span class="mkr${pt.us ? " mkr--us" : ""}">${pt.n}</span>`,
+          iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -14]
+        });
+        const url = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(pt.maps);
+        L.marker([pt.lat, pt.lng], { icon })
+          .addTo(map)
+          .bindPopup(`<b>${pt.name}</b><br><a href="${url}" target="_blank" rel="noopener">In Google Maps öffnen ↗</a>`);
+        bounds.push([pt.lat, pt.lng]);
+      });
+
+      const fit = () => { map.invalidateSize(); if (bounds.length) map.fitBounds(bounds, { padding: [34, 34], maxZoom: cfg.fitMaxZoom || 16 }); };
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { fit(); io.disconnect(); } }));
+        io.observe(el);
+      }
+      setTimeout(fit, 500);
+    });
+  }
+  initMaps();
+
   /* ---------------- Service Worker (offline) ---------------- */
   if ("serviceWorker" in navigator) {
     // Wenn ein neuer SW die Kontrolle uebernimmt, Seite genau einmal neu laden,

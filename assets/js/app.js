@@ -699,6 +699,18 @@
     if (potId) { store.set(ID_KEY, potId); pull(); startPolling(); }
   })();
 
+  /* ---------------- Unterlagen: Kopier-Buttons ---------------- */
+  $$(".copy").forEach(btn => {
+    const orig = btn.textContent;
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy);
+        btn.textContent = "✓ kopiert";
+        setTimeout(() => { btn.textContent = orig; }, 1400);
+      } catch (e) {}
+    });
+  });
+
   /* ---------------- Service Worker (offline) ---------------- */
   if ("serviceWorker" in navigator) {
     // Wenn ein neuer SW die Kontrolle uebernimmt, Seite genau einmal neu laden,

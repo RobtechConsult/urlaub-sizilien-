@@ -2,13 +2,13 @@
    Strategie: NETWORK-FIRST (online immer aktuell, offline aus Cache).
    Beim Aktivieren werden alte Caches geloescht und offene Seiten neu geladen,
    damit eine neue Version sofort sichtbar ist. */
-const CACHE = "malle-2026-v14";
+const CACHE = "malle-2026-v15";
 const ASSETS = [
   "./",
   "index.html",
-  "assets/css/style.css?v=14",
-  "assets/js/data.js?v=14",
-  "assets/js/app.js?v=14",
+  "assets/css/style.css?v=15",
+  "assets/js/data.js?v=15",
+  "assets/js/app.js?v=15",
   "assets/vendor/leaflet/leaflet.css",
   "assets/vendor/leaflet/leaflet.js",
   "manifest.webmanifest"

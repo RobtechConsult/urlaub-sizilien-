@@ -90,12 +90,23 @@
 
   /* ---------------- Reiseplan ---------------- */
   const timeline = $("#planTimeline");
-  timeline.innerHTML = ITINERARY.map((d, i) => `
-    <article class="plan-day" data-idx="${i}">
+  // Heutiges Datum (mit ?heute=JJJJ-MM-TT Override zum Testen/Vorschauen)
+  const TODAY_ISO = (function () {
+    try {
+      const m = location.search.match(/[?&]heute=(\d{4}-\d{2}-\d{2})/);
+      if (m) return m[1];
+    } catch (e) {}
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  })();
+  timeline.innerHTML = ITINERARY.map((d, i) => {
+    const today = d.date && d.date === TODAY_ISO;
+    return `
+    <article class="plan-day${today ? " is-today" : ""}" data-idx="${i}" data-date="${d.date || ""}">
       <button class="plan-day__head" aria-expanded="false">
         <span class="plan-day__icon">${d.icon}</span>
         <span class="plan-day__meta">
-          <span class="plan-day__date">${d.day}</span>
+          <span class="plan-day__date">${d.day}${today ? ' <span class="plan-day__today">Heute</span>' : ""}</span>
           <span class="plan-day__title">${d.title}</span>
         </span>
         <span class="plan-day__tag">${d.tag}</span>
@@ -109,8 +120,8 @@
           </ul>
         </div>
       </div>
-    </article>
-  `).join("");
+    </article>`;
+  }).join("");
 
   $$(".plan-day__head", timeline).forEach(btn => {
     btn.addEventListener("click", () => {
@@ -126,6 +137,60 @@
       }
     });
   });
+
+  // Heutigen Tag automatisch aufklappen
+  (function () {
+    const todayEl = $(".plan-day.is-today", timeline);
+    if (todayEl) {
+      todayEl.classList.add("is-open");
+      $(".plan-day__head", todayEl).setAttribute("aria-expanded", "true");
+    }
+  })();
+
+  /* ---------------- "Heute"-Live-Modus (Tages-Karte) ---------------- */
+  (function () {
+    const box = $("#todayBox");
+    if (!box) return;
+    const WD = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+    const idx = ITINERARY.findIndex(d => d.date === TODAY_ISO);
+    // Tag vor Abreise: Vorfreude-Hinweis
+    const first = ITINERARY[0] && ITINERARY[0].date;
+    const dayBefore = first ? new Date(new Date(first + "T12:00:00").getTime() - 86400000) : null;
+    const dayBeforeISO = dayBefore ? `${dayBefore.getFullYear()}-${String(dayBefore.getMonth()+1).padStart(2,"0")}-${String(dayBefore.getDate()).padStart(2,"0")}` : null;
+
+    if (idx < 0) {
+      if (TODAY_ISO === dayBeforeISO) {
+        box.hidden = false;
+        box.innerHTML = '<div class="today-box__inner"><span class="today-box__badge">Morgen geht\'s los</span><h3 class="today-box__title">Koffer… äh, Handgepäck packen! ✈️🍻</h3><p class="today-box__text">Morgen früh sammeln wir Pieth &amp; Robin in Bochum ein. Check-in, Vorglühen, los!</p></div>';
+      }
+      return; // vor/nach der Reise: keine Tages-Karte
+    }
+
+    const d = ITINERARY[idx];
+    const dt = new Date(TODAY_ISO + "T12:00:00");
+    box.hidden = false;
+    box.innerHTML = `<div class="today-box__inner">
+        <span class="today-box__badge">Heute · ${WD[dt.getDay()]}, ${d.day.split("·")[1].trim()}</span>
+        <h3 class="today-box__title">${d.icon} ${d.title}</h3>
+        <p class="today-box__text">${d.text}</p>
+        <div class="today-box__wx" id="todayWx"></div>
+      </div>`;
+
+    // Heutiges Wetter + Sonnenuntergang laden
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=39.375&longitude=3.232"
+      + "&daily=weathercode,temperature_2m_max,temperature_2m_min,sunset&timezone=Europe%2FMadrid"
+      + "&start_date=" + TODAY_ISO + "&end_date=" + TODAY_ISO;
+    const WMO = { 0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌦️",61:"🌧️",63:"🌧️",65:"🌧️",80:"🌦️",81:"🌦️",82:"⛈️",95:"⛈️",96:"⛈️",99:"⛈️" };
+    fetch(url).then(r => r.ok ? r.json() : Promise.reject()).then(j => {
+      const dd = j && j.daily; if (!dd || !dd.time || !dd.time.length) return;
+      const icon = WMO[dd.weathercode[0]] || "🌡️";
+      const max = Math.round(dd.temperature_2m_max[0]);
+      const min = Math.round(dd.temperature_2m_min[0]);
+      const sunset = dd.sunset[0] ? dd.sunset[0].slice(11, 16) : null;
+      const wx = $("#todayWx");
+      if (wx) wx.innerHTML = `<span>${icon} ${max}° / ${min}°</span>` + (sunset ? `<span>🌇 Sonnenuntergang ${sunset}</span>` : "");
+    }).catch(() => {});
+  })();
 
   /* ---------------- Highlights + Filter ---------------- */
   const cats = ["Alle", ...Array.from(new Set(HIGHLIGHTS.map(h => h.cat)))];

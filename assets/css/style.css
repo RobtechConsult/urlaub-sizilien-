@@ -688,3 +688,14 @@ body::before {
 .settle__tx { margin-top: .9rem; font-size: .95rem; color: var(--ink); }
 .settle__tx ul { list-style: none; padding: 0; margin: .4rem 0 0; display: flex; flex-direction: column; gap: .3rem; }
 .settle__tx li { background: var(--cream-2); border-radius: 10px; padding: .45rem .8rem; }
+
+/* ===== "Heute"-Live-Modus ===== */
+.today-box { margin-bottom: 1.6rem; }
+.today-box__inner { background: linear-gradient(135deg, var(--sea) 0%, var(--sea-deep) 100%); color: #fff; border-radius: var(--radius-lg); padding: 1.4rem 1.6rem; box-shadow: var(--shadow); }
+.today-box__badge { display: inline-block; background: var(--sun); color: #fff; font-size: .75rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: .35em .9em; border-radius: 100px; margin-bottom: .7rem; }
+.today-box__title { font-family: var(--font-display); font-size: clamp(1.3rem, 4vw, 1.8rem); margin-bottom: .5rem; color: #fff; }
+.today-box__text { color: rgba(255,255,255,.92); font-size: .98rem; }
+.today-box__wx { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .9rem; }
+.today-box__wx span { background: rgba(255,255,255,.15); padding: .4em .9em; border-radius: 100px; font-size: .9rem; font-weight: 700; }
+.plan-day.is-today { box-shadow: 0 0 0 2px var(--sun), var(--shadow); }
+.plan-day__today { display: inline-block; background: var(--sun); color: #fff; font-size: .68rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: .15em .6em; border-radius: 100px; margin-left: .4rem; vertical-align: middle; }

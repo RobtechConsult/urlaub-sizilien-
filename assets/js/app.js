@@ -373,6 +373,131 @@
   }
   initMaps();
 
+  /* ---------------- Dark Mode ---------------- */
+  (function () {
+    const btn = $("#themeToggle");
+    if (!btn) return;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const apply = mode => {
+      document.documentElement.setAttribute("data-theme", mode);
+      btn.textContent = mode === "dark" ? "☀️" : "🌙";
+      btn.setAttribute("aria-pressed", String(mode === "dark"));
+      if (meta) meta.setAttribute("content", mode === "dark" ? "#0f1a22" : "#0a5c73");
+    };
+    let cur = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    apply(cur);
+    btn.addEventListener("click", () => {
+      cur = cur === "dark" ? "light" : "dark";
+      try { localStorage.setItem("malle_theme", cur); } catch (e) {}
+      apply(cur);
+    });
+  })();
+
+  /* ---------------- Live-Wetter (open-meteo, kein API-Key) ---------------- */
+  (function () {
+    const el = $("#weather");
+    if (!el) return;
+    const WMO = {
+      0: ["☀️", "Sonnig"], 1: ["🌤️", "Meist sonnig"], 2: ["⛅", "Teils bewölkt"], 3: ["☁️", "Bewölkt"],
+      45: ["🌫️", "Nebel"], 48: ["🌫️", "Nebel"], 51: ["🌦️", "Nieseln"], 53: ["🌦️", "Nieseln"], 55: ["🌦️", "Nieseln"],
+      61: ["🌧️", "Regen"], 63: ["🌧️", "Regen"], 65: ["🌧️", "Starkregen"], 71: ["🌨️", "Schnee"],
+      80: ["🌦️", "Schauer"], 81: ["🌦️", "Schauer"], 82: ["⛈️", "Starke Schauer"],
+      95: ["⛈️", "Gewitter"], 96: ["⛈️", "Gewitter"], 99: ["⛈️", "Gewitter"]
+    };
+    const WD = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+    const hhmm = s => (s && s.length >= 16) ? s.slice(11, 16) : "–";
+    const fallback = '<p class="weather__note">🌤️ Vorhersage noch nicht verfügbar (erscheint ~2 Wochen vor Abreise – und nur online). Oktober-Mittel: tagsüber ~22–24 °C, Wasser ~21 °C, abends kühler.</p>';
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=39.375&longitude=3.232"
+      + "&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset"
+      + "&timezone=Europe%2FMadrid&start_date=2026-10-16&end_date=2026-10-19";
+    fetch(url)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => {
+        const dd = d && d.daily;
+        if (!dd || !dd.time || !dd.time.length) throw 0;
+        const cards = dd.time.map((t, i) => {
+          const dt = new Date(t + "T12:00:00");
+          const code = dd.weathercode[i];
+          const w = WMO[code] || ["🌡️", "–"];
+          const max = Math.round(dd.temperature_2m_max[i]);
+          const min = Math.round(dd.temperature_2m_min[i]);
+          const rain = dd.precipitation_probability_max ? dd.precipitation_probability_max[i] : null;
+          return `
+            <div class="wcard">
+              <div class="wcard__day">${WD[dt.getDay()]} · ${String(dt.getDate()).padStart(2,"0")}.${String(dt.getMonth()+1).padStart(2,"0")}.</div>
+              <div class="wcard__icon" title="${w[1]}">${w[0]}</div>
+              <div class="wcard__temp">${max}° <span>/ ${min}°</span></div>
+              <div class="wcard__meta">${rain != null ? "💧 " + rain + "%" : ""}</div>
+              <div class="wcard__sun">🌅 ${hhmm(dd.sunrise[i])} · 🌇 ${hhmm(dd.sunset[i])}</div>
+            </div>`;
+        }).join("");
+        el.innerHTML = '<p class="weather__cap">Vorhersage für Cala d\'Or · Quelle: open-meteo</p><div class="weather__grid">' + cards + "</div>";
+      })
+      .catch(() => { el.innerHTML = fallback; });
+  })();
+
+  /* ---------------- Budget & Kostenteiler ---------------- */
+  (function () {
+    const form = $("#budgetForm");
+    if (!form) return;
+    const KEY = "malle_budget", PERS = 4;
+    const fmt0 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+    const fmt2 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+    const esc = s => String(s).replace(/[<>&"]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
+    function load() {
+      const d = store.get(KEY, null);
+      if (!d || typeof d !== "object") return { total: 2000, items: [] };
+      if (typeof d.total !== "number") d.total = 2000;
+      if (!Array.isArray(d.items)) d.items = [];
+      return d;
+    }
+    let state = load();
+    const save = () => store.set(KEY, state);
+    function render() {
+      const spent = state.items.reduce((s, i) => s + (+i.amount || 0), 0);
+      const left = state.total - spent;
+      const over = left < 0;
+      $("#bTotal").textContent = fmt0(state.total);
+      $("#bPerPerson").textContent = fmt0(state.total / PERS) + " / Mann";
+      $("#bSpent").textContent = fmt0(spent);
+      $("#bSpentPP").textContent = fmt0(spent / PERS) + " / Mann";
+      $("#bLeft").textContent = fmt0(left);
+      $("#bLeftPP").textContent = fmt0(left / PERS) + " / Mann";
+      $("#bLeft").classList.toggle("is-over", over);
+      const pct = state.total > 0 ? Math.round(spent / state.total * 100) : 0;
+      const bar = $("#bBar");
+      bar.style.width = Math.min(100, pct) + "%";
+      bar.classList.toggle("is-over", over);
+      $("#bBarLabel").textContent = over ? `${pct} % – ${fmt0(-left)} über Budget!` : `${pct} % ausgegeben`;
+      const list = $("#budgetList");
+      list.innerHTML = state.items.length
+        ? state.items.map(i => `<li class="bitem"><span class="bitem__name">${esc(i.name)}</span><span class="bitem__amt">${fmt2(+i.amount)}</span><button class="bitem__del" data-id="${i.id}" aria-label="Löschen">×</button></li>`).join("")
+        : '<li class="bitem bitem--empty">Noch keine Ausgaben eingetragen.</li>';
+      const edit = $("#bEditTotal");
+      if (edit !== document.activeElement) edit.value = state.total;
+    }
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const name = $("#bName").value.trim();
+      const amt = parseFloat($("#bAmount").value);
+      if (!name || isNaN(amt) || amt < 0) return;
+      state.items.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, amount: amt });
+      save(); render(); form.reset(); $("#bName").focus();
+    });
+    $("#budgetList").addEventListener("click", e => {
+      const b = e.target.closest(".bitem__del");
+      if (!b) return;
+      state.items = state.items.filter(i => i.id !== b.dataset.id);
+      save(); render();
+    });
+    $("#bEditTotal").addEventListener("change", e => {
+      const v = parseFloat(e.target.value);
+      if (!isNaN(v) && v >= 0) { state.total = v; save(); render(); }
+    });
+    $("#bReset").addEventListener("click", () => { state.items = []; save(); render(); });
+    render();
+  })();
+
   /* ---------------- Service Worker (offline) ---------------- */
   if ("serviceWorker" in navigator) {
     // Wenn ein neuer SW die Kontrolle uebernimmt, Seite genau einmal neu laden,

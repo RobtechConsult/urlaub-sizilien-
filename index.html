@@ -5,12 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a5c73" />
   <meta name="description" content="Jungs-Trip 2026 nach Cala d'Or, Mallorca – interaktiver Reiseplaner & Begleiter für Strände, Bootstouren, Bars & mehr." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Malle 2026 · Cala d'Or – Jungs-Trip" />
+  <meta property="og:description" content="Unser interaktiver Reise-Begleiter: Programm, Karte, Strände, Erlebnisse, Budget & mehr. 16.–19. Oktober 2026." />
+  <meta property="og:url" content="https://robtechconsult.github.io/urlaub-sizilien-/" />
+  <meta property="og:image" content="https://robtechconsult.github.io/urlaub-sizilien-/assets/img/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
   <title>Malle 2026 · Cala d'Or</title>
+  <script>try{var t=localStorage.getItem("malle_theme");if(t==="dark"||(!t&&window.matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}</script>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="assets/css/style.css?v=12" />
+  <link rel="stylesheet" href="assets/css/style.css?v=13" />
 </head>
 <body>
 
@@ -23,6 +32,7 @@
       <span class="nav__brand-icon">🏝️</span>
       <span class="nav__brand-text">Malle <b>2026</b></span>
     </a>
+    <button class="nav__theme" id="themeToggle" aria-label="Dark Mode umschalten" title="Dark Mode">🌙</button>
     <button class="nav__toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -35,6 +45,7 @@
       <a href="#ausfluege">Ausflüge</a>
       <a href="#erlebnisse">Erlebnisse</a>
       <a href="#kulinarik">Essen</a>
+      <a href="#budget">Budget</a>
       <a href="#packliste">Packliste</a>
       <a href="#sprache">Sprache</a>
       <a href="#praktisch">Infos</a>
@@ -242,6 +253,38 @@
     </div>
   </section>
 
+  <!-- BUDGET -->
+  <section class="section budget" id="budget">
+    <div class="section__inner">
+      <p class="eyebrow">Kasse machen 💶</p>
+      <h2 class="section__title">Budget &amp; Kostenteiler</h2>
+      <p class="section__intro">Gesamtbudget <b>2.000 €</b> (4 × 500 €). Tragt eure gemeinsamen Ausgaben ein – Rest &amp; Pro-Kopf rechnen sich automatisch. (Stand wird auf diesem Gerät gespeichert.)</p>
+      <div class="budget__stats">
+        <div class="bstat"><span class="bstat__label">Budget</span><span class="bstat__val" id="bTotal">2.000 €</span><span class="bstat__sub" id="bPerPerson">500 € / Mann</span></div>
+        <div class="bstat bstat--spent"><span class="bstat__label">Ausgegeben</span><span class="bstat__val" id="bSpent">0 €</span><span class="bstat__sub" id="bSpentPP">0 € / Mann</span></div>
+        <div class="bstat bstat--left"><span class="bstat__label">Übrig</span><span class="bstat__val" id="bLeft">2.000 €</span><span class="bstat__sub" id="bLeftPP">500 € / Mann</span></div>
+      </div>
+      <div class="progress" aria-hidden="true"><div class="progress__bar" id="bBar"></div></div>
+      <p class="progress__label" id="bBarLabel">0 % ausgegeben</p>
+
+      <form class="budget__form" id="budgetForm">
+        <input type="text" id="bName" placeholder="Wofür? (z. B. Bootstour)" maxlength="40" required />
+        <input type="number" id="bAmount" placeholder="€" min="0" step="0.01" required />
+        <button type="submit" class="btn btn--primary btn--sm">+ Hinzufügen</button>
+      </form>
+
+      <ul class="budget__list" id="budgetList"></ul>
+
+      <details class="budget__opts">
+        <summary>Budget anpassen / zurücksetzen</summary>
+        <div class="budget__opts-row">
+          <label>Gesamtbudget (€): <input type="number" id="bEditTotal" min="0" step="50" /></label>
+          <button type="button" class="btn btn--ghost btn--sm" id="bReset">Ausgaben löschen</button>
+        </div>
+      </details>
+    </div>
+  </section>
+
   <!-- PACKLISTE -->
   <section class="section checklist" id="packliste">
     <div class="section__inner">
@@ -270,6 +313,9 @@
     <div class="section__inner">
       <p class="eyebrow">Gut zu wissen</p>
       <h2 class="section__title">Infos &amp; Tipps</h2>
+
+      <div class="weather" id="weather"><p class="weather__note">🌤️ Wetter wird geladen …</p></div>
+
       <div class="practical__grid">
         <div class="tip">
           <h3>✈️ Anreise &amp; Transfer</h3>
@@ -333,7 +379,7 @@
   </footer>
 
   <script src="assets/vendor/leaflet/leaflet.js"></script>
-  <script src="assets/js/data.js?v=12"></script>
-  <script src="assets/js/app.js?v=12"></script>
+  <script src="assets/js/data.js?v=13"></script>
+  <script src="assets/js/app.js?v=13"></script>
 </body>
 </html>

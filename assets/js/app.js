@@ -238,6 +238,16 @@
   if (tripGrid && typeof DAYTRIPS !== "undefined") {
     tripGrid.innerHTML = DAYTRIPS.map(cardHTML).join("");
   }
+  const eatGrid = $("#restaurantGrid");
+  if (eatGrid && typeof RESTAURANTS !== "undefined") {
+    eatGrid.innerHTML = RESTAURANTS.map(r => `
+      <a class="hl-card hl-card--link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.maps)}" target="_blank" rel="noopener">
+        <div class="hl-card__top"><span class="hl-card__icon">${r.icon}</span><span class="hl-card__cat">${r.cat}</span></div>
+        <h3 class="hl-card__name">${r.name}</h3>
+        <p class="hl-card__text">${r.note}</p>
+        <p class="hl-card__place">📍 In Google Maps öffnen ↗</p>
+      </a>`).join("");
+  }
 
   /* ---------------- Kulinarische Bucket-List ---------------- */
   const foodGrid = $("#foodGrid");

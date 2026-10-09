@@ -17,8 +17,8 @@ const ITINERARY = [
     title: "Abflug & Anreise",
     tag: "Anreise",
     icon: "🛫",
-    text: "Niklas & Robin in Bochum einsammeln, dann gemeinsam zum Flughafen Köln/Bonn – Heiko stößt dazu. Noch entspannt am Gate vorglühen 🍺, Abflug 21:50 Uhr (Ryanair FR 9967). Landung 00:10 Uhr in Palma, vorgebuchter Transfer (~50 Min) nach Cala d'Or, spät einchecken.",
-    tips: ["Fahrgemeinschaft: Niklas & Robin in Bochum", "Parken am CGN vorab buchen", "Vorglühen am Gate – aber Flug nicht verpassen 😄"]
+    text: "Pieth & Robin in Bochum einsammeln, dann gemeinsam zum Flughafen Köln/Bonn – Heiko stößt dazu. Noch entspannt am Gate vorglühen 🍺, Abflug 21:50 Uhr (Ryanair FR 9967). Landung 00:10 Uhr in Palma, vorgebuchter Transfer (~50 Min) nach Cala d'Or, spät einchecken.",
+    tips: ["Fahrgemeinschaft: Pieth & Robin in Bochum", "Parken am CGN vorab buchen", "Vorglühen am Gate – aber Flug nicht verpassen 😄"]
   },
   {
     day: "Sa · 17.10.",
@@ -94,6 +94,16 @@ const FOOD = [
   { icon: "🌿", name: "Hierbas", note: "Kräuterlikör – süß oder trocken" },
   { icon: "🍹", name: "Sangría / Tinto de verano", note: "Der Klassiker für den Strandtag" },
   { icon: "☕", name: "Café con hielo", note: "Espresso auf Eis gegen die Mittagshitze" },
+];
+
+/* ---------- Restaurants & Bars in der Nähe (mit Google-Maps-Suche) ---------- */
+const RESTAURANTS = [
+  { icon: "🦪", name: "Port Petit", cat: "Fein · Hafen", note: "Gehobene mediterrane Küche direkt am Hafen – Austern & Chateaubriand. Für den besonderen Abend.", maps: "Port Petit Cala d'Or" },
+  { icon: "🍸", name: "La Loba", cat: "Marina · modern", note: "Hip an der Marina: Austern, Tacos, Tuna Tataki und gute Drinks.", maps: "La Loba Cala d'Or" },
+  { icon: "🍹", name: "Churchill's", cat: "Tapas & Cocktails", note: "Hafenterrasse, Tapas bis spät und lange Cocktailkarte – ideal für die Jungs-Runde.", maps: "Churchill's Cala d'Or" },
+  { icon: "🥘", name: "La Bodega", cat: "Spanische Tapas", note: "Authentisch & gemütlich: Chorizo in Rotwein, Patatas Bravas, Albóndigas.", maps: "La Bodega Cala d'Or" },
+  { icon: "🥩", name: "Indiana Johns", cat: "Grill & Steaks", note: "Deftiger Grill-Fusion: Steaks, Ribs und Seafood – wenn der Hunger groß ist.", maps: "Indiana Johns Cala d'Or" },
+  { icon: "🐟", name: "Mediterráneo", cat: "Fisch vom Grill", note: "Frischer gegrillter Fisch (Dorada, Sardinen) und Tapas mit Meerblick.", maps: "Restaurante Mediterraneo Cala d'Or" },
 ];
 
 /* ---------- Packliste (NUR Handgepäck 40×30×20 cm!) ---------- */

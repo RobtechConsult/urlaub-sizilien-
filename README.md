@@ -9,7 +9,7 @@ begleitet – Strände, Bootstouren, Bars und gutes Essen immer griffbereit.
 
 - **Flüge (Ryanair):** Fr 16.10. 21:50 Köln/Bonn → 00:10 Palma · Rück Mo 19.10. 22:30 → 00:55 CGN
 - **Hotel:** Gavimar Cala Gran Hotel & Apartments ★★★, Halbpension
-- **Crew:** Robert, Robin, Niklas & Heiko · nur Handgepäck · kein Mietwagen
+- **Crew:** Robert, Robin, Pieth & Heiko · nur Handgepäck · kein Mietwagen
 
 ## ✨ Was die Seite kann
 

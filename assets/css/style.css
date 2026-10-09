@@ -557,3 +557,16 @@ body::before {
 .map-legend b { color: var(--sea-deep); }
 .map-legend small { color: var(--muted); }
 .mapcard .btn { margin-top: 1.1rem; }
+
+/* Legende als Google-Maps-Links */
+.map-legend a { display: flex; gap: .6rem; align-items: baseline; text-decoration: none; color: inherit; }
+.map-legend a:hover b { color: var(--terra); text-decoration: underline; }
+/* Anklickbare Karte (z. B. Restaurants -> Google Maps) */
+.hl-card--link { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+.hl-card--link:hover .hl-card__place { text-decoration: underline; }
+
+/* Zwischenüberschrift innerhalb einer Section */
+.subhead {
+  font-family: var(--font-display); color: var(--sea-deep); font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+  margin: 2.6rem 0 .3rem;
+}

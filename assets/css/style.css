@@ -580,3 +580,8 @@ body::before {
 .leaflet-popup-content { font-family: var(--font-body); font-size: .92rem; }
 .leaflet-popup-content a { color: var(--terra); font-weight: 700; text-decoration: none; }
 .leaflet-popup-content a:hover { text-decoration: underline; }
+
+/* Buchbare Aktivitäten – Preis/Zugang-Zeile */
+.book-meta { font-size: .85rem; font-weight: 700; color: var(--muted); margin-bottom: .5rem; }
+.book-price { color: var(--olive); }
+.book-access { color: var(--sea-light); }

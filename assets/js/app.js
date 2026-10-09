@@ -325,8 +325,8 @@
       const el = document.getElementById(id);
       if (!el) return;
       const map = L.map(el, { scrollWheelZoom: false, zoomControl: true }).setView(cfg.center, cfg.zoom);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-        maxZoom: 19, attribution: "&copy; OpenStreetMap, &copy; CARTO"
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19, attribution: "&copy; OpenStreetMap"
       }).addTo(map);
 
       const pts = cfg.points;

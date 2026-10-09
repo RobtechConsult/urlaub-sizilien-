@@ -91,19 +91,24 @@ body::before {
   box-shadow: var(--shadow-sm);
   padding-top: .6rem; padding-bottom: .6rem;
 }
-.nav__brand { display: flex; align-items: center; gap: .5rem; font-family: var(--font-display); font-size: 1.3rem; color: var(--sea-deep); }
+.nav__brand { display: flex; align-items: center; gap: .5rem; font-family: var(--font-display); font-size: 1.3rem; color: var(--sea-deep); white-space: nowrap; flex-shrink: 0; }
 .nav__brand-icon { font-size: 1.5rem; }
 .nav.is-scrolled .nav__brand { color: var(--sea-deep); }
 .nav:not(.is-scrolled) .nav__brand { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.35); }
 .nav__brand b { font-weight: 700; }
 
-.nav__links { display: flex; gap: .3rem; align-items: center; }
+.nav__links { display: flex; gap: .25rem; align-items: center; }
 .nav__links a {
-  padding: .5rem .85rem; border-radius: 100px; font-size: .92rem; font-weight: 600;
-  color: var(--ink); transition: background .2s, color .2s;
+  padding: .5rem .7rem; border-radius: 100px; font-size: .9rem; font-weight: 600;
+  color: var(--ink); transition: background .2s, color .2s; white-space: nowrap;
 }
 .nav:not(.is-scrolled) .nav__links a { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
 .nav__links a:hover { background: var(--sun); color: #fff; text-shadow: none; }
+/* Mittlere Breiten: Links etwas kompakter, damit alle 10 Punkte passen */
+@media (max-width: 1150px) and (min-width: 1025px) {
+  .nav__links { gap: .1rem; }
+  .nav__links a { padding: .45rem .5rem; font-size: .82rem; }
+}
 
 .nav__toggle { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; z-index: 101; }
 .nav__toggle span { width: 26px; height: 3px; border-radius: 3px; background: var(--sea-deep); transition: transform .3s, opacity .3s; }
@@ -112,7 +117,7 @@ body::before {
 .nav__toggle.is-open span:nth-child(2) { opacity: 0; }
 .nav__toggle.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .nav__toggle { display: flex; }
   .nav__links {
     position: fixed; inset: 0 0 0 auto; width: min(78vw, 320px);
@@ -136,7 +141,10 @@ body::before {
 .hero__sky {
   position: absolute; inset: 0; z-index: -3;
   background: linear-gradient(180deg, #f9c66b 0%, #f2a45c 22%, #e07a6a 45%, #a85a86 68%, #4a3f7a 90%);
+  background-size: 100% 220%;
+  animation: skyDrift 20s ease-in-out infinite alternate;
 }
+@keyframes skyDrift { from { background-position: 0 0; } to { background-position: 0 35%; } }
 .hero__sea {
   position: absolute; left: 0; right: 0; bottom: 0; height: 26%; z-index: -1;
   background: linear-gradient(180deg, rgba(10,92,115,.65), var(--sea-deep));
@@ -146,6 +154,27 @@ body::before {
   background: radial-gradient(ellipse at center, rgba(255,255,255,.35), transparent 60%);
   opacity: .5;
 }
+/* Wandernder Licht-Schimmer auf dem Meer */
+.hero__sea::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 35%, rgba(255,255,255,.14) 50%, transparent 65%);
+  background-size: 220% 100%;
+  animation: seaShimmer 7s linear infinite;
+}
+@keyframes seaShimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+
+/* Segelboot driftet über den Horizont */
+.hero__boat {
+  position: absolute; bottom: 25%; left: -8%; z-index: -1;
+  animation: boatSail 30s linear infinite;
+}
+.hero__boat span {
+  display: inline-block; font-size: clamp(1.3rem, 3.5vw, 2.1rem);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.25));
+  animation: boatBob 3.2s ease-in-out infinite;
+}
+@keyframes boatSail { from { left: -8%; } to { left: 106%; } }
+@keyframes boatBob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
 /* Buchten-Küste (Headlands) mit untergehender Sonne */
 .hero__etna {
   position: absolute; left: 50%; bottom: 24%; transform: translateX(-50%);
@@ -158,6 +187,11 @@ body::before {
   width: 96px; height: 96px; border-radius: 50%;
   background: radial-gradient(circle, #fff6d8, #ffd36b 55%, rgba(255,170,70,0) 72%);
   box-shadow: 0 0 70px 24px rgba(255,190,90,.4);
+  animation: sunPulse 5s ease-in-out infinite;
+}
+@keyframes sunPulse {
+  0%,100% { transform: translateX(-50%) scale(1); opacity: .92; }
+  50%     { transform: translateX(-50%) scale(1.07); opacity: 1; }
 }
 
 .hero__content { position: relative; z-index: 2; max-width: 760px; animation: heroIn 1s ease both; }
@@ -210,9 +244,71 @@ body::before {
 /* Reveal-Animation */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
+
+/* Gestaffeltes Einblenden der Karten (Kaskade) */
+.overview__grid > .reveal:nth-child(2), .highlights__grid > .reveal:nth-child(2), .plan__timeline > .reveal:nth-child(2) { transition-delay: .07s; }
+.overview__grid > .reveal:nth-child(3), .highlights__grid > .reveal:nth-child(3), .plan__timeline > .reveal:nth-child(3) { transition-delay: .14s; }
+.overview__grid > .reveal:nth-child(4), .highlights__grid > .reveal:nth-child(4), .plan__timeline > .reveal:nth-child(4) { transition-delay: .21s; }
+.highlights__grid > .reveal:nth-child(5) { transition-delay: .28s; }
+.highlights__grid > .reveal:nth-child(6) { transition-delay: .35s; }
+.highlights__grid > .reveal:nth-child(7) { transition-delay: .42s; }
+.highlights__grid > .reveal:nth-child(8) { transition-delay: .49s; }
+.highlights__grid > .reveal:nth-child(9) { transition-delay: .56s; }
+
+/* Animierter Unterstrich unter den Section-Titeln */
+.section__title::after {
+  content: ""; display: block; width: 68px; height: 4px; margin-top: .55rem; border-radius: 4px;
+  background: linear-gradient(90deg, var(--sun), var(--lemon));
+  transform: scaleX(0); transform-origin: left; transition: transform .7s .15s cubic-bezier(.2,.8,.2,1);
+}
+.section.is-visible .section__title::after { transform: scaleX(1); }
+.countdown .section__title::after, .emergency .section__title::after { margin-left: auto; margin-right: auto; transform-origin: center; }
+
+/* Countdown-Ziffern "pop" bei jeder Änderung */
+@keyframes cdPop { 0% { transform: scale(1); } 30% { transform: scale(1.18); } 100% { transform: scale(1); } }
+.cd__num.cd--pop { animation: cdPop .45s ease; }
+
+/* Nav-Icon wiegt sanft */
+.nav__brand-icon { display: inline-block; transform-origin: 50% 90%; animation: sway 4.5s ease-in-out infinite; }
+@keyframes sway { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+
+/* Glanz-Sweep über Buttons beim Hover */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: ""; position: absolute; top: 0; left: -160%; width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-20deg); transition: left .6s ease; pointer-events: none;
+}
+.btn:hover::after { left: 170%; }
+
+/* Primär-Button pulsiert dezent (Blickfang) */
+.btn--primary { animation: btnPulse 2.8s ease-in-out infinite; }
+@keyframes btnPulse {
+  0%,100% { box-shadow: 0 8px 20px rgba(232,134,46,.35); }
+  50%     { box-shadow: 0 12px 30px rgba(232,134,46,.6); }
+}
+
+/* Laufender Schimmer auf Fortschrittsbalken */
+.progress__bar { position: relative; overflow: hidden; }
+.progress__bar::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.4) 50%, transparent 80%);
+  background-size: 220% 100%; animation: barShine 2.4s linear infinite;
+}
+@keyframes barShine { from { background-position: 150% 0; } to { background-position: -70% 0; } }
+
+/* Essen-Karte: Icon hüpft beim Abhaken */
+.food-card.is-tried .food-card__icon { animation: foodPop .45s ease; }
+@keyframes foodPop { 0% { transform: scale(1); } 45% { transform: scale(1.35) rotate(-10deg); } 100% { transform: scale(1); } }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; transition: none; }
   html { scroll-behavior: auto; }
+  .hero__sky, .hero__etna::after, .hero__sea::after, .hero__boat, .hero__boat span,
+  .nav__brand-icon, .btn--primary, .progress__bar::after, .cd__num, .hero__scroll span::after,
+  .food-card.is-tried .food-card__icon { animation: none !important; }
+  .btn::after { display: none; }
+  .section__title::after { transition: none; transform: scaleX(1); }
 }
 
 /* ---------------- Countdown ---------------- */

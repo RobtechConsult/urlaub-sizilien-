@@ -50,6 +50,15 @@
   };
   const note = $("#countdownNote");
   const pad = n => String(n).padStart(2, "0");
+  // Setzt den Wert und löst bei Änderung eine kurze "Pop"-Animation aus
+  const setNum = (el, val) => {
+    const str = String(val);
+    if (el.textContent === str) return;
+    el.textContent = str;
+    el.classList.remove("cd--pop");
+    void el.offsetWidth; // Reflow erzwingen, damit die Animation neu startet
+    el.classList.add("cd--pop");
+  };
 
   function tickCountdown() {
     const now = Date.now();
@@ -72,9 +81,9 @@
     const m = Math.floor(diff / 60000); diff -= m * 60000;
     const s = Math.floor(diff / 1000);
     cd.days.textContent = d;
-    cd.hours.textContent = pad(h);
-    cd.mins.textContent = pad(m);
-    cd.secs.textContent = pad(s);
+    setNum(cd.hours, pad(h));
+    setNum(cd.mins, pad(m));
+    setNum(cd.secs, pad(s));
   }
   tickCountdown();
   setInterval(tickCountdown, 1000);
@@ -213,17 +222,21 @@
   }
   $("#packReset").addEventListener("click", () => resetList("malle_pack", "#packGrid", packCl));
 
-  /* ---------------- Erlebnisse (Karten) ---------------- */
-  const expGrid = $("#erlebnisseGrid");
-  if (expGrid && typeof ERLEBNISSE !== "undefined") {
-    expGrid.innerHTML = ERLEBNISSE.map(e => `
+  /* ---------------- Erlebnisse & Ausflüge (Karten) ---------------- */
+  const cardHTML = e => `
       <article class="hl-card">
         <div class="hl-card__top"><span class="hl-card__icon">${e.icon}</span><span class="hl-card__cat">${e.cat}</span></div>
         <h3 class="hl-card__name">${e.name}</h3>
         <p class="hl-card__place">📍 ${e.place}</p>
         <p class="hl-card__text">${e.text}</p>
-      </article>
-    `).join("");
+      </article>`;
+  const expGrid = $("#erlebnisseGrid");
+  if (expGrid && typeof ERLEBNISSE !== "undefined") {
+    expGrid.innerHTML = ERLEBNISSE.map(cardHTML).join("");
+  }
+  const tripGrid = $("#daytripsGrid");
+  if (tripGrid && typeof DAYTRIPS !== "undefined") {
+    tripGrid.innerHTML = DAYTRIPS.map(cardHTML).join("");
   }
 
   /* ---------------- Kulinarische Bucket-List ---------------- */
@@ -264,7 +277,7 @@
   /* ---------------- Sprachkarten (flip) ---------------- */
   const phrasesGrid = $("#phrasesGrid");
   phrasesGrid.innerHTML = PHRASES.map(p => `
-    <button class="phrase" aria-label="${p.de} auf Italienisch">
+    <button class="phrase" aria-label="${p.de} auf Spanisch">
       <span class="phrase__inner">
         <span class="phrase__face phrase__front">
           <span class="phrase__de">${p.de}</span>

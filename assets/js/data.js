@@ -17,8 +17,8 @@ const ITINERARY = [
     title: "Abflug & Anreise",
     tag: "Anreise",
     icon: "🛫",
-    text: "Treffen am Flughafen Köln/Bonn, Abflug 21:50 Uhr mit Ryanair (FR 9967). Landung 00:10 Uhr in Palma, dann mit dem vorgebuchten Transfer (~50 Min) nach Cala d'Or und spät einchecken.",
-    tips: ["Transfer unbedingt vorbuchen – nachts kein Bus", "Nur Handgepäck: 40×30×20 cm", "Ausweis & Boarding-Pass griffbereit"]
+    text: "Niklas & Robin in Bochum einsammeln, dann gemeinsam zum Flughafen Köln/Bonn – Heiko stößt dazu. Noch entspannt am Gate vorglühen 🍺, Abflug 21:50 Uhr (Ryanair FR 9967). Landung 00:10 Uhr in Palma, vorgebuchter Transfer (~50 Min) nach Cala d'Or, spät einchecken.",
+    tips: ["Fahrgemeinschaft: Niklas & Robin in Bochum", "Parken am CGN vorab buchen", "Vorglühen am Gate – aber Flug nicht verpassen 😄"]
   },
   {
     day: "Sa · 17.10.",
@@ -69,6 +69,15 @@ const ERLEBNISSE = [
   { cat: "Genuss", icon: "🌿", name: "Hierbas-Tasting + Tapas", place: "Cala d'Or · zu Fuß", text: "Mallorcas Kräuterlikör in süß/trocken durchprobieren, dazu Tapas – authentisch und günstig." },
   { cat: "Kreativ", icon: "🏺", name: "Töpfern & Trinken", place: "Santanyí/Palma · anfragen", text: "„Sip & Paint“/Keramik-Workshop mit Getränk – eure Random-Idee! In der Region per Transfer; vorher Verfügbarkeit (Okt) anfragen." },
   { cat: "Aktiv", icon: "🛶", name: "Kajak & Schnorcheln", place: "ab Cala d'Or", text: "Sportlich in die Calas paddeln, schnorcheln – und danach das kühle Bier doppelt verdient." },
+];
+
+/* ---------- Weiter weg: Tagesausflüge (Bus & Taxi) ---------- */
+const DAYTRIPS = [
+  { cat: "~60 km · 1 h", icon: "🏛️", name: "Palma de Mallorca", place: "🚌 Bus 515e (Apr–Okt) · 🚕 Taxi ~90 €", text: "Die Hauptstadt: Kathedrale La Seu, Altstadtgassen, Hafen, Tapas & richtig gute Bars. Lohnt einen ganzen Tag." },
+  { cat: "~57–60 km · 1 h", icon: "🍺", name: "Ballermann / Playa de Palma", place: "🚕 Taxi ~90 € je Strecke · 🚌 515e → Palma, dann Linie 23", text: "Megapark & Bierkönig – DER Partystrand. Ehrlich: von Cala d'Or weit weg, am besten als bewusster Tages-/Nachtausflug (oder Taxi teilen & spät zurück)." },
+  { cat: "~25 km · 35 Min", icon: "🕳️", name: "Coves del Drac & Porto Cristo", place: "🚌 Bus 428 · 🚕 Taxi ~35–40 €", text: "Beeindruckende Tropfsteinhöhlen mit unterirdischem See und kleinem Bootskonzert. Danach Hafenstädtchen Porto Cristo." },
+  { cat: "~30–35 km · 40 Min", icon: "🏝️", name: "Es Trenc & Colònia de Sant Jordi", place: "🚕 Taxi ~45–55 € · 🚢 oder Bootstour", text: "Karibik-Feeling: langer, naturbelassener Sandstrand mit türkisem Wasser. Ohne Auto am ehesten per Taxi oder geführter Tour/Boot." },
+  { cat: "~15–18 km · 25 Min", icon: "🍇", name: "Felanitx & Sant Salvador", place: "🚕 Taxi ~25–30 €", text: "Weingut-Verkostung in der Region Felanitx plus das Bergkloster Sant Salvador mit grandiosem Rundumblick." },
 ];
 
 /* ---------- Essen & Trinken – Bucket-List ---------- */

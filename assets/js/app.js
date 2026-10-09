@@ -436,27 +436,114 @@
       .catch(() => { el.innerHTML = fallback; });
   })();
 
-  /* ---------------- Budget & Kostenteiler ---------------- */
+  /* ---------------- Geteilte Kasse (synchron über alle Geräte) ---------------- */
   (function () {
     const form = $("#budgetForm");
     if (!form) return;
-    const KEY = "malle_budget", PERS = 4;
+    const MEMBERS = ["Robert", "Robin", "Pieth", "Heiko"], PERS = MEMBERS.length;
+    const STATE_KEY = "malle_kitty_state", ID_KEY = "malle_kitty_id", PAYER_KEY = "malle_kitty_payer";
+    const API = "https://jsonblob.com/api/jsonBlob";
     const fmt0 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
     const fmt2 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
     const esc = s => String(s).replace(/[<>&"]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
-    function load() {
-      const d = store.get(KEY, null);
-      if (!d || typeof d !== "object") return { total: 2000, items: [] };
+
+    function normalize(d) {
+      if (!d || typeof d !== "object") d = {};
       if (typeof d.total !== "number") d.total = 2000;
       if (!Array.isArray(d.items)) d.items = [];
+      if (typeof d.updatedAt !== "number") d.updatedAt = 0;
+      d.items = d.items.filter(i => i && i.id).map(i => ({ id: i.id, name: String(i.name || ""), amount: +i.amount || 0, payer: MEMBERS.indexOf(i.payer) >= 0 ? i.payer : MEMBERS[0], ts: +i.ts || 0 }));
       return d;
     }
-    let state = load();
-    const save = () => store.set(KEY, state);
+    let state = normalize(store.get(STATE_KEY, null));
+    let potId = null;
+    try {
+      const m = location.hash.match(/kasse=([A-Za-z0-9\-]+)/);
+      potId = (m && m[1]) || store.get(ID_KEY, null);
+    } catch (e) { potId = store.get(ID_KEY, null); }
+    const saveLocal = () => store.set(STATE_KEY, state);
+
+    // --- Remote-Helfer (jsonblob, ohne Account) ---
+    async function remoteGet(id) {
+      const r = await fetch(API + "/" + id, { headers: { "Accept": "application/json" } });
+      if (!r.ok) throw new Error("get " + r.status);
+      return normalize(await r.json());
+    }
+    async function remotePut(id, obj) {
+      const r = await fetch(API + "/" + id, { method: "PUT", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(obj) });
+      if (!r.ok) throw new Error("put " + r.status);
+    }
+    async function remoteCreate(obj) {
+      const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(obj) });
+      if (!r.ok) throw new Error("create " + r.status);
+      let loc = r.headers.get("Location") || r.headers.get("X-jsonblob");
+      if (!loc) throw new Error("no-id");
+      return loc.split("/").pop();
+    }
+
+    function setSync(txt, cls) {
+      const el = $("#kittySync"); if (!el) return;
+      el.textContent = txt || "";
+      el.className = "kitty-sync" + (cls ? " " + cls : "");
+    }
+    function updateBar() {
+      const st = $("#kittyStatus"), start = $("#kittyStart"), share = $("#kittyShare");
+      if (potId) {
+        st.textContent = "● Gemeinsame Kasse aktiv";
+        st.classList.add("is-live");
+        start.hidden = true; share.hidden = false;
+      } else {
+        st.textContent = "● Kasse nur auf diesem Gerät";
+        st.classList.remove("is-live");
+        start.hidden = false; share.hidden = true;
+      }
+    }
+
+    // Wendet eine Mutation lokal an, pusht gemergt aufs Remote (concurrent-sicher)
+    async function mutate(fn) {
+      fn(state); state.updatedAt = Date.now(); saveLocal(); render();
+      if (!potId) return;
+      setSync("synchronisiere …");
+      try {
+        let base = await remoteGet(potId).catch(() => null);
+        if (!base) base = { total: state.total, items: [], updatedAt: 0 };
+        fn(base); base.updatedAt = Date.now();
+        await remotePut(potId, base);
+        state = normalize(base); saveLocal(); render();
+        setSync("✓ synchron", "ok");
+      } catch (e) { setSync("⚠ offline – lokal gesichert", "warn"); }
+    }
+    async function pull() {
+      if (!potId) return;
+      try {
+        const remote = await remoteGet(potId);
+        if (remote.updatedAt >= state.updatedAt) { state = remote; saveLocal(); render(); }
+        setSync("✓ synchron", "ok");
+      } catch (e) { setSync("⚠ offline", "warn"); }
+    }
+
+    function settle() {
+      const paid = {}; MEMBERS.forEach(m => paid[m] = 0);
+      state.items.forEach(i => { paid[i.payer] = (paid[i.payer] || 0) + i.amount; });
+      const spent = state.items.reduce((s, i) => s + i.amount, 0);
+      const share = spent / PERS;
+      const bal = MEMBERS.map(m => ({ m, paid: paid[m], bal: paid[m] - share }));
+      // Transfer-Vorschläge (greedy)
+      const deb = bal.filter(b => b.bal < -0.01).map(b => ({ m: b.m, v: -b.bal })).sort((a, b) => b.v - a.v);
+      const cre = bal.filter(b => b.bal > 0.01).map(b => ({ m: b.m, v: b.bal })).sort((a, b) => b.v - a.v);
+      const tx = []; let di = 0, ci = 0;
+      while (di < deb.length && ci < cre.length) {
+        const amt = Math.min(deb[di].v, cre[ci].v);
+        tx.push({ from: deb[di].m, to: cre[ci].m, amt });
+        deb[di].v -= amt; cre[ci].v -= amt;
+        if (deb[di].v < 0.01) di++; if (cre[ci].v < 0.01) ci++;
+      }
+      return { bal, share, spent, tx };
+    }
+
     function render() {
-      const spent = state.items.reduce((s, i) => s + (+i.amount || 0), 0);
-      const left = state.total - spent;
-      const over = left < 0;
+      const spent = state.items.reduce((s, i) => s + i.amount, 0);
+      const left = state.total - spent, over = left < 0;
       $("#bTotal").textContent = fmt0(state.total);
       $("#bPerPerson").textContent = fmt0(state.total / PERS) + " / Mann";
       $("#bSpent").textContent = fmt0(spent);
@@ -469,33 +556,82 @@
       bar.style.width = Math.min(100, pct) + "%";
       bar.classList.toggle("is-over", over);
       $("#bBarLabel").textContent = over ? `${pct} % – ${fmt0(-left)} über Budget!` : `${pct} % ausgegeben`;
+
       const list = $("#budgetList");
       list.innerHTML = state.items.length
-        ? state.items.map(i => `<li class="bitem"><span class="bitem__name">${esc(i.name)}</span><span class="bitem__amt">${fmt2(+i.amount)}</span><button class="bitem__del" data-id="${i.id}" aria-label="Löschen">×</button></li>`).join("")
+        ? state.items.map(i => `<li class="bitem"><span class="bitem__payer">${esc(i.payer)}</span><span class="bitem__name">${esc(i.name)}</span><span class="bitem__amt">${fmt2(i.amount)}</span><button class="bitem__del" data-id="${i.id}" aria-label="Löschen">×</button></li>`).join("")
         : '<li class="bitem bitem--empty">Noch keine Ausgaben eingetragen.</li>';
+
+      const s = settle(), se = $("#settle");
+      if (!state.items.length) {
+        se.innerHTML = '<p class="settle__hint">Sobald Ausgaben da sind, seht ihr hier, wer wem was schuldet.</p>';
+      } else {
+        const rows = s.bal.map(b => {
+          const cls = b.bal > 0.01 ? "pos" : (b.bal < -0.01 ? "neg" : "");
+          const note = b.bal > 0.01 ? "bekommt " + fmt2(b.bal) : (b.bal < -0.01 ? "schuldet " + fmt2(-b.bal) : "ausgeglichen");
+          return `<div class="settle__row"><span class="settle__name">${b.m}</span><span class="settle__paid">bezahlt ${fmt2(b.paid)}</span><span class="settle__bal ${cls}">${note}</span></div>`;
+        }).join("");
+        const tx = s.tx.length
+          ? '<div class="settle__tx"><b>Ausgleich:</b><ul>' + s.tx.map(t => `<li>${t.from} → <b>${t.to}</b>: ${fmt2(t.amt)}</li>`).join("") + "</ul></div>"
+          : '<div class="settle__tx">Alles ausgeglichen 🎉</div>';
+        se.innerHTML = `<p class="settle__hint">Fairer Anteil pro Mann: <b>${fmt2(s.share)}</b> (von ${fmt2(s.spent)} gesamt)</p>${rows}${tx}`;
+      }
       const edit = $("#bEditTotal");
-      if (edit !== document.activeElement) edit.value = state.total;
+      if (edit && edit !== document.activeElement) edit.value = state.total;
     }
+
+    // --- Events ---
+    try { const lp = store.get(PAYER_KEY, null); if (lp && MEMBERS.indexOf(lp) >= 0) $("#bPayer").value = lp; } catch (e) {}
     form.addEventListener("submit", e => {
       e.preventDefault();
       const name = $("#bName").value.trim();
       const amt = parseFloat($("#bAmount").value);
+      const payer = $("#bPayer").value;
       if (!name || isNaN(amt) || amt < 0) return;
-      state.items.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, amount: amt });
-      save(); render(); form.reset(); $("#bName").focus();
+      const item = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, amount: amt, payer, ts: Date.now() };
+      store.set(PAYER_KEY, payer);
+      mutate(s => s.items.push(item));
+      form.reset(); $("#bPayer").value = payer; $("#bName").focus();
     });
     $("#budgetList").addEventListener("click", e => {
-      const b = e.target.closest(".bitem__del");
-      if (!b) return;
-      state.items = state.items.filter(i => i.id !== b.dataset.id);
-      save(); render();
+      const b = e.target.closest(".bitem__del"); if (!b) return;
+      const id = b.dataset.id;
+      mutate(s => { s.items = s.items.filter(i => i.id !== id); });
     });
     $("#bEditTotal").addEventListener("change", e => {
       const v = parseFloat(e.target.value);
-      if (!isNaN(v) && v >= 0) { state.total = v; save(); render(); }
+      if (!isNaN(v) && v >= 0) mutate(s => { s.total = v; });
     });
-    $("#bReset").addEventListener("click", () => { state.items = []; save(); render(); });
-    render();
+    $("#bReset").addEventListener("click", () => mutate(s => { s.items = []; }));
+
+    $("#kittyStart").addEventListener("click", async () => {
+      setSync("Kasse wird erstellt …");
+      try {
+        state.updatedAt = Date.now();
+        const id = await remoteCreate(state);
+        potId = id; store.set(ID_KEY, id);
+        try { history.replaceState(null, "", "#kasse=" + id); } catch (e) {}
+        updateBar(); setSync("✓ Kasse aktiv – jetzt Link teilen!", "ok");
+        startPolling();
+      } catch (e) { setSync("⚠ Konnte Kasse nicht erstellen (online nötig)", "warn"); }
+    });
+    $("#kittyShare").addEventListener("click", async () => {
+      const link = location.origin + location.pathname + "#kasse=" + potId;
+      try { await navigator.clipboard.writeText(link); setSync("🔗 Link kopiert – in die Gruppe posten!", "ok"); }
+      catch (e) { setSync(link, "ok"); }
+    });
+
+    let polling = false;
+    function startPolling() {
+      if (polling) return; polling = true;
+      setInterval(pull, 12000);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) pull(); });
+      window.addEventListener("focus", pull);
+    }
+
+    // --- Init ---
+    render(); updateBar();
+    if (potId) { store.set(ID_KEY, potId); pull(); startPolling(); }
   })();
 
   /* ---------------- Service Worker (offline) ---------------- */

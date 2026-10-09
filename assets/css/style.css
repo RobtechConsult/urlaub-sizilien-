@@ -1,5 +1,5 @@
 /* =========================================================================
-   Sizilien 2026 – Styles
+   Malle 2026 (Cala d'Or) – Styles
    Mediterrane Farbwelt: Meerblau, Terrakotta, Zitrone, Lava, Creme
    ========================================================================= */
 
@@ -91,19 +91,16 @@ body::before {
   box-shadow: var(--shadow-sm);
   padding-top: .6rem; padding-bottom: .6rem;
 }
-.nav__brand { display: flex; align-items: center; gap: .5rem; font-family: var(--font-display); font-size: 1.3rem; color: var(--sea-deep); white-space: nowrap; flex-shrink: 0; }
+.nav__brand { display: flex; align-items: center; gap: .5rem; font-family: var(--font-display); font-size: 1.3rem; color: var(--sea-deep); }
 .nav__brand-icon { font-size: 1.5rem; }
 .nav.is-scrolled .nav__brand { color: var(--sea-deep); }
 .nav:not(.is-scrolled) .nav__brand { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.35); }
 .nav__brand b { font-weight: 700; }
 
-.nav__links { display: flex; gap: .15rem; align-items: center; }
+.nav__links { display: flex; gap: .3rem; align-items: center; }
 .nav__links a {
-  padding: .5rem .7rem; border-radius: 100px; font-size: .9rem; font-weight: 600;
-  color: var(--ink); transition: background .2s, color .2s; white-space: nowrap;
-}
-@media (max-width: 1180px) and (min-width: 1025px) {
-  .nav__links a { padding: .5rem .45rem; font-size: .82rem; }
+  padding: .5rem .85rem; border-radius: 100px; font-size: .92rem; font-weight: 600;
+  color: var(--ink); transition: background .2s, color .2s;
 }
 .nav:not(.is-scrolled) .nav__links a { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
 .nav__links a:hover { background: var(--sun); color: #fff; text-shadow: none; }
@@ -115,7 +112,7 @@ body::before {
 .nav__toggle.is-open span:nth-child(2) { opacity: 0; }
 .nav__toggle.is-open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-@media (max-width: 1024px) {
+@media (max-width: 860px) {
   .nav__toggle { display: flex; }
   .nav__links {
     position: fixed; inset: 0 0 0 auto; width: min(78vw, 320px);
@@ -253,73 +250,6 @@ body::before {
 }
 .overview__contact a { font-weight: 600; }
 
-/* ---------------- Anreise / Routen-Karte ---------------- */
-.route { background: linear-gradient(180deg, var(--cream-2) 0%, var(--cream) 100%); }
-.route-map {
-  background: #eaf3f6; border-radius: var(--radius-lg); padding: clamp(1rem, 3vw, 1.8rem);
-  box-shadow: var(--shadow-sm); border: 1px solid rgba(6,58,77,.08); overflow: hidden;
-}
-.route-map__svg { width: 100%; height: auto; display: block; overflow: visible; }
-.route-map__sea { fill: rgba(26,134,163,.18); }
-.route-map__path {
-  fill: none; stroke: var(--terra); stroke-width: 4; stroke-linecap: round;
-  stroke-dasharray: 2 14;
-}
-.route-map__pin { fill: var(--sun); stroke: #fff; stroke-width: 2.5; }
-.route-map__pin--end { fill: var(--olive); }
-.route-map__label {
-  font: 700 15px/1 var(--font-body); fill: var(--sea-deep);
-}
-.route-map__label--ferry { font: 600 12px/1 var(--font-body); fill: var(--sea); }
-.route-map__car { filter: drop-shadow(0 3px 5px rgba(6,58,77,.4)); }
-.route-stats { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.6rem 0 1.4rem; }
-.route-stat {
-  background: #fff; border-radius: var(--radius); padding: .9rem 1.5rem; min-width: 140px;
-  text-align: center; box-shadow: var(--shadow-sm); border: 1px solid rgba(6,58,77,.06);
-}
-.route-stat__num { display: block; font-family: var(--font-display); font-weight: 700; color: var(--sea-deep); font-size: 1.4rem; }
-.route-stat__label { display: block; font-size: .8rem; color: var(--muted); margin-top: .2rem; }
-
-/* ---------------- Mit Baby unterwegs ---------------- */
-.baby { background: linear-gradient(180deg, #fdf1f4 0%, var(--cream) 100%); }
-.baby .eyebrow { color: #c25a78; }
-.baby-alert {
-  background: #fff; border: 2px solid #d4708c; border-radius: var(--radius-lg);
-  padding: clamp(1.2rem, 3vw, 1.9rem); margin-bottom: 2rem; box-shadow: var(--shadow-sm);
-}
-.baby-alert h3 { font-family: var(--font-display); color: #a83f5f; font-size: 1.3rem; margin-bottom: .9rem; }
-.baby-alert ol { padding-left: 1.3rem; display: flex; flex-direction: column; gap: .7rem; }
-.baby-alert li { color: var(--ink); font-size: .98rem; padding-left: .2rem; }
-.baby-alert li::marker { color: #d4708c; font-weight: 700; }
-
-.baby-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.4rem; }
-.baby-card {
-  background: #fff; border-radius: var(--radius-lg); padding: 1.7rem;
-  box-shadow: var(--shadow-sm); border: 1px solid rgba(6,58,77,.06);
-  transition: transform .25s, box-shadow .25s;
-}
-.baby-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-.baby-card__title {
-  font-family: var(--font-display); color: var(--sea-deep); font-size: 1.22rem;
-  margin-bottom: .9rem; display: flex; align-items: center; gap: .6rem;
-}
-.baby-card__icon { font-size: 1.6rem; }
-.baby-card__list { list-style: none; display: flex; flex-direction: column; gap: .65rem; }
-.baby-card__list li { padding-left: 1.4rem; position: relative; color: var(--ink); font-size: .95rem; }
-.baby-card__list li::before { content: "•"; position: absolute; left: .35rem; color: #d4708c; font-weight: 700; }
-
-.fact__warn {
-  margin-top: .7rem; font-size: .85rem !important; color: #a83f5f !important;
-  background: #fdf1f4; border-radius: 10px; padding: .55rem .8rem; font-weight: 600;
-}
-.route-stat--baby { border-color: #d4708c; }
-.route-stat--baby .route-stat__num { color: #a83f5f; }
-.emergency__note {
-  margin-top: 1.6rem; font-size: .95rem; max-width: 720px; margin-inline: auto;
-  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
-  border-radius: var(--radius); padding: 1rem 1.3rem; text-align: left;
-}
-
 /* ---------------- Reiseplan ---------------- */
 .plan { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%); }
 .plan__timeline { display: flex; flex-direction: column; gap: .9rem; }
@@ -346,13 +276,7 @@ body::before {
 .plan-day__chevron { font-size: 1.4rem; color: var(--muted); transition: transform .3s; flex-shrink: 0; }
 .plan-day.is-open .plan-day__chevron { transform: rotate(180deg); }
 .plan-day__body { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
-.plan-day.is-open .plan-day__body { max-height: 700px; }
-.plan-day__baby {
-  display: flex; gap: .6rem; align-items: flex-start; margin-top: .9rem;
-  background: #fdf1f4; border-left: 4px solid #d4708c; border-radius: 0 12px 12px 0;
-  padding: .75rem 1rem; font-size: .93rem; color: var(--ink);
-}
-.plan-day__baby > span:first-child { font-size: 1.1rem; line-height: 1.4; }
+.plan-day.is-open .plan-day__body { max-height: 340px; }
 .plan-day__body-inner { padding: 0 1.3rem 1.4rem 5.3rem; }
 .plan-day__body-inner p { color: var(--ink); margin-bottom: .9rem; }
 .plan-day__tips { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -419,43 +343,6 @@ body::before {
 }
 .food-card.is-tried { border-color: var(--olive); background: #f4f8f1; }
 .food-card.is-tried .food-card__stamp { opacity: 1; }
-
-/* ---------------- Einkaufshilfe: Sonnen- & Mückenschutz ---------------- */
-.suncare {
-  background: #fff; border-radius: var(--radius-lg); border: 1px solid rgba(6,58,77,.08);
-  box-shadow: var(--shadow-sm); padding: clamp(1.2rem, 3vw, 2rem); margin-bottom: 2.4rem;
-}
-.suncare__head { font-family: var(--font-display); color: var(--sea-deep); font-size: 1.4rem; margin-bottom: .4rem; }
-.suncare__lead { color: var(--muted); font-size: .98rem; margin-bottom: 1.5rem; max-width: 640px; }
-.suncare__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.2rem; }
-.sc-card { border-radius: var(--radius); padding: 1.4rem; border: 1px solid rgba(6,58,77,.08); }
-.sc-card--baby { background: #fdf1f4; border-color: #eabcca; }
-.sc-card--adult { background: #eef6f8; border-color: #b9d8e1; }
-.sc-card__who {
-  font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: .15rem;
-}
-.sc-card--baby .sc-card__who { color: #a83f5f; }
-.sc-card--adult .sc-card__who { color: var(--sea); }
-.sc-card__title { font-family: var(--font-display); font-size: 1.25rem; color: var(--sea-deep); margin-bottom: .8rem; }
-.sc-card__list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
-.sc-card__list li { padding-left: 1.3rem; position: relative; font-size: .93rem; color: var(--ink); }
-.sc-card__list li::before { content: "•"; position: absolute; left: .3rem; font-weight: 700; }
-.sc-card--baby .sc-card__list li::before { color: #d4708c; }
-.sc-card--adult .sc-card__list li::before { color: var(--sea-light); }
-
-.ingredients { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-top: 1.2rem; }
-.ing { border-radius: var(--radius); padding: 1.3rem; border: 2px solid; }
-.ing h4 { font-size: 1rem; margin-bottom: .7rem; font-weight: 700; }
-.ing ul { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
-.ing li { font-size: .9rem; padding-left: 1.1rem; position: relative; }
-.ing li::before { position: absolute; left: 0; font-weight: 700; }
-.ing--good { background: #f2f8ef; border-color: #a8c79c; }
-.ing--good h4 { color: #46703a; }
-.ing--good li::before { content: "✓"; color: #5b8a4b; }
-.ing--avoid { background: #fdf2ef; border-color: #e5a893; }
-.ing--avoid h4 { color: #a3411f; }
-.ing--avoid li::before { content: "×"; color: var(--terra); }
 
 /* ---------------- Checklisten ---------------- */
 .checklist__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.6rem; }

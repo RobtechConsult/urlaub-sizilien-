@@ -16,5 +16,5 @@
 - **Bei jeder Änderung an CSS/JS die Versionsnummer hochzählen**, sonst sehen
   Nutzer wegen des Service Workers die alte Version:
   - `?v=N` in den `<link>`/`<script>`-Tags in `index.html`
-  - `CACHE = "sizilien-2026-vN"` und die `ASSETS`-Liste in `sw.js`
+  - `CACHE = "malle-2026-vN"` und die `ASSETS`-Liste in `sw.js`
 - Alle Texte sind auf Deutsch.

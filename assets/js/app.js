@@ -1,5 +1,5 @@
 /* =========================================================================
-   Sizilien 2026 – Interaktivität
+   Malle 2026 (Cala d'Or) – Interaktivität
    ========================================================================= */
 (function () {
   "use strict";
@@ -98,7 +98,6 @@
           <ul class="plan-day__tips">
             ${d.tips.map(t => `<li>${t}</li>`).join("")}
           </ul>
-          ${d.baby ? `<p class="plan-day__baby"><span aria-hidden="true">👶</span> <span>${d.baby}</span></p>` : ""}
         </div>
       </div>
     </article>
@@ -283,74 +282,13 @@
     if (card) card.classList.toggle("is-flipped");
   });
 
-  /* ---------------- Einkaufshilfe: Sonnen- & Mückenschutz ---------------- */
-  const suncareGrid = $("#suncareGrid");
-  if (suncareGrid && typeof SUNCARE !== "undefined") {
-    suncareGrid.innerHTML = SUNCARE.map(s => `
-      <article class="sc-card sc-card--${s.tone}">
-        <p class="sc-card__who">${s.who}</p>
-        <h4 class="sc-card__title">${s.title}</h4>
-        <ul class="sc-card__list">
-          ${s.items.map(i => `<li>${i}</li>`).join("")}
-        </ul>
-      </article>
-    `).join("");
-  }
-  if (typeof INGREDIENTS !== "undefined") {
-    const fill = (sel, arr) => { const el = $(sel); if (el) el.innerHTML = arr.map(i => `<li>${i}</li>`).join(""); };
-    fill("#ingGood", INGREDIENTS.good);
-    fill("#ingAvoid", INGREDIENTS.avoid);
-  }
-
-  /* ---------------- Mit Baby unterwegs ---------------- */
-  const babyGrid = $("#babyGrid");
-  if (babyGrid && typeof BABY !== "undefined") {
-    babyGrid.innerHTML = BABY.map(b => `
-      <article class="baby-card">
-        <h3 class="baby-card__title"><span class="baby-card__icon" aria-hidden="true">${b.icon}</span>${b.title}</h3>
-        <ul class="baby-card__list">
-          ${b.items.map(i => `<li>${i}</li>`).join("")}
-        </ul>
-      </article>
-    `).join("");
-  }
-
-  /* ---------------- Anreise: Auto-Animation entlang der Route ---------------- */
-  const routeSection = $("#anreise");
-  const carAnim = document.getElementById("carAnim");
-  const routeReplay = $("#routeReplay");
-  const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  function playCarAnim() {
-    if (!carAnim || typeof carAnim.beginElement !== "function") return;
-    try { carAnim.beginElement(); } catch (e) {}
-  }
-
-  if (routeSection && carAnim && !reducedMotion && "IntersectionObserver" in window) {
-    const routeIO = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) {
-          playCarAnim();
-          routeIO.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.35 });
-    routeIO.observe(routeSection);
-  }
-  if (routeReplay) {
-    routeReplay.addEventListener("click", playCarAnim);
-  }
-
   /* ---------------- Scroll-Reveal ---------------- */
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(en => {
         if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
       });
-    // threshold 0 + negativer rootMargin: loest aus, sobald das Element ~80px
-    // ins Bild ragt. Ein prozentualer Threshold wuerde bei Sektionen, die
-    // hoeher als der Viewport sind, nie erreicht -> Inhalt bliebe unsichtbar.
-    }, { threshold: 0, rootMargin: "0px 0px -80px 0px" });
+    }, { threshold: 0.12 });
     $$(".section, .fact, .hl-card, .plan-day").forEach(el => {
       el.classList.add("reveal");
       io.observe(el);

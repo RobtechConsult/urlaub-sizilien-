@@ -507,7 +507,6 @@
     if (!form) return;
     const MEMBERS = ["Robert", "Robin", "Pieth", "Heiko"], PERS = MEMBERS.length;
     const STATE_KEY = "malle_kitty_state", ID_KEY = "malle_kitty_id", PAYER_KEY = "malle_kitty_payer";
-    const API = "https://jsonblob.com/api/jsonBlob";
     const fmt0 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
     const fmt2 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
     const esc = s => String(s).replace(/[<>&"]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
@@ -523,27 +522,74 @@
     let state = normalize(store.get(STATE_KEY, null));
     let potId = null;
     try {
-      const m = location.hash.match(/kasse=([A-Za-z0-9\-]+)/);
+      const m = location.hash.match(/kasse=([A-Za-z0-9:_\-]+)/);
       potId = (m && m[1]) || store.get(ID_KEY, null);
     } catch (e) { potId = store.get(ID_KEY, null); }
     const saveLocal = () => store.set(STATE_KEY, state);
 
-    // --- Remote-Helfer (jsonblob, ohne Account) ---
-    async function remoteGet(id) {
-      const r = await fetch(API + "/" + id, { headers: { "Accept": "application/json" } });
-      if (!r.ok) throw new Error("get " + r.status);
-      return normalize(await r.json());
+    // --- Remote-Helfer: mehrere anmeldefreie JSON-Speicher, Pot-ID = "<anbieter>:<id>" ---
+    const J = { "Content-Type": "application/json", "Accept": "application/json" };
+    const ok = (r, what) => { if (!r.ok) throw new Error(what + " " + r.status); return r; };
+    const PROVIDERS = {
+      // extendsclass JSON Storage – ID kommt im Antwort-Body
+      e: {
+        base: "https://json.extendsclass.com/bin",
+        async create(obj) {
+          const r = ok(await fetch(this.base, { method: "POST", headers: J, body: JSON.stringify(obj) }), "create");
+          const j = await r.json().catch(() => ({}));
+          const id = j.id || (j.uri ? String(j.uri).split("/").pop() : "");
+          if (!id) throw new Error("no-id");
+          return id;
+        },
+        async get(id) { return (await ok(await fetch(this.base + "/" + id, { headers: { "Accept": "application/json" } }), "get")).json(); },
+        async put(id, obj) { ok(await fetch(this.base + "/" + id, { method: "PUT", headers: J, body: JSON.stringify(obj) }), "put"); }
+      },
+      // kvdb.io – Bucket-ID kommt als Text im Body
+      k: {
+        base: "https://kvdb.io",
+        async create(obj) {
+          const r = ok(await fetch(this.base + "/", { method: "POST" }), "create");
+          const id = (await r.text()).trim();
+          if (!/^[A-Za-z0-9]+$/.test(id)) throw new Error("no-id");
+          await this.put(id, obj);
+          return id;
+        },
+        async get(id) { return JSON.parse(await (await ok(await fetch(this.base + "/" + id + "/kasse"), "get")).text()); },
+        async put(id, obj) { ok(await fetch(this.base + "/" + id + "/kasse", { method: "PUT", body: JSON.stringify(obj) }), "put"); }
+      },
+      // jsonblob – ID nur im Location-Header (klappt nicht in jedem Browser)
+      j: {
+        base: "https://jsonblob.com/api/jsonBlob",
+        async create(obj) {
+          const r = ok(await fetch(this.base, { method: "POST", headers: J, body: JSON.stringify(obj) }), "create");
+          const loc = r.headers.get("Location") || r.headers.get("X-jsonblob");
+          if (!loc) throw new Error("no-id");
+          return loc.split("/").pop();
+        },
+        async get(id) { return (await ok(await fetch(this.base + "/" + id, { headers: { "Accept": "application/json" } }), "get")).json(); },
+        async put(id, obj) { ok(await fetch(this.base + "/" + id, { method: "PUT", headers: J, body: JSON.stringify(obj) }), "put"); }
+      }
+    };
+    function parsePot(pot) {
+      const i = String(pot).indexOf(":");
+      return i > 0 ? { p: PROVIDERS[pot.slice(0, i)], id: pot.slice(i + 1) } : { p: PROVIDERS.j, id: pot }; // alte IDs = jsonblob
     }
-    async function remotePut(id, obj) {
-      const r = await fetch(API + "/" + id, { method: "PUT", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(obj) });
-      if (!r.ok) throw new Error("put " + r.status);
-    }
+    async function remoteGet(pot) { const { p, id } = parsePot(pot); if (!p) throw new Error("provider"); return normalize(await p.get(id)); }
+    async function remotePut(pot, obj) { const { p, id } = parsePot(pot); if (!p) throw new Error("provider"); await p.put(id, obj); }
+    // Probiert die Anbieter nacheinander und testet Schreiben + Lesen, bevor er einen nimmt
     async function remoteCreate(obj) {
-      const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(obj) });
-      if (!r.ok) throw new Error("create " + r.status);
-      let loc = r.headers.get("Location") || r.headers.get("X-jsonblob");
-      if (!loc) throw new Error("no-id");
-      return loc.split("/").pop();
+      const errs = [];
+      for (const key of ["e", "k", "j"]) {
+        try {
+          const id = await PROVIDERS[key].create(obj);
+          const pot = key + ":" + id;
+          await remotePut(pot, obj);
+          const back = await remoteGet(pot);
+          if (!back || !Array.isArray(back.items)) throw new Error("readback");
+          return pot;
+        } catch (e) { errs.push(key + ":" + (e && e.message ? e.message : "fehler")); }
+      }
+      throw new Error(errs.join(", "));
     }
 
     function setSync(txt, cls) {
@@ -678,7 +724,7 @@
         try { history.replaceState(null, "", "#kasse=" + id); } catch (e) {}
         updateBar(); setSync("✓ Kasse aktiv – jetzt Link teilen!", "ok");
         startPolling();
-      } catch (e) { setSync("⚠ Konnte Kasse nicht erstellen (online nötig)", "warn"); }
+      } catch (e) { setSync("⚠ Konnte Kasse nicht erstellen – Details: " + (e && e.message ? e.message : "unbekannt"), "warn"); }
     });
     $("#kittyShare").addEventListener("click", async () => {
       const link = location.origin + location.pathname + "#kasse=" + potId;

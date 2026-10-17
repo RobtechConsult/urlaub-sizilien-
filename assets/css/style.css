@@ -710,3 +710,7 @@ body::before {
 .doc__note { color: var(--muted) !important; font-size: .82rem !important; margin-top: .5rem; }
 .copy { background: var(--cream-2); border: 1px solid var(--hair); color: var(--sea-deep); font-weight: 700; font-family: inherit; font-size: .88rem; padding: .22em .6em; border-radius: 8px; cursor: pointer; transition: background .15s, color .15s; }
 .copy:hover { background: var(--sun); color: #fff; border-color: var(--sun); }
+
+/* hidden-Attribut muss auch bei .btn (display:inline-flex) greifen */
+[hidden] { display: none !important; }
+.kitty-sync { word-break: break-word; }

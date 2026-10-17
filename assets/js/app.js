@@ -506,7 +506,7 @@
     const form = $("#budgetForm");
     if (!form) return;
     const MEMBERS = ["Robert", "Robin", "Pieth", "Heiko"], PERS = MEMBERS.length;
-    const STATE_KEY = "malle_kitty_state", ID_KEY = "malle_kitty_id", PAYER_KEY = "malle_kitty_payer";
+    const STATE_KEY = "malle_kitty_state", PAYER_KEY = "malle_kitty_payer";
     const fmt0 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
     const fmt2 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
     const esc = s => String(s).replace(/[<>&"]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
@@ -520,76 +520,42 @@
       return d;
     }
     let state = normalize(store.get(STATE_KEY, null));
-    let potId = null;
-    try {
-      const m = location.hash.match(/kasse=([A-Za-z0-9:_\-]+)/);
-      potId = (m && m[1]) || store.get(ID_KEY, null);
-    } catch (e) { potId = store.get(ID_KEY, null); }
     const saveLocal = () => store.set(STATE_KEY, state);
+    const DIRTY_KEY = "malle_kitty_dirty";
+    let dirty = !!store.get(DIRTY_KEY, false);
+    const setDirty = v => { dirty = v; store.set(DIRTY_KEY, v); };
+    const clone = o => JSON.parse(JSON.stringify(o));
 
-    // --- Remote-Helfer: mehrere anmeldefreie JSON-Speicher, Pot-ID = "<anbieter>:<id>" ---
-    const J = { "Content-Type": "application/json", "Accept": "application/json" };
-    const ok = (r, what) => { if (!r.ok) throw new Error(what + " " + r.status); return r; };
-    const PROVIDERS = {
-      // extendsclass JSON Storage – ID kommt im Antwort-Body
-      e: {
-        base: "https://json.extendsclass.com/bin",
-        async create(obj) {
-          const r = ok(await fetch(this.base, { method: "POST", headers: J, body: JSON.stringify(obj) }), "create");
-          const j = await r.json().catch(() => ({}));
-          const id = j.id || (j.uri ? String(j.uri).split("/").pop() : "");
-          if (!id) throw new Error("no-id");
-          return id;
-        },
-        async get(id) { return (await ok(await fetch(this.base + "/" + id, { headers: { "Accept": "application/json" } }), "get")).json(); },
-        async put(id, obj) { ok(await fetch(this.base + "/" + id, { method: "PUT", headers: J, body: JSON.stringify(obj) }), "put"); }
-      },
-      // kvdb.io – Bucket-ID kommt als Text im Body
-      k: {
-        base: "https://kvdb.io",
-        async create(obj) {
-          const r = ok(await fetch(this.base + "/", { method: "POST" }), "create");
-          const id = (await r.text()).trim();
-          if (!/^[A-Za-z0-9]+$/.test(id)) throw new Error("no-id");
-          await this.put(id, obj);
-          return id;
-        },
-        async get(id) { return JSON.parse(await (await ok(await fetch(this.base + "/" + id + "/kasse"), "get")).text()); },
-        async put(id, obj) { ok(await fetch(this.base + "/" + id + "/kasse", { method: "PUT", body: JSON.stringify(obj) }), "put"); }
-      },
-      // jsonblob – ID nur im Location-Header (klappt nicht in jedem Browser)
-      j: {
-        base: "https://jsonblob.com/api/jsonBlob",
-        async create(obj) {
-          const r = ok(await fetch(this.base, { method: "POST", headers: J, body: JSON.stringify(obj) }), "create");
-          const loc = r.headers.get("Location") || r.headers.get("X-jsonblob");
-          if (!loc) throw new Error("no-id");
-          return loc.split("/").pop();
-        },
-        async get(id) { return (await ok(await fetch(this.base + "/" + id, { headers: { "Accept": "application/json" } }), "get")).json(); },
-        async put(id, obj) { ok(await fetch(this.base + "/" + id, { method: "PUT", headers: J, body: JSON.stringify(obj) }), "put"); }
-      }
-    };
-    function parsePot(pot) {
-      const i = String(pot).indexOf(":");
-      return i > 0 ? { p: PROVIDERS[pot.slice(0, i)], id: pot.slice(i + 1) } : { p: PROVIDERS.j, id: pot }; // alte IDs = jsonblob
+    // --- Fester gemeinsamer Speicher über ntfy.sh (kein Account, keine Einrichtung) ---
+    // Jede Änderung wird als kompakter Snapshot gepostet, gelesen wird der neueste.
+    // ntfy.sh hält Nachrichten ca. 12 h vor -> Keepalive postet den Stand regelmäßig neu.
+    const NTFY = "https://ntfy.sh/malle2026-caladorkasse-rrph7k3q9x";
+    const pack = st => JSON.stringify({ v: 1, t: st.total, u: st.updatedAt, i: st.items.map(x => [x.id, x.name, Math.round(x.amount * 100) / 100, MEMBERS.indexOf(x.payer), x.ts]) });
+    function unpack(s) {
+      const o = JSON.parse(s);
+      if (!o || o.v !== 1) return null;
+      return normalize({ total: o.t, updatedAt: o.u, items: (o.i || []).map(a => ({ id: a[0], name: a[1], amount: a[2], payer: MEMBERS[a[3]] || MEMBERS[0], ts: a[4] })) });
     }
-    async function remoteGet(pot) { const { p, id } = parsePot(pot); if (!p) throw new Error("provider"); return normalize(await p.get(id)); }
-    async function remotePut(pot, obj) { const { p, id } = parsePot(pot); if (!p) throw new Error("provider"); await p.put(id, obj); }
-    // Probiert die Anbieter nacheinander und testet Schreiben + Lesen, bevor er einen nimmt
-    async function remoteCreate(obj) {
-      const errs = [];
-      for (const key of ["e", "k", "j"]) {
+    // Neuester Snapshot oder null (leer/abgelaufen); wirft bei Netzwerkfehler
+    async function remoteGet() {
+      const r = await fetch(NTFY + "/json?poll=1&since=all");
+      if (!r.ok) throw new Error("get " + r.status);
+      let latest = null, latestTime = 0;
+      (await r.text()).split("\n").forEach(line => {
+        if (!line.trim()) return;
         try {
-          const id = await PROVIDERS[key].create(obj);
-          const pot = key + ":" + id;
-          await remotePut(pot, obj);
-          const back = await remoteGet(pot);
-          if (!back || !Array.isArray(back.items)) throw new Error("readback");
-          return pot;
-        } catch (e) { errs.push(key + ":" + (e && e.message ? e.message : "fehler")); }
-      }
-      throw new Error(errs.join(", "));
+          const m = JSON.parse(line);
+          if (m.event !== "message" || !m.message) return;
+          const st = unpack(m.message);
+          if (st && (!latest || st.updatedAt >= latest.updatedAt)) { latest = st; latestTime = m.time || 0; }
+        } catch (e) {}
+      });
+      return latest ? { st: latest, time: latestTime } : null;
+    }
+    async function remotePut(st) {
+      // Body als Text -> "einfacher" Request ohne CORS-Preflight
+      const r = await fetch(NTFY, { method: "POST", body: pack(st) });
+      if (!r.ok) throw new Error("put " + r.status);
     }
 
     function setSync(txt, cls) {
@@ -598,39 +564,48 @@
       el.className = "kitty-sync" + (cls ? " " + cls : "");
     }
     function updateBar() {
-      const st = $("#kittyStatus"), start = $("#kittyStart"), share = $("#kittyShare");
-      if (potId) {
-        st.textContent = "● Gemeinsame Kasse aktiv";
-        st.classList.add("is-live");
-        start.hidden = true; share.hidden = false;
-      } else {
-        st.textContent = "● Kasse nur auf diesem Gerät";
-        st.classList.remove("is-live");
-        start.hidden = false; share.hidden = true;
-      }
+      const st = $("#kittyStatus");
+      st.textContent = "● Gemeinsame Kasse für alle 4";
+      st.classList.add("is-live");
     }
 
-    // Wendet eine Mutation lokal an, pusht gemergt aufs Remote (concurrent-sicher)
+    // Änderung lokal anwenden, dann auf den neuesten Server-Stand anwenden und posten
     async function mutate(fn) {
       fn(state); state.updatedAt = Date.now(); saveLocal(); render();
-      if (!potId) return;
       setSync("synchronisiere …");
       try {
-        let base = await remoteGet(potId).catch(() => null);
-        if (!base) base = { total: state.total, items: [], updatedAt: 0 };
-        fn(base); base.updatedAt = Date.now();
-        await remotePut(potId, base);
+        const remote = await remoteGet();
+        let base;
+        if (remote) { base = remote.st; fn(base); } else { base = clone(state); }
+        base.updatedAt = Date.now();
+        await remotePut(base);
         state = normalize(base); saveLocal(); render();
+        setDirty(false);
         setSync("✓ synchron", "ok");
-      } catch (e) { setSync("⚠ offline – lokal gesichert", "warn"); }
+      } catch (e) { setDirty(true); setSync("⚠ offline – lokal gesichert, wird nachgereicht", "warn"); }
     }
     async function pull() {
-      if (!potId) return;
       try {
-        const remote = await remoteGet(potId);
-        if (remote.updatedAt >= state.updatedAt) { state = remote; saveLocal(); render(); }
+        const remote = await remoteGet();
+        if (dirty) {
+          // Offline-Einträge nachreichen (neue Einträge zusammenführen)
+          const base = remote ? remote.st : clone(state);
+          if (remote) {
+            const ids = new Set(base.items.map(i => i.id));
+            state.items.forEach(i => { if (!ids.has(i.id)) base.items.push(i); });
+          }
+          base.updatedAt = Date.now();
+          await remotePut(base);
+          state = normalize(base); saveLocal(); render(); setDirty(false);
+        } else if (remote) {
+          if (remote.st.updatedAt >= state.updatedAt) { state = remote.st; saveLocal(); render(); }
+          // Keepalive, damit der Stand nicht aus dem 12-h-Cache fällt
+          if (Date.now() / 1000 - remote.time > 6 * 3600) await remotePut(state);
+        } else if (state.items.length || state.total !== 2000) {
+          await remotePut(state); // Server leer/abgelaufen -> eigenen Stand wiederherstellen
+        }
         setSync("✓ synchron", "ok");
-      } catch (e) { setSync("⚠ offline", "warn"); }
+      } catch (e) { setSync("⚠ offline – zeigt lokalen Stand", "warn"); }
     }
 
     function settle() {
@@ -715,34 +690,16 @@
     });
     $("#bReset").addEventListener("click", () => mutate(s => { s.items = []; }));
 
-    $("#kittyStart").addEventListener("click", async () => {
-      setSync("Kasse wird erstellt …");
-      try {
-        state.updatedAt = Date.now();
-        const id = await remoteCreate(state);
-        potId = id; store.set(ID_KEY, id);
-        try { history.replaceState(null, "", "#kasse=" + id); } catch (e) {}
-        updateBar(); setSync("✓ Kasse aktiv – jetzt Link teilen!", "ok");
-        startPolling();
-      } catch (e) { setSync("⚠ Konnte Kasse nicht erstellen – Details: " + (e && e.message ? e.message : "unbekannt"), "warn"); }
-    });
-    $("#kittyShare").addEventListener("click", async () => {
-      const link = location.origin + location.pathname + "#kasse=" + potId;
-      try { await navigator.clipboard.writeText(link); setSync("🔗 Link kopiert – in die Gruppe posten!", "ok"); }
-      catch (e) { setSync(link, "ok"); }
-    });
-
     let polling = false;
     function startPolling() {
       if (polling) return; polling = true;
-      setInterval(pull, 12000);
+      setInterval(pull, 20000);
       document.addEventListener("visibilitychange", () => { if (!document.hidden) pull(); });
       window.addEventListener("focus", pull);
     }
 
-    // --- Init ---
-    render(); updateBar();
-    if (potId) { store.set(ID_KEY, potId); pull(); startPolling(); }
+    // --- Init: Kasse ist für alle automatisch aktiv ---
+    render(); updateBar(); pull(); startPolling();
   })();
 
   /* ---------------- Unterlagen: Kopier-Buttons ---------------- */

@@ -511,9 +511,14 @@
     const fmt2 = n => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
     const esc = s => String(s).replace(/[<>&"]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
 
+    // Startgeld je Person: Pieth 1.000 € Konto + 250 € bar, die anderen je 250 € bar
+    const DEFAULT_START = { Robert: 250, Robin: 250, Pieth: 1250, Heiko: 250 };
     function normalize(d) {
       if (!d || typeof d !== "object") d = {};
-      if (typeof d.total !== "number") d.total = 2000;
+      const st = d.start && typeof d.start === "object" ? d.start : {};
+      d.start = {};
+      MEMBERS.forEach(m => { d.start[m] = Number.isFinite(+st[m]) && st[m] !== null && st[m] !== "" ? +st[m] : DEFAULT_START[m]; });
+      d.total = MEMBERS.reduce((sum, m) => sum + d.start[m], 0);
       if (!Array.isArray(d.items)) d.items = [];
       if (typeof d.updatedAt !== "number") d.updatedAt = 0;
       d.items = d.items.filter(i => i && i.id).map(i => ({ id: i.id, name: String(i.name || ""), amount: +i.amount || 0, payer: MEMBERS.indexOf(i.payer) >= 0 ? i.payer : MEMBERS[0], ts: +i.ts || 0 }));
@@ -530,11 +535,12 @@
     // Jede Änderung wird als kompakter Snapshot gepostet, gelesen wird der neueste.
     // ntfy.sh hält Nachrichten ca. 12 h vor -> Keepalive postet den Stand regelmäßig neu.
     const NTFY = "https://ntfy.sh/malle2026-caladorkasse-rrph7k3q9x";
-    const pack = st => JSON.stringify({ v: 1, t: st.total, u: st.updatedAt, i: st.items.map(x => [x.id, x.name, Math.round(x.amount * 100) / 100, MEMBERS.indexOf(x.payer), x.ts]) });
+    const pack = st => JSON.stringify({ v: 1, t: st.total, u: st.updatedAt, s: MEMBERS.map(m => st.start[m]), i: st.items.map(x => [x.id, x.name, Math.round(x.amount * 100) / 100, MEMBERS.indexOf(x.payer), x.ts]) });
     function unpack(s) {
       const o = JSON.parse(s);
       if (!o || o.v !== 1) return null;
-      return normalize({ total: o.t, updatedAt: o.u, items: (o.i || []).map(a => ({ id: a[0], name: a[1], amount: a[2], payer: MEMBERS[a[3]] || MEMBERS[0], ts: a[4] })) });
+      const start = Array.isArray(o.s) && o.s.length === MEMBERS.length ? Object.fromEntries(MEMBERS.map((m, k) => [m, +o.s[k]])) : null;
+      return normalize({ start, updatedAt: o.u, items: (o.i || []).map(a => ({ id: a[0], name: a[1], amount: a[2], payer: MEMBERS[a[3]] || MEMBERS[0], ts: a[4] })) });
     }
     // Neuester Snapshot oder null (leer/abgelaufen); wirft bei Netzwerkfehler
     async function remoteGet() {
@@ -611,20 +617,39 @@
     function settle() {
       const paid = {}; MEMBERS.forEach(m => paid[m] = 0);
       state.items.forEach(i => { paid[i.payer] = (paid[i.payer] || 0) + i.amount; });
-      const spent = state.items.reduce((s, i) => s + i.amount, 0);
-      const share = spent / PERS;
-      const bal = MEMBERS.map(m => ({ m, paid: paid[m], bal: paid[m] - share }));
-      // Transfer-Vorschläge (greedy)
-      const deb = bal.filter(b => b.bal < -0.01).map(b => ({ m: b.m, v: -b.bal })).sort((a, b) => b.v - a.v);
-      const cre = bal.filter(b => b.bal > 0.01).map(b => ({ m: b.m, v: b.bal })).sort((a, b) => b.v - a.v);
-      const tx = []; let di = 0, ci = 0;
-      while (di < deb.length && ci < cre.length) {
-        const amt = Math.min(deb[di].v, cre[ci].v);
-        tx.push({ from: deb[di].m, to: cre[ci].m, amt });
-        deb[di].v -= amt; cre[ci].v -= amt;
-        if (deb[di].v < 0.01) di++; if (cre[ci].v < 0.01) ci++;
+      const spent = state.items.reduce((sum, i) => sum + i.amount, 0);
+      const left = state.total - spent;
+      const fair = left / PERS; // was jedem am Ende vom Rest zusteht
+      const rows = MEMBERS.map(m => {
+        const holds = state.start[m] - paid[m];
+        return { m, start: state.start[m], paid: paid[m], holds, diff: holds - fair };
+      });
+      // diff > 0: hält mehr als ihm zusteht -> gibt ab; diff < 0: bekommt
+      const giv = rows.filter(r => r.diff > 0.01).map(r => ({ m: r.m, v: r.diff })).sort((x, y) => y.v - x.v);
+      const rec = rows.filter(r => r.diff < -0.01).map(r => ({ m: r.m, v: -r.diff })).sort((x, y) => y.v - x.v);
+      const tx = []; let gi = 0, ri = 0;
+      while (gi < giv.length && ri < rec.length) {
+        const amt = Math.min(giv[gi].v, rec[ri].v);
+        tx.push({ from: giv[gi].m, to: rec[ri].m, amt });
+        giv[gi].v -= amt; rec[ri].v -= amt;
+        if (giv[gi].v < 0.01) gi++; if (rec[ri].v < 0.01) ri++;
       }
-      return { bal, share, spent, tx };
+      return { rows, spent, left, fair, tx };
+    }
+
+    // Komplette Übersicht als Text (Sicherung / zum Posten in die Gruppe)
+    function exportText() {
+      const s = settle(), d = i => new Date(i.ts || 0).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" });
+      const lines = ["💶 Malle-Kasse – Stand " + new Date().toLocaleString("de-DE"), "",
+        "Startgeld: " + MEMBERS.map(m => m + " " + fmt2(state.start[m])).join(", ") + " = " + fmt2(state.total), "",
+        "Ausgaben (" + state.items.length + "):"];
+      state.items.forEach(i => lines.push("- " + d(i) + " " + i.name + ": " + fmt2(i.amount) + " (" + i.payer + ")"));
+      lines.push("", "Ausgegeben: " + fmt2(s.spent) + " · Rest: " + fmt2(s.left) + " · fair pro Mann: " + fmt2(s.fair), "");
+      s.rows.forEach(r => lines.push(r.m + ": hält noch " + fmt2(r.holds)));
+      lines.push("", "Ausgleich:");
+      if (s.tx.length) s.tx.forEach(t => lines.push("- " + t.from + " → " + t.to + ": " + fmt2(t.amt)));
+      else lines.push("- alles ausgeglichen");
+      return lines.join("\n");
     }
 
     function render() {
@@ -649,21 +674,19 @@
         : '<li class="bitem bitem--empty">Noch keine Ausgaben eingetragen.</li>';
 
       const s = settle(), se = $("#settle");
-      if (!state.items.length) {
-        se.innerHTML = '<p class="settle__hint">Sobald Ausgaben da sind, seht ihr hier, wer wem was schuldet.</p>';
-      } else {
-        const rows = s.bal.map(b => {
-          const cls = b.bal > 0.01 ? "pos" : (b.bal < -0.01 ? "neg" : "");
-          const note = b.bal > 0.01 ? "bekommt " + fmt2(b.bal) : (b.bal < -0.01 ? "schuldet " + fmt2(-b.bal) : "ausgeglichen");
-          return `<div class="settle__row"><span class="settle__name">${b.m}</span><span class="settle__paid">bezahlt ${fmt2(b.paid)}</span><span class="settle__bal ${cls}">${note}</span></div>`;
-        }).join("");
-        const tx = s.tx.length
-          ? '<div class="settle__tx"><b>Ausgleich:</b><ul>' + s.tx.map(t => `<li>${t.from} → <b>${t.to}</b>: ${fmt2(t.amt)}</li>`).join("") + "</ul></div>"
-          : '<div class="settle__tx">Alles ausgeglichen 🎉</div>';
-        se.innerHTML = `<p class="settle__hint">Fairer Anteil pro Mann: <b>${fmt2(s.share)}</b> (von ${fmt2(s.spent)} gesamt)</p>${rows}${tx}`;
-      }
-      const edit = $("#bEditTotal");
-      if (edit && edit !== document.activeElement) edit.value = state.total;
+      const rows = s.rows.map(r => {
+        const cls = r.diff > 0.01 ? "neg" : (r.diff < -0.01 ? "pos" : "");
+        const note = r.diff > 0.01 ? "gibt " + fmt2(r.diff) + " ab" : (r.diff < -0.01 ? "bekommt " + fmt2(-r.diff) : "passt genau");
+        return `<div class="settle__row"><span class="settle__name">${r.m}</span><span class="settle__paid">Start ${fmt0(r.start)} · bezahlt ${fmt2(r.paid)} · hält noch <b>${fmt2(r.holds)}</b></span><span class="settle__bal ${cls}">${note}</span></div>`;
+      }).join("");
+      const tx = s.tx.length
+        ? '<div class="settle__tx"><b>Am Ende ausgleichen (bar oder überweisen):</b><ul>' + s.tx.map(t => `<li>${t.from} → <b>${t.to}</b>: ${fmt2(t.amt)}</li>`).join("") + "</ul></div>"
+        : '<div class="settle__tx">Alles ausgeglichen 🎉</div>';
+      se.innerHTML = `<p class="settle__hint">Rest im Topf: <b>${fmt2(s.left)}</b> → fair pro Mann: <b>${fmt2(s.fair)}</b>. „Hält noch" = Startgeld minus selbst bezahlt.</p>${rows}${tx}`;
+      MEMBERS.forEach(m => {
+        const inp = $("#bStart" + m);
+        if (inp && inp !== document.activeElement) inp.value = state.start[m];
+      });
     }
 
     // --- Events ---
@@ -682,13 +705,27 @@
     $("#budgetList").addEventListener("click", e => {
       const b = e.target.closest(".bitem__del"); if (!b) return;
       const id = b.dataset.id;
+      const it = state.items.find(i => i.id === id);
+      if (!confirm("Eintrag wirklich löschen?\n" + (it ? it.name + " – " + fmt2(it.amount) : ""))) return;
       mutate(s => { s.items = s.items.filter(i => i.id !== id); });
     });
-    $("#bEditTotal").addEventListener("change", e => {
-      const v = parseFloat(e.target.value);
-      if (!isNaN(v) && v >= 0) mutate(s => { s.total = v; });
+    MEMBERS.forEach(m => {
+      const inp = $("#bStart" + m);
+      if (inp) inp.addEventListener("change", e => {
+        const v = parseFloat(e.target.value);
+        if (!isNaN(v) && v >= 0) mutate(s => { s.start = Object.assign({}, s.start, { [m]: v }); s.total = MEMBERS.reduce((sum, x) => sum + s.start[x], 0); });
+      });
     });
-    $("#bReset").addEventListener("click", () => mutate(s => { s.items = []; }));
+    $("#bReset").addEventListener("click", () => {
+      if (!confirm("ALLE Ausgaben für alle 4 löschen? Das kann man nicht rückgängig machen.")) return;
+      if (!confirm("Wirklich sicher? Tipp: vorher \"Alles als Text kopieren\" als Sicherung.")) return;
+      mutate(s => { s.items = []; });
+    });
+    $("#bExport").addEventListener("click", async () => {
+      const txt = exportText();
+      try { await navigator.clipboard.writeText(txt); setSync("📋 Übersicht kopiert – in die Gruppe posten!", "ok"); }
+      catch (e) { window.prompt("Zum Kopieren:", txt); }
+    });
 
     let polling = false;
     function startPolling() {

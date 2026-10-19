@@ -19,7 +19,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%9D%EF%B8%8F%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
-  <link rel="stylesheet" href="assets/css/style.css?v=18" />
+  <link rel="stylesheet" href="assets/css/style.css?v=19" />
 </head>
 <body>
 
@@ -80,7 +80,7 @@
     <div class="section__inner">
       <p class="eyebrow">Kasse machen 💶</p>
       <h2 class="section__title">Budget &amp; Kostenteiler</h2>
-      <p class="section__intro">Gesamtbudget <b>2.000 €</b> (4 × 500 €). Ausgabe mit Zahler eintragen – alle 4 sehen automatisch denselben Stand. Pro-Kopf und <b>wer wem was schuldet</b> rechnen sich von selbst.</p>
+      <p class="section__intro">Budget <b>2.000 €</b>: Pieth hat 1.000 € auf dem Konto + jeder 250 € bar. Ausgabe mit Zahler eintragen – alle 4 sehen denselben Stand. Unten seht ihr, wer wie viel Geld hält und wer am Ende <b>wem wie viel zurückgibt</b>.</p>
 
       <div class="kitty-bar">
         <span class="kitty-status" id="kittyStatus">● Kasse nur auf diesem Gerät</span>
@@ -108,14 +108,22 @@
 
       <ul class="budget__list" id="budgetList"></ul>
 
-      <h3 class="subhead">🧮 Abrechnung – wer zahlt wem</h3>
+      <h3 class="subhead">🧮 Abrechnung – wer hält was, wer bekommt was</h3>
       <div class="settle" id="settle"></div>
 
+      <button type="button" class="btn btn--ghost btn--sm" id="bExport">📋 Alles als Text kopieren (Sicherung)</button>
+
       <details class="budget__opts">
-        <summary>Budget anpassen / zurücksetzen</summary>
+        <summary>Startgeld anpassen / zurücksetzen</summary>
+        <p class="budget__opts-hint">Wer hatte zu Beginn wie viel? (Pieth: 1.000 € Konto + 250 € bar)</p>
+        <div class="budget__start">
+          <label>Robert <input type="number" id="bStartRobert" min="0" step="10" /> €</label>
+          <label>Robin <input type="number" id="bStartRobin" min="0" step="10" /> €</label>
+          <label>Pieth <input type="number" id="bStartPieth" min="0" step="10" /> €</label>
+          <label>Heiko <input type="number" id="bStartHeiko" min="0" step="10" /> €</label>
+        </div>
         <div class="budget__opts-row">
-          <label>Gesamtbudget (€): <input type="number" id="bEditTotal" min="0" step="50" /></label>
-          <button type="button" class="btn btn--ghost btn--sm" id="bReset">Ausgaben löschen</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="bReset">Alle Ausgaben löschen</button>
         </div>
       </details>
     </div>
@@ -428,7 +436,7 @@
   </footer>
 
   <script src="assets/vendor/leaflet/leaflet.js"></script>
-  <script src="assets/js/data.js?v=18"></script>
-  <script src="assets/js/app.js?v=18"></script>
+  <script src="assets/js/data.js?v=19"></script>
+  <script src="assets/js/app.js?v=19"></script>
 </body>
 </html>
